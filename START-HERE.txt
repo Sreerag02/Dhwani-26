@@ -1,0 +1,7 @@
+DHWANI 26 - REVERSIBLE V5
+Open this folder in VS Code.
+Run npm install, then npm run dev -- --host
+
+Tap Gates, then scroll DOWN to open clouds and reveal Khai.
+Scroll UP to reverse Khai and close clouds again.
+Theme art follows scrolling too. See UPDATE-NOTES.md.

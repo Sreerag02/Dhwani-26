@@ -1,0 +1,64 @@
+:root { --festival-header-height:72px; }
+html {scroll-padding-top:var(--festival-header-height)}
+.gates {cursor:pointer;touch-action:manipulation}
+.festival-header {position:absolute;inset:0 0 auto;min-height:var(--festival-header-height);display:flex;align-items:center;gap:20px;padding:10px clamp(16px,3vw,48px);background:#1f1d66;box-shadow:0 2px 0 #af005f;color:#fabf01;pointer-events:auto}
+.festival-header-logo {display:block;flex:none;width:126px}
+.festival-header-logo img {width:100%;height:42px;object-fit:contain}
+.festival-header-details {border-left:1px solid #fabf0170;padding-left:20px;display:grid;gap:4px;font:11px/1.35 Poppins,sans-serif}
+.festival-header-details strong {font-size:13px;letter-spacing:.08em}
+.festival-header-details span {color:#eee9ff}
+.festival-menu-button {margin-left:auto;display:grid;align-content:center;gap:7px;width:46px;height:46px;border:0;background:none;cursor:pointer;flex:none}
+.festival-menu-button span {display:block;width:28px;height:2px;background:#fabf01;margin:auto}
+.festival-menu-button span:last-child {display:none}
+.festival-menu-button:focus-visible {outline:2px solid #02caef}
+.side-nav {max-height:100dvh;overflow-y:auto}
+.cloud-journey {position:relative;height:230svh;background:#1f1d66}
+.cloud-journey-sticky {position:sticky;top:0;height:100svh;overflow:hidden;padding-top:var(--festival-header-height)}
+.cloud-journey-sticky .mascot-poster {height:100%;min-height:0}
+.cloud-curtain {position:absolute;inset:0;z-index:20;overflow:hidden;pointer-events:none}
+.cloud-curtain-ground {position:absolute;inset:0;background:#95034e}
+.cloud-curtain-layer {position:absolute;width:76%;pointer-events:none}
+.cloud-curtain-layer img {display:block;width:100%;height:auto;max-width:none}
+.curtain-0 {left:-13%;top:-20%;width:95%}
+.curtain-1 {right:-14%;top:-18%;width:94%}
+.curtain-2 {left:-10%;top:15%;width:80%}
+.curtain-3 {right:-13%;top:12%;width:80%}
+.curtain-4 {left:-18%;bottom:-25%;width:92%}
+.curtain-5 {right:-20%;bottom:-24%;width:95%}
+.curtain-6 {left:0;top:35%;width:65%}
+.curtain-7 {right:-5%;top:32%;width:70%}
+.curtain-8 {left:-10%;bottom:-20%;width:85%}
+.curtain-9 {right:-15%;bottom:-20%;width:85%}
+.cloud-scroll-prompt {position:absolute;bottom:8%;left:50%;translate:-50% 0;z-index:21;border:1px solid #fabf01;padding:14px 22px;background:#1f1d66;color:#fabf01;font:11px/1.5 Poppins,sans-serif;letter-spacing:.15em;white-space:nowrap;cursor:pointer}
+.cloud-scroll-prompt span {display:block;font-size:24px}
+/* Scroll owns entrance transforms; idle drift lives on separate inner images. */
+.cloud-journey .poster-character-button,
+.cloud-journey .poster-khai img,
+.cloud-journey .poster-cloud,
+.cloud-journey .poster-foreground {animation:none}
+.cloud-journey .poster-cloud img,
+.cloud-journey .poster-foreground img {animation-play-state:var(--poster-drift-state,paused)}
+@media(max-width:700px){
+ :root {--festival-header-height:64px}
+ .festival-header {gap:10px;padding:8px 12px}
+ .festival-header-logo {width:88px}
+ .festival-header-details {padding-left:10px;font-size:8px;max-width:170px}
+ .festival-header-details strong {font-size:10px;letter-spacing:.02em}
+ .festival-menu-button {width:40px;height:44px}
+ .cloud-curtain-layer {min-width:125%}
+ .curtain-0,.curtain-1 {top:-5%}
+ .curtain-2,.curtain-3 {top:19%}
+ .curtain-4,.curtain-5 {bottom:4%}
+ .curtain-6,.curtain-7 {top:40%}
+ .curtain-8,.curtain-9 {bottom:-9%}
+ .cloud-journey-sticky .poster-heading {top:3%;font-size:27px}
+ .cloud-journey-sticky .poster-khai {top:13%}
+ .cloud-journey-sticky .poster-character {top:22%;width:min(88vw,52svh)}
+ .cloud-journey-sticky .poster-sign {top:70%;width:39%}
+ .cloud-journey-sticky .poster-foreground {width:180%;left:-40%}
+}
+@media(max-height:500px) and (orientation:landscape){
+ .cloud-journey-sticky .poster-character {width:38%;top:10%}
+ .cloud-journey-sticky .poster-khai {width:50%;left:25%;top:9%}
+ .cloud-journey-sticky .poster-heading {font-size:20px}
+}

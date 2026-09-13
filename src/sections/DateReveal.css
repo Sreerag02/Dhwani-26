@@ -1,0 +1,16 @@
+.date-reveal {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #1f1d66;
+  isolation: isolate;
+}
+
+/* Mobile browser height fallback */
+
+@supports not (height: 100svh) {
+  .date-reveal {
+    min-height: 100vh;
+  }
+}

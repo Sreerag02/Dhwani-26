@@ -1,0 +1,106 @@
+/* A continuous portrait poster, not another clipped one-screen hero. */
+.carnival {
+  position:relative;
+  isolation:isolate;
+  width:100%;
+  overflow:hidden;
+  margin-top:-1px;
+  background:linear-gradient(180deg,#1f1d66 0%,#25155e 12%,#821967 29%,#ff6266 43%,#ffb650 53%,#501347 66%,#6e165f 87%,#1f1d66 100%);
+}
+.carnival-stage {
+  position:relative;
+  width:min(100%,1120px);
+  aspect-ratio:9 / 16;
+  margin:0 auto;
+}
+.carnival::before {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(90deg,#1f1d6644,transparent 20%,transparent 80%,#1f1d6644);
+}
+.carnival-kicker {
+  position:absolute; z-index:8; top:2%; left:0; width:100%; margin:0;
+  font:400 clamp(20px,3vw,34px)/1.1 "Galavant",sans-serif;
+  text-align:center; color:#fabf01;
+}
+.carnival-kicker span {display:block;font:9px/2.5 "Poppins",sans-serif;letter-spacing:.25em}
+.carnival-layer {position:absolute;pointer-events:none;}
+.carnival-layer img {display:block;width:100%;height:auto;max-width:none;user-select:none}
+.carnival-wheel {z-index:1;top:12%;left:3%;width:94%}
+.carnival-blue {z-index:3;top:6%;left:-3%;width:106%}
+.carnival-title {z-index:7;top:25%;left:12%;width:76%}
+.carnival-gate {z-index:5;top:42%;left:-4%;width:108%}
+.carnival-gate-far {z-index:2;top:58%;left:18%;width:64%;opacity:.32}
+.lamp-a {z-index:4;top:7%;left:40%;width:7%}
+.lamp-b {z-index:6;top:1%;left:53%;width:15%}
+.lamp-c {z-index:6;top:29%;left:2%;width:16%}
+.lamp-d {z-index:6;top:13%;right:-2%;width:17%}
+.lamp-e {z-index:8;top:65%;left:24%;width:20%}
+.lamp-f {z-index:8;top:75%;right:32%;width:14%;rotate:12deg}
+.note-a {z-index:4;top:16%;left:11%;width:3%}
+.note-b {z-index:4;top:24%;left:7%;width:5%}
+.note-c {z-index:4;top:21%;right:12%;width:4%}
+.note-d {z-index:8;top:30%;right:2%;width:4%}
+.mist-a {z-index:8;top:55%;left:-10%;width:48%}
+.mist-b {z-index:8;top:55%;right:-10%;width:48%}
+.mist-c {z-index:8;top:85%;left:-13%;width:45%}
+.mist-d {z-index:8;top:84%;right:-14%;width:46%}
+.mist-e {z-index:8;bottom:1%;left:-12%;width:57%}
+.mist-f {z-index:8;bottom:1%;right:-12%;width:57%}
+.lamp-g {z-index:6;top:48%;left:1%;width:12%}
+.lamp-h {z-index:6;top:58%;right:3%;width:9%}
+.note-e {z-index:8;top:71%;left:9%;width:4%}
+.note-f {z-index:8;top:80%;right:12%;width:3%}
+.mist-g {z-index:4;top:36%;left:-12%;width:35%}
+.mist-h {z-index:4;top:39%;right:-15%;width:38%}
+.carnival-float {animation:carnival-sway 7s ease-in-out infinite;transform-origin:50% 10%;animation-play-state:paused}
+.carnival[data-playing="true"] .carnival-float {animation-play-state:running}
+.lamp-b .carnival-float,.lamp-d .carnival-float,.mist-b .carnival-float {animation-delay:-3s;animation-duration:8s}
+@keyframes carnival-sway {50% {transform:translate3d(9px,-18px,0) rotate(3deg)}}
+[class*="note-"] .carnival-float {animation-name:carnival-note-drift;animation-duration:5s}
+@keyframes carnival-note-drift {50% {transform:translate3d(-10px,-24px,0) rotate(-9deg)}}
+@media (min-width:701px) {
+  .carnival {padding-top:var(--festival-header-height,72px)}
+  .carnival-stage {width:100%;aspect-ratio:16/9;height:auto}
+  .carnival-kicker {top:3%;font-size:clamp(20px,2vw,32px)}
+  .carnival-wheel {width:50%;left:25%;top:6%}
+  .carnival-blue {width:94%;left:3%;top:8%;height:52%}
+  .carnival-blue > div,.carnival-blue img {height:100%}
+  .carnival-blue img {object-fit:contain;object-position:top}
+  .carnival-title {width:43%;left:28.5%;top:33%}
+  .carnival-gate {width:57%;left:21.5%;top:58%}
+  .carnival-gate-far {width:33%;left:33.5%;top:70%}
+  .lamp-a {left:22%;top:12%;width:4%}
+  .lamp-b {left:64%;top:4%;width:7%}
+  .lamp-c {left:5%;top:35%;width:8%}
+  .lamp-d {right:5%;top:19%;width:9%}
+  .lamp-e {left:15%;top:69%;width:8%}
+  .lamp-f {right:19%;top:75%;width:6%}
+  .note-a {left:12%;top:24%;width:2%}
+  .note-b {left:18%;top:53%;width:3%}
+  .note-c {right:14%;top:43%;width:2.5%}
+  .note-d {right:21%;top:65%;width:2.5%}
+  .mist-a {left:-6%;top:67%;width:32%}
+  .mist-b {right:-6%;top:66%;width:32%}
+  .mist-c {left:-7%;top:87%;width:26%}
+  .mist-d {right:-7%;top:86%;width:26%}
+  .mist-e {left:10%;bottom:-8%;width:27%}
+  .mist-f {right:10%;bottom:-8%;width:27%}
+  .lamp-g {left:31%;top:73%;width:5%}
+  .lamp-h {right:28%;top:11%;width:4%}
+  .note-e {left:29%;top:23%;width:2.5%}
+  .note-f {right:33%;top:77%;width:2%}
+  .mist-g {left:-6%;top:11%;width:24%}
+  .mist-h {right:-7%;top:53%;width:27%}
+}
+@media (max-width:700px) {
+  .carnival-kicker {font-size:22px}
+  .carnival-kicker span {font-size:7px}
+  .carnival-stage {width:100%;aspect-ratio:9/16}
+  .carnival-title {width:74%;left:13%;top:29%}
+  .carnival-wheel {width:86%;left:7%;top:15%}
+  .carnival-blue {width:100%;left:0;top:8%}
+  .carnival-gate {top:44%}
+}
+@media (prefers-reduced-motion:reduce) {
+  .carnival-float {animation:none!important}
+}
