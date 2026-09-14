@@ -1,0 +1,7 @@
+DHWANI 26 - WORLD FLOW V6
+Open this folder in VS Code.
+Run npm install, then npm run dev -- --host
+
+Simply scroll: World of Dhwani > Clouds > Carnival > Mask > Khai.
+Scroll upward to reverse. No entry buttons.
+Read UPDATE-NOTES.md for changes.
