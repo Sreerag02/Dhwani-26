@@ -1,0 +1,28 @@
+.world-intro {position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;text-align:center;background:#1f1d66;color:#fabf01;padding:32px}
+.world-intro::before,.world-intro::after {content:"";position:absolute;inset:0 auto 0 0;width:clamp(6px,1vw,18px);background:#af005f;border-right:6px solid #3731ab}
+.world-intro::after {left:auto;right:0;background:#02caef;border-color:#fabf01}
+.world-intro p {font-size:clamp(8px,1vw,13px);letter-spacing:.22em;color:#02caef;margin:0 0 36px}
+.world-intro h1 {font:400 clamp(70px,15vw,230px)/.92 Galavant,sans-serif;margin:0;text-shadow:5px 8px #af005f}
+.world-intro h1 span {display:block;font:400 clamp(24px,4vw,60px)/1.5 Poppins,sans-serif;letter-spacing:.16em;color:#fff8e8;text-shadow:none}
+.world-year {display:block;margin-top:25px;font:400 clamp(32px,5vw,72px)/1 Galavant,sans-serif;color:#02caef}
+.reveal-journey {position:relative;height:590svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
+.journey-sticky {position:sticky;top:0;height:100svh;overflow:hidden;background:#1f1d66}
+.journey-scene {position:absolute;inset:0;height:100%;min-height:0;padding-top:0}
+.world-intro.journey-scene {z-index:40}
+.journey-anchor {position:absolute;left:0;width:1px;height:1px;scroll-margin-top:var(--festival-header-height)}
+.theme-anchor {top:calc(490svh * .30)}
+.khai-anchor {top:calc(490svh * .64)}
+.carnival-embedded {height:100%;padding:0;display:grid;place-items:center;margin:0}
+.carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 16 / 9));height:auto;aspect-ratio:16/9}
+.scroll-mask {position:absolute;inset:0;z-index:30;display:grid;place-items:center;overflow:hidden;background:#1f1d66;pointer-events:none}
+.scroll-mask img {width:min(65vw,70svh);height:80%;object-fit:contain}
+.khai-journey .mascot-poster {height:100%;min-height:0}
+.khai-journey .poster-character-button,.khai-journey .poster-khai img,.khai-journey .poster-cloud,.khai-journey .poster-foreground {animation:none}
+.khai-journey .poster-cloud img,.khai-journey .poster-foreground img {animation-play-state:var(--poster-drift-state,paused)}
+@media(max-width:700px){
+ .world-intro {padding:20px}
+ .world-intro h1 {font-size:19vw;text-shadow:3px 5px #af005f}
+ .world-intro h1 span {font-size:7vw}
+ .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 9 / 16));aspect-ratio:9/16}
+ .scroll-mask img {width:88vw}
+}
