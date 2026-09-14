@@ -5,3 +5,4 @@ Run npm install, then npm run dev -- --host
 Simply scroll: World of Dhwani > Clouds > Carnival > Mask > Khai.
 Scroll upward to reverse. No entry buttons.
 Read UPDATE-NOTES.md for changes.
+updated for vercel 
