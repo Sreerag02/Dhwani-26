@@ -26,3 +26,20 @@
  .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 9 / 16));aspect-ratio:9/16}
  .scroll-mask img {width:88vw}
 }
+
+/* Center each cloud on an elliptical ring; scroll moves it radially outward. */
+.cloud-curtain .cloud-bloom-layer {
+  width:clamp(300px,58vw,1100px);
+  min-width:0;
+  translate:-50% -50%;
+  transform-origin:center;
+  will-change:transform;
+}
+.cloud-curtain .cloud-bloom-ring-1 {width:clamp(260px,46vw,880px)}
+@media(max-width:700px){
+  .cloud-curtain .cloud-bloom-layer {width:max(110vw,55svh)}
+  .cloud-curtain .cloud-bloom-ring-1 {width:max(94vw,46svh)}
+}
+@media(prefers-reduced-motion:reduce){
+  .cloud-curtain .cloud-bloom-layer {will-change:auto}
+}

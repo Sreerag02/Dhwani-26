@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform, useSpring } from "motion/react";
+import FerrisWheel from "../components/FerrisWheel";
 import "./ThemeReveal.css";
 
 const E = "/assets/elements/";
@@ -15,10 +16,10 @@ const notes = [
   ["blue note.svg","note-e"], ["note.svg","note-f"],
 ];
 /* Observe the stationary wrapper, never the image starting outside the viewport. */
-function RevealLayer({ className, src, alt = "", from = 0, float = false }) {
+function RevealLayer({ className, src, alt = "", from = 0, float = false, children }) {
   const sharedProgress = useContext(TimelineContext);
   const ref = useRef(null);
-  const props = { className, src, alt, from, float };
+  const props = { className, src, alt, from, float, children };
   return <div ref={ref} className={"carnival-layer " + className}>
     {sharedProgress ? <LayerMotion {...props} progress={sharedProgress} /> : <ViewportLayer {...props} target={ref} />}
   </div>;
@@ -31,15 +32,15 @@ function ViewportLayer({ target, ...props }) {
   return <LayerMotion {...props} progress={reduced ? scrollYProgress : smoothProgress} />;
 }
 
-function LayerMotion({ className, src, alt, from, float, progress }) {
+function LayerMotion({ className, src, alt, from, float, progress, children }) {
   const reduced = useReducedMotion();
   const x = useTransform(progress, [0, 1], [from, 0]);
   const y = useTransform(progress, [0, 1], [90, 0]);
   const opacity = useTransform(progress, [0, .65], [0, 1]);
   const scale = useTransform(progress, [0, 1], [className === "carnival-title" ? .78 : 1, 1]);
   return <motion.div style={reduced ? undefined : { opacity, x, y, scale }}>
-      <img className={float ? "carnival-float" : ""} src={src}
-        alt={alt} draggable="false" loading="lazy" decoding="async" />
+      {children || <img className={float ? "carnival-float" : ""} src={src}
+        alt={alt} draggable="false" loading="lazy" decoding="async" />}
     </motion.div>;
 }
 
@@ -62,7 +63,9 @@ export default function ThemeReveal({ progress = null, embedded = false }) {
     <RevealLayer className="carnival-stalls" src={E+"stalls.png"} />
     <div className="carnival-stage">
       <p className="carnival-kicker">DHWANI ’26 <span>THE THEME</span></p>
-      <RevealLayer className="carnival-wheel" src={E+"new ferris.svg"} />
+      <RevealLayer className="carnival-wheel">
+        <FerrisWheel duration={48} running={playing && !reduced} />
+      </RevealLayer>
       <RevealLayer className="carnival-blue" src={E+"CLOUDS.svg"} from={-70} />
       <RevealLayer className="carnival-gate" src={E+"torii new.svg"} />
       <RevealLayer className="carnival-title" src={E+"title.svg"} alt="Carnivale Razzmatazz" />

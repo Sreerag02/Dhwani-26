@@ -33,9 +33,12 @@ export default function KhaiHero({ progress }) {
       <div className="poster-character">
         <motion.button className="poster-character-button" type="button" aria-label="Make Khai dance"
           style={{ opacity: entrance, y: reduced ? 0 : rise }}
-          onClick={() => setTap(n => n + 1)} whileTap={reduced ? undefined : { scale: 0.97 }}>
-          <motion.img key={tap} src={MASCOT + "mascot-main.svg"} alt="Khai, the Dhwani mascot" draggable="false"
-            initial={false} animate={tap && !reduced ? { rotate: [0,-3,3,-1,0], y: [0,-14,0] } : { rotate: 0, y: 0 }}
+          onClick={() => setTap(n => n + 1)}
+          whileTap={reduced ? undefined : { scale: 0.97 }}>
+          <motion.img key={tap} src={MASCOT + "mascot-main.svg"}
+            alt="Khai, the Dhwani mascot" draggable="false"
+            initial={false}
+            animate={tap && !reduced ? { rotate: [0, -3, 3, -1, 0], y: [0, -14, 0] } : { rotate: 0, y: 0 }}
             transition={{ duration: 0.65, ease: "easeInOut" }} />
         </motion.button>
       </div>
@@ -48,4 +51,3 @@ export default function KhaiHero({ progress }) {
     </motion.section>
   );
 }
-

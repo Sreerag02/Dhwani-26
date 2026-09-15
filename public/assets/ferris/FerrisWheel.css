@@ -1,0 +1,52 @@
+.ferrisPhysics {
+  position: relative;
+  width: min(100%, 980px);
+  aspect-ratio: 2914 / 3067;
+  container-type: inline-size;
+  overflow: visible;
+  user-select: none;
+  pointer-events: none;
+}
+
+.ferrisPhysics__rotor,
+.ferrisPhysics__support {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ferrisPhysics__rotor {
+  z-index: 1;
+  transform-origin: 49.9483% 42.9410%;
+  will-change: transform;
+}
+
+.ferrisPhysics__cabinPivot {
+  position: absolute;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  will-change: left, top;
+}
+
+.ferrisPhysics__cabin {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+  transform: rotate(var(--swing, 0rad));
+  will-change: transform;
+}
+
+.ferrisPhysics__support {
+  z-index: 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ferrisPhysics__rotor,
+  .ferrisPhysics__cabin {
+    transform: none !important;
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "viewBox": [
+    0,
+    0,
+    2914,
+    3067
+  ],
+  "center": [
+    1455.492303656,
+    1317.041900636
+  ],
+  "radius": 1303.5594926580227,
+  "cabins": [
+    {
+      "file": "/assets/ferris/cabins/cabin-01.png",
+      "crop_w": 309,
+      "crop_h": 412,
+      "pivot_local_x": 154.5,
+      "pivot_local_y": 15.253450579999992,
+      "base_angle": 0.5080707219812488,
+      "base_angle_deg": 29.110308063690177
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-02.png",
+      "crop_w": 309,
+      "crop_h": 412,
+      "pivot_local_x": 154.5,
+      "pivot_local_y": 15.253450580000049,
+      "base_angle": 1.031172081078452,
+      "base_angle_deg": 59.08180819751723
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-03.png",
+      "crop_w": 305,
+      "crop_h": 412,
+      "pivot_local_x": 154.5,
+      "pivot_local_y": 15.253450579999935,
+      "base_angle": 1.554127387445694,
+      "base_angle_deg": 89.04494012633114
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-04.png",
+      "crop_w": 309,
+      "crop_h": 412,
+      "pivot_local_x": 154.5,
+      "pivot_local_y": 15.253450579999935,
+      "base_angle": 2.075566867953356,
+      "base_angle_deg": 118.92122163091433
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-05.png",
+      "crop_w": 309,
+      "crop_h": 411,
+      "pivot_local_x": 154.5,
+      "pivot_local_y": 15.253450579999935,
+      "base_angle": 2.596868785119633,
+      "base_angle_deg": 148.78962133662046
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-06.png",
+      "crop_w": 309,
+      "crop_h": 408,
+      "pivot_local_x": 154.5,
+      "pivot_local_y": 15.253450579999935,
+      "base_angle": 3.1252229288560027,
+      "base_angle_deg": 179.0620838609629
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-07.png",
+      "crop_w": 309,
+      "crop_h": 412,
+      "pivot_local_x": 154.5,
+      "pivot_local_y": 15.253450579999935,
+      "base_angle": 3.65250817851251,
+      "base_angle_deg": 209.27330326578272
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-08.png",
+      "crop_w": 310,
+      "crop_h": 411,
+      "pivot_local_x": 155.0,
+      "pivot_local_y": 15.253450579999935,
+      "base_angle": 4.179901360298405,
+      "base_angle_deg": 239.49070672609034
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-09.png",
+      "crop_w": 306,
+      "crop_h": 412,
+      "pivot_local_x": 151.0,
+      "pivot_local_y": 15.253450579999935,
+      "base_angle": 4.703028102421321,
+      "base_angle_deg": 269.46366120016194
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-10.png",
+      "crop_w": 310,
+      "crop_h": 412,
+      "pivot_local_x": 155.0,
+      "pivot_local_y": 15.253450580000049,
+      "base_angle": 5.223376992320605,
+      "base_angle_deg": 299.2774564657085
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-11.png",
+      "crop_w": 310,
+      "crop_h": 412,
+      "pivot_local_x": 155.0,
+      "pivot_local_y": 15.253450579999992,
+      "base_angle": 5.744842179633573,
+      "base_angle_deg": 329.15521086174044
+    },
+    {
+      "file": "/assets/ferris/cabins/cabin-12.png",
+      "crop_w": 310,
+      "crop_h": 408,
+      "pivot_local_x": 155.0,
+      "pivot_local_y": 11.25345058,
+      "base_angle": 6.272852987637197,
+      "base_angle_deg": 359.40800169764054
+    }
+  ]
+}

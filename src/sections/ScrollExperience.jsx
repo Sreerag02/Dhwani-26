@@ -5,12 +5,35 @@ import ThemeReveal from "./ThemeReveal";
 import "../components/Opening.css";
 import "./ScrollExperience.css";
 
-function Cloud({ index, progress }) {
+// Two overlapping rings open toward all eight compass directions.
+const CLOUD_LAYERS = Array.from({ length: 16 }, (_, index) => {
+  const ring = Math.floor(index / 8);
+  const direction = index % 8;
+  const angle = direction * Math.PI / 4 - Math.PI / 2;
+  const dx = Math.cos(angle);
+  const dy = Math.sin(angle);
+  return {
+    id: index,
+    file: 2 + (direction + ring * 3) % 7,
+    ring,
+    left: 50 + dx * (ring ? 20 : 39),
+    top: 50 + dy * (ring ? 22 : 43),
+    x: `${dx * (ring ? 105 : 90)}vw`,
+    y: `${dy * (ring ? 115 : 100)}svh`,
+    start: ring ? .07 : .02,
+    end: ring ? .76 : .68,
+    turn: (direction % 2 ? 1 : -1) * (ring ? 5 : 3),
+  };
+});
+
+function Cloud({ layer, progress }) {
   const reduced = useReducedMotion();
-  const x = useTransform(progress, [0, .08, .55], ["0%", "0%", index % 2 ? "150%" : "-150%"]);
-  const y = useTransform(progress, [0, .55], ["0%", index < 2 ? "-28%" : "20%"]);
-  return <motion.div className={`cloud-curtain-layer curtain-${index}`} style={reduced ? undefined : { x, y }}>
-    <img src={`/assets/curtain/${2 + index % 6}.png`} alt="" decoding="async" draggable="false" />
+  const x = useTransform(progress, [layer.start, layer.end], ["0vw", layer.x]);
+  const y = useTransform(progress, [layer.start, layer.end], ["0svh", layer.y]);
+  const rotate = useTransform(progress, [layer.start, layer.end], [0, layer.turn]);
+  return <motion.div className={`cloud-curtain-layer cloud-bloom-layer cloud-bloom-ring-${layer.ring}`}
+    style={{ left: `${layer.left}%`, top: `${layer.top}%`, ...(reduced ? {} : { x, y, rotate }) }}>
+    <img src={`/assets/curtain/${layer.file}.png`} alt="" decoding="async" draggable="false" />
   </motion.div>;
 }
 
@@ -25,8 +48,8 @@ export default function ScrollExperience() {
   const introY = useTransform(progress, [0, .18], [0, -100]);
   const clouds = useTransform(progress, [.12, .46], [0, 1]);
   const ground = useTransform(clouds, [0, .10, .32], [1, 1, 0]);
-  const cloudOpacity = useTransform(clouds, [.40, .56], [1, 0]);
-  const cloudVisibility = useTransform(clouds, value => value >= .56 ? "hidden" : "visible");
+  const cloudOpacity = useTransform(clouds, [.66, .84], [1, 0]);
+  const cloudVisibility = useTransform(clouds, value => value >= .84 ? "hidden" : "visible");
   const theme = useTransform(progress, [.20, .46], [0, 1]);
   const themeVisibility = useTransform(progress, value => value >= .62 ? "hidden" : "visible");
   const maskOpacity = useTransform(progress, [.52, .60, .65, .76], [0, 1, 1, 0]);
@@ -47,7 +70,7 @@ export default function ScrollExperience() {
       </motion.div>
       <motion.div className="cloud-curtain" style={{ opacity: cloudOpacity, visibility: cloudVisibility }} aria-hidden="true">
         <motion.div className="cloud-curtain-ground" style={{ opacity: ground }} />
-        {Array.from({ length: 10 }, (_, index) => <Cloud key={index} index={index} progress={clouds} />)}
+        {CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={clouds} />)}
       </motion.div>
       <motion.div className="scroll-mask" style={{ opacity: maskOpacity, visibility: maskVisibility }} aria-hidden="true">
         <motion.img src="/assets/mascot/mascot%20mask.svg" alt="" draggable="false" style={{ scale: reduced ? 1 : maskScale }} />
