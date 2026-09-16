@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import SideNavbar from "./components/SideNavbar";
 import ScrollExperience from "./sections/ScrollExperience";
-import DateReveal from "./sections/DateReveal";
+import ComingSoon from "./sections/ComingSoon";
 
 export default function App() {
   const nextPage = useRef(null);
@@ -26,7 +26,7 @@ export default function App() {
     {showHeader && <div className="global-navigation"><SideNavbar /></div>}
     <main className="dhwani-site">
       <ScrollExperience />
-      <div ref={nextPage}><DateReveal /></div>
+      <div ref={nextPage}><ComingSoon /></div>
     </main>
   </>;
 }

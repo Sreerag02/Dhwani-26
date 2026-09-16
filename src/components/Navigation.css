@@ -17,9 +17,10 @@
 .nav-sheet-top {flex:none}
 .nav-sheet-wheel {position:relative;flex:1;overflow:hidden}
 /* Deprecated link list replaced by OptionWheel; kept for any fallback nav items. */
-.nav-sheet-links {margin:0;padding:0;display:grid;justify-items:start;gap:8px}
-.nav-sheet-links a,.nav-sheet-links summary {font:400 clamp(30px,3.5vw,56px)/1.12 Poppins,sans-serif;color:#fff;text-decoration:none;letter-spacing:-.04em;cursor:pointer;transition:color .2s,transform .2s}
+.nav-sheet-links {margin:0;padding:8px clamp(20px,2.4vw,44px) 24px;display:grid;justify-items:start;gap:4px}
+.nav-sheet-links a,.nav-sheet-links summary {font:400 clamp(22px,3vw,34px)/1.1 Poppins,sans-serif;color:#fff;text-decoration:none;letter-spacing:-.04em;cursor:pointer;transition:color .2s,transform .2s}
 .nav-sheet-links a:hover,.nav-sheet-links summary:hover {color:#fabf01;transform:translateX(10px)}
+.nav-sheet-coming {font:400 clamp(22px,3vw,34px)/1.1 Poppins,sans-serif;color:#ffffff55;letter-spacing:-.04em;cursor:default}
 .nav-sheet-links summary {list-style:none}
 .nav-sheet-links summary::-webkit-details-marker {display:none}
 .nav-sheet-links details p {font:14px/1.7 Poppins,sans-serif;max-width:420px;color:#bbb;letter-spacing:0;margin:16px 0 0}

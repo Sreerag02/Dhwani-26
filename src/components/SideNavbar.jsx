@@ -74,24 +74,28 @@ export default function SideNavbar() {
           </div>
           <div className="nav-sheet-wheel">
             <OptionWheel
-              items={['Ambient', 'House', 'Techno', 'Jazz', 'Lo-Fi', 'Synthwave']}
+              items={['Theme', 'Khai', 'Coming Soon']}
               defaultSelected={2}
               textColor="#a6a6a6"
-              activeColor="#7C3AED"
+              activeColor="#ffffff"
               side="right"
               fontSize={3}
-              spacing={2.45}
-              curve={2}
-              tilt={12}
+              spacing={1.4}
+              curve={1}
+              tilt={6}
               blur={2}
               fade={0.25}
-              smoothing={360}
-              inset={204}
+              minOpacity={0.05}
+              smoothing={200}
+              inset={80}
               loop={false}
               draggable
               soundUrl="/sounds/click-soft.mp3"
               soundVolume={0.5}
-              onChange={(index, item) => console.log(index, item)}
+              onChange={(index, item) => {
+                const href = { 'Theme': '#theme-reveal', 'Khai': '#khai', 'Coming Soon': '#coming-soon' }[item];
+                if (href) goTo({ preventDefault() {} }, href);
+              }}
             />
           </div>
         </motion.aside>
