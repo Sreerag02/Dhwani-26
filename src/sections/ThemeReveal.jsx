@@ -44,7 +44,7 @@ function LayerMotion({ className, src, alt, from, float, progress, children }) {
     </motion.div>;
 }
 
-export default function ThemeReveal({ progress = null, embedded = false }) {
+export default function ThemeReveal({ progress = null, embedded = false, onReady = null }) {
   const ref = useRef(null);
   const [playing,setPlaying] = useState(false);
   const reduced = useReducedMotion();
@@ -58,11 +58,26 @@ export default function ThemeReveal({ progress = null, embedded = false }) {
     document.addEventListener("visibilitychange", update);
     return () => { observer.disconnect(); document.removeEventListener("visibilitychange", update); };
   }, []);
+  useEffect(() => {
+    if (!onReady) return;
+    let cancelled = false;
+    const imgs = Array.from(ref.current?.querySelectorAll("img") ?? []);
+    const pending = imgs.map(img => new Promise(resolve => {
+      if (img.complete && img.naturalWidth > 0) return resolve();
+      img.loading = "eager";
+      const finish = () => { img.removeEventListener("load", finish); img.removeEventListener("error", finish); resolve(); };
+      img.addEventListener("load", finish);
+      img.addEventListener("error", finish);
+      if (img.complete) resolve();
+    }));
+    Promise.all(pending).then(() => { if (!cancelled) onReady(); });
+    return () => { cancelled = true; };
+  }, [onReady]);
   return <TimelineContext.Provider value={progress}><section ref={ref} id={embedded ? undefined : "theme-reveal"} className={`carnival${embedded ? " carnival-embedded" : ""}`} aria-label="Carnivale Razzmatazz"
     data-playing={playing && !reduced}>
     <RevealLayer className="carnival-stalls" src={E+"stalls.png"} />
     <div className="carnival-stage">
-      <p className="carnival-kicker">DHWANI ’26 <span>THE THEME</span></p>
+      <p className="carnival-kicker">DHWANI ’26 </p>
       <RevealLayer className="carnival-wheel">
         <FerrisWheel duration={48} running={playing && !reduced} />
       </RevealLayer>
