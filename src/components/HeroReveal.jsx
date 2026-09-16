@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useTransform } from "motion/react";
+import KhaiPuppet from "./KhaiPuppet";
 import "./MascotHero.css";
 const MASCOT = "/assets/mascot/";
 const CLOUDS = [["cloud-left.png","one"],["cloud-rightup.png","two"],["cloud-1.png","three"],["cloud-leftup.png","four"],["cloud-2.png","five"],["cloud-leftup.png","six"]];
@@ -28,19 +29,19 @@ export default function KhaiHero({ progress }) {
       style={{ "--poster-drift-state": driftState }}>
       <img className="poster-background" src={MASCOT + "Gradient Fill 1.png"} alt="" draggable="false" />
       <div className="poster-tint" />
-      <motion.h1 className="poster-heading" style={{ opacity: entrance, y: reduced ? 0 : leftShift }}>DHWANI ’26</motion.h1>
       <div className="poster-khai"><motion.img style={{ opacity: titleOpacity, scale: reduced ? 1 : titleScale }} src={MASCOT + "khai.png"} alt="Khai" draggable="false" /></div>
       <div className="poster-character">
-        <motion.button className="poster-character-button" type="button" aria-label="Make Khai dance"
-          style={{ opacity: entrance, y: reduced ? 0 : rise }}
-          onClick={() => setTap(n => n + 1)}
-          whileTap={reduced ? undefined : { scale: 0.97 }}>
-          <motion.img key={tap} src={MASCOT + "mascot-main.svg"}
-            alt="Khai, the Dhwani mascot" draggable="false"
-            initial={false}
-            animate={tap && !reduced ? { rotate: [0, -3, 3, -1, 0], y: [0, -14, 0] } : { rotate: 0, y: 0 }}
-            transition={{ duration: 0.65, ease: "easeInOut" }} />
-        </motion.button>
+<motion.button className="poster-character-button" type="button" aria-label="Make Khai dance"
+            style={{ opacity: entrance, y: reduced ? 0 : rise }}
+            onClick={() => setTap(n => n + 1)}
+            whileTap={reduced ? undefined : { scale: 0.97 }}>
+            <motion.div key={tap} className="poster-character-wrap"
+              initial={false}
+              animate={tap && !reduced ? { rotate: [0, -3, 3, -1, 0], y: [0, -14, 0] } : { rotate: 0, y: 0 }}
+              transition={{ duration: 0.65, ease: "easeInOut" }}>
+              <KhaiPuppet progress={progress} reduced={reduced} />
+            </motion.div>
+          </motion.button>
       </div>
       <motion.div className="poster-sign poster-sign-left" style={{ opacity: titleOpacity, x: reduced ? 0 : leftShift }}><img src={MASCOT + "sign-left.png"} alt="You don’t find the carnival. The carnival finds you. And when the time comes, someone will show you the way in." draggable="false" /></motion.div>
       <motion.div className="poster-sign poster-sign-right" style={{ opacity: titleOpacity, x: reduced ? 0 : signShift }}><img src={MASCOT + "sign-right.png"} alt="Keep watching. You’re closer than you think." draggable="false" /></motion.div>
