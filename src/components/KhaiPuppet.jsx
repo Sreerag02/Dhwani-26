@@ -42,9 +42,9 @@ export default function KhaiPuppet({ progress, reduced }) {
   };
   return (
     <div className="khai-puppet">
-      <img className="khai-puppet-layer" src={KHAI + "outfits.png"} alt="" draggable="false" style={POS} />
+      {/* <img className="khai-puppet-layer" src={KHAI + "outfits.png"} alt="" draggable="false" style={POS} /> */}
       {KH.hair > 0 && (
-        <img className="khai-puppet-layer" src={KHAI + "hair-" + KH.hair + ".png"} alt="" draggable="false" style={POS} />
+        <img className="khai-puppet-layer" src={KHAI + "hair-" + KH.hair + ".png"} alt="" draggable="false" style={{...POS, top: "-14%", transform: `scale(0.9)`}} />
       )}
       <img className="khai-puppet-layer" src={KHAI + "head.png"} alt="" draggable="false" style={headStyle} />
       <div style={{ ...POS, left: "-32%", top: "-6%", transform: `scaleX(-1) scale(0.8)`, transformOrigin: `${100 - KH.leftPivot.x}% ${KH.leftPivot.y}%` }}>
