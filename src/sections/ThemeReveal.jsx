@@ -15,11 +15,14 @@ const notes = [
   ["note.svg","note-c"], ["blue note.svg","note-d"],
   ["blue note.svg","note-e"], ["note.svg","note-f"],
 ];
+/* Kicker fades in late (theme progress .55-1), i.e. as the cloud curtain parts. */
+const KICKER_FADE = [.55, 1];
+const DEFAULT_FADE = [0, .65];
 /* Observe the stationary wrapper, never the image starting outside the viewport. */
-function RevealLayer({ className, src, alt = "", from = 0, float = false, children }) {
+function RevealLayer({ className, src, alt = "", from = 0, float = false, fade = null, children }) {
   const sharedProgress = useContext(TimelineContext);
   const ref = useRef(null);
-  const props = { className, src, alt, from, float, children };
+  const props = { className, src, alt, from, float, fade, children };
   return <div ref={ref} className={"carnival-layer " + className}>
     {sharedProgress ? <LayerMotion {...props} progress={sharedProgress} /> : <ViewportLayer {...props} target={ref} />}
   </div>;
@@ -32,11 +35,11 @@ function ViewportLayer({ target, ...props }) {
   return <LayerMotion {...props} progress={reduced ? scrollYProgress : smoothProgress} />;
 }
 
-function LayerMotion({ className, src, alt, from, float, progress, children }) {
+function LayerMotion({ className, src, alt, from, float, fade, progress, children }) {
   const reduced = useReducedMotion();
   const x = useTransform(progress, [0, 1], [from, 0]);
   const y = useTransform(progress, [0, 1], [90, 0]);
-  const opacity = useTransform(progress, [0, .65], [0, 1]);
+  const opacity = useTransform(progress, fade ?? DEFAULT_FADE, [0, 1]);
   const scale = useTransform(progress, [0, 1], [className === "carnival-title" ? .78 : 1, 1]);
   return <motion.div style={reduced ? undefined : { opacity, x, y, scale }}>
       {children || <img className={float ? "carnival-float" : ""} src={src}
@@ -77,7 +80,9 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
     data-playing={playing && !reduced}>
     <RevealLayer className="carnival-stalls" src={E+"stalls.png"} />
     <div className="carnival-stage">
-      <p className="carnival-kicker">DHWANI ’26 </p>
+      <RevealLayer className="carnival-kicker" from={0} fade={KICKER_FADE}>
+        <img src="/assets/logo/dhwani26-text.png" alt="Dhwani '26" draggable="false" />
+      </RevealLayer>
       <RevealLayer className="carnival-wheel">
         <FerrisWheel duration={48} running={playing && !reduced} />
       </RevealLayer>

@@ -15,7 +15,7 @@ export default function ComingSoon() {
         {lanterns.map(([file, pos]) => (
           <img key={pos} src={E + file} alt="" className={"coming-soon__lamp " + pos + " cs-float"} draggable="false" />
         ))}
-        <img src="/assets/logo/dhwani-main.png" alt="Dhwani '26" className="coming-soon__logo" />
+        <img src="/assets/logo/dhwani26-text.png" alt="Dhwani '26" className="coming-soon__logo" />
         {/* <h2 className="coming-soon__title">Coming Soon</h2> */}
         <p className="coming-soon__text">More of the Carnivale Razzmatazz is on its way.</p>
       </div>
