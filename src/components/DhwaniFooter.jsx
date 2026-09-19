@@ -16,11 +16,12 @@ const YoutubeIcon = ({ className = '', size = 20 }) => (
   </svg>
 );
 
-const DiscordIcon = ({ className = '', size = 20 }) => (
+const FacebookIcon = ({ className = '', size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M18 6h0a14.5 14.5 0 0 0-3.26-1.01.1.1 0 0 0-.1.05c-.14.25-.3.58-.41.83a13.38 13.38 0 0 0-4.46 0 9.7 9.7 0 0 0-.42-.83.1.1 0 0 0-.1-.05A14.4 14.4 0 0 0 6 6a.1.1 0 0 0-.05.04C3.89 9.3 3.3 12.52 3.6 15.7a.1.1 0 0 0 .04.07 14.6 14.6 0 0 0 4.4 2.22.1.1 0 0 0 .11-.04c.34-.46.64-.95.9-1.47a.1.1 0 0 0-.05-.14 9.6 9.6 0 0 1-1.37-.65.1.1 0 0 1 0-.16c.09-.07.19-.14.28-.21a.1.1 0 0 1 .1 0c2.88 1.32 6 1.32 8.86 0a.1.1 0 0 1 .1 0c.09.07.18.14.28.21a.1.1 0 0 1 0 .16c-.44.25-.9.47-1.37.65a.1.1 0 0 0-.05.14c.27.52.57 1.01.9 1.47a.1.1 0 0 0 .1.04 14.56 14.56 0 0 0 4.42-2.22.1.1 0 0 0 .04-.07c.36-3.64-.6-6.84-2.54-9.66a.1.1 0 0 0-.05-.04ZM9.67 14.15c-.83 0-1.51-.76-1.51-1.7 0-.93.66-1.7 1.51-1.7.86 0 1.53.77 1.51 1.7 0 .94-.66 1.7-1.51 1.7Zm4.66 0c-.83 0-1.51-.76-1.51-1.7 0-.93.66-1.7 1.51-1.7.86 0 1.53.77 1.51 1.7 0 .94-.66 1.7-1.51 1.7Z"/>
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
   </svg>
 );
+
 
 const ArrowUpIcon = ({ className = '', size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -476,21 +477,14 @@ export function DhwaniFooter() {
           color: #ffffff;
         }
 
-        .social-sp:hover {
-          background: #1db954;
-          border-color: #1db954;
-          box-shadow: 0 0 25px rgba(29, 185, 84, 0.85);
+        .social-fb:hover {
+          background: #1877f2;
+          border-color: #1877f2;
+          box-shadow: 0 0 25px rgba(24, 119, 242, 0.85);
           transform: translateY(-4px) scale(1.12);
           color: #ffffff;
         }
 
-        .social-dc:hover {
-          background: #5865f2;
-          border-color: #5865f2;
-          box-shadow: 0 0 25px rgba(88, 101, 242, 0.85);
-          transform: translateY(-4px) scale(1.12);
-          color: #ffffff;
-        }
 
         .dhwani-closing-credits {
           display: flex;
@@ -894,15 +888,16 @@ export function DhwaniFooter() {
             <YoutubeIcon size={19} />
           </a>
           <a 
-            href="https://spotify.com" 
+            href="https://facebook.com/dhwanicet" 
             target="_blank" 
             rel="noreferrer" 
-            className="social-atelier-link social-sp" 
-            aria-label="Listen to Dhwani Official Festival Playlist"
+            className="social-atelier-link social-fb" 
+            aria-label="Follow Dhwani on Facebook"
           >
-            <DiscordIcon size={19} />
+            <FacebookIcon size={19} />
           </a>
         </div>
+
 
         {/* Closing Heritage & Credits */}
         <div className="dhwani-closing-credits">
