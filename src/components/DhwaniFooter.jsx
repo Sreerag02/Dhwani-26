@@ -776,7 +776,7 @@ export function DhwaniFooter() {
       <div 
         className="carnival-art-canvas"
         style={{ 
-          backgroundImage: "url('/images/bg.png')",
+          backgroundImage: "url('/assets/footer/bg.png')",
           transform: `scale(1.06) translate3d(${bgOffsetX}px, ${bgOffsetY}px, 0)`,
           transition: isHovered ? 'transform 0.12s ease-out' : 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)'
         }}
@@ -796,7 +796,7 @@ export function DhwaniFooter() {
       >
         <div className="mascot-left-aura-halo" />
         <img 
-          src="/images/khai2.png" 
+          src="/assets/footer/khai2.png" 
           alt="Khai in dynamic action pose" 
           className="mascot-khai2-img"
           loading="lazy"
@@ -814,7 +814,7 @@ export function DhwaniFooter() {
       >
         <div className="mascot-aura-halo" />
         <img 
-          src="/images/KHAI.png" 
+          src="/assets/footer/KHAI.png" 
           alt="Khai - The Dhwani Mascot" 
           className="mascot-khai-img"
           loading="lazy"
@@ -837,7 +837,7 @@ export function DhwaniFooter() {
         <div className="brand-editorial-header">
           <div className="dhwani-emblem-gem">
             <img 
-              src="/images/icon.png" 
+              src="/assets/footer/icon.png" 
               alt="Dhwani '26 Feather Emblem" 
               className="dhwani-feather-emblem"
             />
@@ -846,7 +846,7 @@ export function DhwaniFooter() {
           <div className="brand-identity-text">
             <h2 className="fest-main-title">
               <img
-                src="/images/dhwani-text.png"
+                src="/assets/footer/dhwani-text.png"
                 alt="Dhwani '26"
                 className="dhwani-title-img"
               />
@@ -930,3 +930,5 @@ export function DhwaniFooter() {
     </footer>
   );
 }
+
+export default DhwaniFooter;
