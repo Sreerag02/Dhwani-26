@@ -29,127 +29,35 @@
   z-index: 3;
 }
 
-/* Notice Board Header */
+/* Notice Board Header - Clean Heading Only */
 .notice-board-header {
   text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.notice-board-banner {
-  display: inline-flex;
+  margin-bottom: 2rem;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(20, 10, 35, 0.88);
-  backdrop-filter: blur(12px);
-  padding: 1.25rem 2.5rem;
-  border-radius: 20px;
-  border: 2px solid rgba(251, 191, 36, 0.4);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .notice-board-badge {
   font-family: system-ui, -apple-system, sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.25em;
   color: #fbbf24;
   text-transform: uppercase;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
 }
 
 .notice-board-title {
   font-family: Galavant, 'Cinzel', Georgia, serif;
-  font-size: clamp(2.2rem, 4.2vw, 3.8rem);
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
   font-weight: 900;
   letter-spacing: 0.04em;
   margin: 0;
   background: linear-gradient(135deg, #ffffff 0%, #fef08a 50%, #f59e0b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 4px 18px rgba(245, 158, 11, 0.3);
-}
-
-.notice-board-subtitle {
-  font-family: system-ui, sans-serif;
-  font-size: clamp(0.85rem, 1.3vw, 1.05rem);
-  color: #d1d5db;
-  margin-top: 0.4rem;
-}
-
-.drag-hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: rgba(245, 158, 11, 0.15);
-  color: #fef08a;
-  padding: 0.3rem 0.8rem;
-  border-radius: 999px;
-  border: 1px dashed rgba(251, 191, 36, 0.4);
-  font-weight: 600;
-}
-
-/* Controls Bar Row */
-.events-controls-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding: 0 0.5rem;
-}
-
-.events-filter-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.events-tab-btn {
-  background: rgba(30, 20, 50, 0.75);
-  color: #e5e7eb;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0.5rem 1.25rem;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(8px);
-}
-
-.events-tab-btn:hover {
-  background: rgba(245, 158, 11, 0.2);
-  border-color: #f59e0b;
-  color: #ffffff;
-}
-
-.events-tab-btn.is-active {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: #0f0a1c;
-  border-color: #fbbf24;
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
-}
-
-.reset-board-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fbbf24;
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  padding: 0.5rem 1.2rem;
-  border-radius: 9999px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(8px);
-  margin-left: auto;
-}
-
-.reset-board-btn:hover {
-  background: rgba(251, 191, 36, 0.25);
-  color: #ffffff;
-  transform: translateY(-1px);
+  text-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
 }
 
 /* Infinite Board Viewport Container - 100% Filled with texture.jpg */
@@ -170,6 +78,31 @@
 
 .infinite-board-viewport:active {
   cursor: grabbing;
+}
+
+/* Floating Center View Button on the Board */
+.board-center-view-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  background: rgba(15, 10, 28, 0.85);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+}
+
+.board-center-view-btn:hover {
+  background: rgba(245, 158, 11, 0.9);
+  color: #0f0a1c;
+  transform: translateY(-1px);
 }
 
 /* Canvas Draggable Board Layer */
@@ -582,25 +515,20 @@
     padding: 2.5rem 0.5rem 4rem;
   }
 
-  .notice-board-banner {
-    padding: 1rem 1.2rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .events-controls-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .reset-board-btn {
-    margin-left: 0;
-    align-self: center;
+  .notice-board-title {
+    font-size: 2.2rem;
   }
 
   .infinite-board-viewport {
     height: 560px;
     border-radius: 16px;
+  }
+
+  .board-center-view-btn {
+    top: 12px;
+    right: 12px;
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
   }
 
   .event-card.draggable-card {

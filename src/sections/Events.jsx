@@ -2,8 +2,6 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import "./Events.css";
 
-const EVENT_CATEGORIES = ["All", "Dance", "Music", "Proshow", "Cultural", "Dramatics"];
-
 const INITIAL_EVENTS = [
   {
     id: 1,
@@ -121,15 +119,10 @@ function RedPushpin({ className = "" }) {
 }
 
 export default function Events() {
-  const [activeCategory, setActiveCategory] = useState("All");
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [resetKey, setResetKey] = useState(0);
   const boardRef = useRef(null);
   const isDraggingCardRef = useRef(false);
-
-  const filteredEvents = activeCategory === "All"
-    ? INITIAL_EVENTS
-    : INITIAL_EVENTS.filter(e => e.category === activeCategory);
 
   const handleResetCanvas = () => {
     setResetKey(prev => prev + 1);
@@ -141,42 +134,23 @@ export default function Events() {
       <div className="events-transition-top" />
 
       <div className="events-container">
-        {/* Notice Board Header */}
+        {/* Notice Board Header - Clean Heading Only */}
         <header className="notice-board-header">
-          <div className="notice-board-banner">
-            <span className="notice-board-badge">DHWANI '26</span>
-            <h2 className="notice-board-title">FESTIVAL NOTICE BOARD</h2>
-            <p className="notice-board-subtitle">
-              <span className="drag-hint">🖐 Drag board to pan view • Drag cards to rearrange</span>
-            </p>
-          </div>
-
-          {/* Controls Bar */}
-          <div className="events-controls-row">
-            <nav className="events-filter-tabs" aria-label="Event category filter">
-              {EVENT_CATEGORIES.map(cat => (
-                <button
-                  key={cat}
-                  className={`events-tab-btn ${activeCategory === cat ? "is-active" : ""}`}
-                  onClick={() => setActiveCategory(cat)}
-                >
-                  {cat}
-                </button>
-              ))}
-            </nav>
-
-            <button
-              className="reset-board-btn"
-              onClick={handleResetCanvas}
-              title="Reset Board Position"
-            >
-              🔄 Center View
-            </button>
-          </div>
+          <span className="notice-board-badge">DHWANI '26</span>
+          <h2 className="notice-board-title">FESTIVAL NOTICE BOARD</h2>
         </header>
 
         {/* Board Viewport Container - Covered 100% with paper texture */}
         <div className="infinite-board-viewport" ref={boardRef}>
+          {/* Small Floating Center View Button on the Board */}
+          <button
+            className="board-center-view-btn"
+            onClick={handleResetCanvas}
+            title="Reset Board Position"
+          >
+            🔄 Center View
+          </button>
+
           <motion.div
             key={resetKey}
             className="infinite-board-canvas"
@@ -191,7 +165,7 @@ export default function Events() {
 
             {/* Cards Container Layer */}
             <div className="paper-cards-layer">
-              {filteredEvents.map((event) => (
+              {INITIAL_EVENTS.map((event) => (
                 <motion.article
                   key={event.id}
                   className="event-card draggable-card"
@@ -204,7 +178,6 @@ export default function Events() {
                     isDraggingCardRef.current = true;
                   }}
                   onDragEnd={() => {
-                    // Reset dragging flag slightly after release so click isn't triggered on drag release
                     setTimeout(() => {
                       isDraggingCardRef.current = false;
                     }, 120);
@@ -214,7 +187,6 @@ export default function Events() {
                   whileDrag={{ scale: 1.08, rotate: 0, zIndex: 100, cursor: "grabbing" }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    // Do NOT open modal if user was dragging the card!
                     if (isDraggingCardRef.current) return;
                     setSelectedEvent(event);
                   }}
