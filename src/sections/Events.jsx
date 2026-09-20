@@ -130,13 +130,17 @@ export default function Events() {
 
   return (
     <section id="events" className="events-section" aria-label="Events Notice Board">
-      {/* Top transition drape for smooth scrolling from Khai section */}
+      {/* Top golden cloud drape for seamless continuity from Khai section */}
+      <div className="events-cloud-overflow" aria-hidden="true">
+        <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
+      </div>
+
+      {/* Top transition drape for smooth scrolling */}
       <div className="events-transition-top" />
 
       <div className="events-container">
         {/* Notice Board Header - Clean Heading Only */}
         <header className="notice-board-header">
-          <span className="notice-board-badge">DHWANI '26</span>
           <h2 className="notice-board-title">FESTIVAL NOTICE BOARD</h2>
         </header>
 
