@@ -44,7 +44,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 10px;
+  height: 15px;
   transform: translateY(-50%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -76,7 +76,7 @@
 /* Notice Board Header - Clean Heading Only */
 .notice-board-header {
   text-align: center;
-  margin-top: 3.5rem;
+  margin-top: 8.5rem;
   margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
@@ -105,6 +105,14 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+}
+
+/* Perspective Wrapper for 3D Parallax Tilt */
+.infinite-board-viewport-perspective {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  width: 100%;
+  will-change: transform;
 }
 
 /* Infinite Board Viewport Container - 100% Filled with texture.jpg */
@@ -563,7 +571,7 @@
   }
 
   .notice-board-header {
-    margin-top: 1.5rem;
+    margin-top: 4.5rem;
   }
 
   .events-section {

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue, useReducedMotion } from "motion/react";
 import "./Events.css";
 
 const INITIAL_EVENTS = [
@@ -121,127 +121,194 @@ function RedPushpin({ className = "" }) {
 export default function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [resetKey, setResetKey] = useState(0);
+  const sectionRef = useRef(null);
   const boardRef = useRef(null);
   const isDraggingCardRef = useRef(false);
+  const reduced = useReducedMotion();
+
+  // Scroll Parallax Transforms
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const cloudParallaxY = useTransform(scrollYProgress, [0, 1], [-40, 50]);
+  const headerParallaxY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const boardParallaxY = useTransform(scrollYProgress, [0, 1], [45, -35]);
+
+  // Mouse 3D Tilt Parallax
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [4, -4]), { stiffness: 120, damping: 18 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4, 4]), { stiffness: 120, damping: 18 });
+
+  const handleMouseMove = (e) => {
+    if (reduced || !sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   const handleResetCanvas = () => {
     setResetKey(prev => prev + 1);
   };
 
   return (
-    <section id="events" className="events-section" aria-label="Events Notice Board">
-      {/* Flipped golden carnival cloud drape extending into Events section */}
-      <div className="flipped-cloud-drape" aria-hidden="true">
+    <section
+      ref={sectionRef}
+      id="events"
+      className="events-section"
+      aria-label="Events Notice Board"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Flipped golden carnival cloud drape with scroll parallax */}
+      <motion.div
+        className="flipped-cloud-drape"
+        aria-hidden="true"
+        style={{ y: reduced ? 0 : cloudParallaxY }}
+      >
         <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
-      </div>
+      </motion.div>
 
-      {/* Seam blur overlay to hide line between sections */}
+      {/* Seam blur overlay */}
       <div className="events-seam-blur" aria-hidden="true" />
 
       {/* Top transition drape for smooth scrolling */}
       <div className="events-transition-top" />
 
       <div className="events-container">
-        {/* Notice Board Header - Clean Heading Only */}
-        <header className="notice-board-header">
-          <h2 className="notice-board-title">FESTIVAL NOTICE BOARD</h2>
-        </header>
+        {/* Notice Board Header with Bidirectional Scroll Entrance & Exit */}
+        <motion.header
+          className="notice-board-header"
+          style={{ y: reduced ? 0 : headerParallaxY }}
+          initial={{ opacity: 0, y: 50, scale: 0.92 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h2 className="notice-board-title">FESTIVAL EVENTS BOARD</h2>
+        </motion.header>
 
-        {/* Board Viewport Container - Covered 100% with paper texture */}
-        <div className="infinite-board-viewport" ref={boardRef}>
-          {/* Small Floating Center View Button on the Board */}
-          <button
-            className="board-center-view-btn"
-            onClick={handleResetCanvas}
-            title="Reset Board Position"
-          >
-            🔄 Center View
-          </button>
+        {/* Board Viewport Container with 3D Entrance & Bidirectional Scroll Effects */}
+        <motion.div
+          className="infinite-board-viewport-perspective"
+          style={{
+            y: reduced ? 0 : boardParallaxY,
+            rotateX: reduced ? 0 : rotateX,
+            rotateY: reduced ? 0 : rotateY
+          }}
+          initial={{ opacity: 0, y: 80, scale: 0.92, rotateX: 6 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+          viewport={{ once: false, amount: 0.18 }}
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        >
+          <div className="infinite-board-viewport" ref={boardRef}>
+            {/* Small Floating Center View Button on the Board */}
+            <button
+              className="board-center-view-btn"
+              onClick={handleResetCanvas}
+              title="Reset Board Position"
+            >
+              🔄 Center View
+            </button>
 
-          <motion.div
-            key={resetKey}
-            className="infinite-board-canvas"
-            drag
-            dragConstraints={{ left: -1800, right: 900, top: -1200, bottom: 600 }}
-            dragElastic={0.05}
-            dragMomentum={true}
-            whileTap={{ cursor: "grabbing" }}
-          >
-            {/* Paper Stamp */}
-            <div className="paper-stamp">DHWANI NOTICE BOARD • 2026</div>
+            <motion.div
+              key={resetKey}
+              className="infinite-board-canvas"
+              drag
+              dragConstraints={{ left: -1800, right: 900, top: -1200, bottom: 600 }}
+              dragElastic={0.05}
+              dragMomentum={true}
+              whileTap={{ cursor: "grabbing" }}
+            >
+              {/* Paper Stamp */}
+              <div className="paper-stamp">DHWANI NOTICE BOARD • 2026</div>
 
-            {/* Cards Container Layer */}
-            <div className="paper-cards-layer">
-              {INITIAL_EVENTS.map((event) => (
-                <motion.article
-                  key={event.id}
-                  className="event-card draggable-card"
-                  drag
-                  dragConstraints={boardRef}
-                  dragElastic={0.1}
-                  dragMomentum={false}
-                  onDragStart={(e) => {
-                    e.stopPropagation();
-                    isDraggingCardRef.current = true;
-                  }}
-                  onDragEnd={() => {
-                    setTimeout(() => {
-                      isDraggingCardRef.current = false;
-                    }, 120);
-                  }}
-                  initial={{ x: event.initialPos.x, y: event.initialPos.y, rotate: event.tilt }}
-                  whileHover={{ scale: 1.05, zIndex: 30 }}
-                  whileDrag={{ scale: 1.08, rotate: 0, zIndex: 100, cursor: "grabbing" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (isDraggingCardRef.current) return;
-                    setSelectedEvent(event);
-                  }}
-                >
-                  {/* Pushpin on top of card */}
-                  <div className="event-card__pin-wrapper">
-                    <RedPushpin />
-                  </div>
-
-                  {/* Washi tape accent */}
-                  <div className="event-card__tape" />
-
-                  {/* Photo Frame */}
-                  <div className="event-card__photo-frame">
-                    <img src={event.image} alt={event.title} className="event-card__img" loading="lazy" />
-                    <span className="event-card__badge">{event.category}</span>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="event-card__content">
-                    <div className="event-card__meta">
-                      <span className="event-card__date">{event.date}</span>
-                      <span className="event-card__venue">{event.venue}</span>
+              {/* Cards Container Layer */}
+              <div className="paper-cards-layer">
+                {INITIAL_EVENTS.map((event, index) => (
+                  <motion.article
+                    key={event.id}
+                    className="event-card draggable-card"
+                    drag
+                    dragConstraints={boardRef}
+                    dragElastic={0.1}
+                    dragMomentum={false}
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      isDraggingCardRef.current = true;
+                    }}
+                    onDragEnd={() => {
+                      setTimeout(() => {
+                        isDraggingCardRef.current = false;
+                      }, 120);
+                    }}
+                    initial={{ x: event.initialPos.x, y: event.initialPos.y + 30, opacity: 0, rotate: event.tilt, scale: 0.9 }}
+                    whileInView={{ x: event.initialPos.x, y: event.initialPos.y, opacity: 1, rotate: event.tilt, scale: 1 }}
+                    viewport={{ once: false, amount: 0.1 }}
+                    transition={{ duration: 0.55, delay: index * 0.07, ease: "easeOut" }}
+                    whileHover={{ scale: 1.06, zIndex: 30 }}
+                    whileDrag={{ scale: 1.08, rotate: 0, zIndex: 100, cursor: "grabbing" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isDraggingCardRef.current) return;
+                      setSelectedEvent(event);
+                    }}
+                  >
+                    {/* Pushpin on top of card */}
+                    <div className="event-card__pin-wrapper">
+                      <RedPushpin />
                     </div>
-                    <h3 className="event-card__title">{event.title}</h3>
-                    <p className="event-card__subtitle">{event.subtitle}</p>
 
-                    <div className="event-card__footer">
-                      <span className="event-card__prize">Prize: <strong>{event.prize}</strong></span>
-                      <button
-                        className="event-card__action-btn"
-                        aria-label={`View details for ${event.title}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (!isDraggingCardRef.current) {
-                            setSelectedEvent(event);
-                          }
-                        }}
-                      >
-                        Details →
-                      </button>
+                    {/* Washi tape accent */}
+                    <div className="event-card__tape" />
+
+                    {/* Photo Frame */}
+                    <div className="event-card__photo-frame">
+                      <img src={event.image} alt={event.title} className="event-card__img" loading="lazy" />
+                      <span className="event-card__badge">{event.category}</span>
                     </div>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+
+                    {/* Card Body */}
+                    <div className="event-card__content">
+                      <div className="event-card__meta">
+                        <span className="event-card__date">{event.date}</span>
+                        <span className="event-card__venue">{event.venue}</span>
+                      </div>
+                      <h3 className="event-card__title">{event.title}</h3>
+                      <p className="event-card__subtitle">{event.subtitle}</p>
+
+                      <div className="event-card__footer">
+                        <span className="event-card__prize">Prize: <strong>{event.prize}</strong></span>
+                        <button
+                          className="event-card__action-btn"
+                          aria-label={`View details for ${event.title}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isDraggingCardRef.current) {
+                              setSelectedEvent(event);
+                            }
+                          }}
+                        >
+                          Details →
+                        </button>
+                      </div>
+                    </div>
+                  </motion.article>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
 
       {/* Event Details Modal */}
