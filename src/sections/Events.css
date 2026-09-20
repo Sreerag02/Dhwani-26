@@ -10,23 +10,23 @@
   box-sizing: border-box;
 }
 
-/* Flipped Golden Carnival Cloud Drape extending from Khai section */
+/* Flipped Golden Carnival Cloud Drape - Perfect Replica Mirror */
 .flipped-cloud-drape {
   position: absolute;
-  top: -110px;
-  left: -2%;
-  width: 104%;
+  top: 0;
+  left: -1%;
+  width: 102%;
   z-index: 3;
   pointer-events: none;
-  opacity: 0.95;
+  opacity: 0.98;
 }
 
-@keyframes flipped-cloud-float {
+@keyframes flipped-cloud-float-sync {
   0%, 100% {
     transform: scaleY(-1) translate3d(0, 0, 0);
   }
   50% {
-    transform: scaleY(-1) translate3d(0, -12px, 0);
+    transform: scaleY(-1) translate3d(0, -13px, 0);
   }
 }
 
@@ -34,8 +34,24 @@
   width: 100%;
   height: auto;
   display: block;
-  animation: flipped-cloud-float 8s ease-in-out infinite;
+  animation: flipped-cloud-float-sync 8s ease-in-out infinite;
   filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5));
+}
+
+/* Seam Blur & Soft Glow Overlay to dissolve any line between sections */
+.events-seam-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  transform: translateY(-50%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: linear-gradient(to bottom, rgba(251, 191, 36, 0.2) 0%, rgba(31, 29, 102, 0.5) 50%, rgba(251, 191, 36, 0.2) 100%);
+  box-shadow: 0 0 30px rgba(31, 29, 102, 0.8);
+  z-index: 4;
+  pointer-events: none;
 }
 
 /* Smooth top gradient transition connecting Khai section seamlessly */

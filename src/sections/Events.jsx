@@ -135,6 +135,9 @@ export default function Events() {
         <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
       </div>
 
+      {/* Seam blur overlay to hide line between sections */}
+      <div className="events-seam-blur" aria-hidden="true" />
+
       {/* Top transition drape for smooth scrolling */}
       <div className="events-transition-top" />
 
