@@ -5,7 +5,7 @@ import ThemeReveal from "./ThemeReveal";
 import "../components/Opening.css";
 import "./ScrollExperience.css";
 
-// Clouds sweep right-to-left across a dense 4x8 tile grid.  Every cloud crosses
+// Clouds sweep left-to-right across a dense 4x8 tile grid.  Every cloud crosses
 // the centre of its tile at ~.40-.42, so the viewport is fully covered in one
 // shared moment, then all clear by ~.50 (before the mask at .52). Parallax
 // comes from travel distance (front ring sweeps further/faster), while timing
@@ -28,8 +28,8 @@ const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
     ring,
     left: colsX[col] + micro,
     top: rowsY[row] + microY,
-    from: `${travel}vw`,
-    to: `-${travel}vw`,
+    from: `-${travel}vw`,
+    to: `${travel}vw`,
     y: `${(row % 2 ? -1 : 1) * (8 + col * 4)}svh`,
     start,
     mid,
