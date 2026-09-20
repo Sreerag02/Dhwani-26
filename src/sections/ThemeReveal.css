@@ -34,6 +34,8 @@
 .carnival-blue {z-index:3;top:6%;left:-3%;width:106%}
 .carnival-title {z-index:7;top:25%;left:12%;width:76%}
 .carnival-gate {z-index:5;top:42%;left:-4%;width:108%}
+.hidden-khai {z-index:6;top:64%;left:50%;translate:-50% 0;width:24%}
+.hidden-khai img {filter:drop-shadow(0 16px 26px rgba(0,0,0,.38))}
 .carnival-gate-far {z-index:2;top:58%;left:18%;width:64%;opacity:.32}
 .lamp-a {z-index:4;top:7%;left:40%;width:7%}
 .lamp-b {z-index:6;top:1%;left:53%;width:15%}
@@ -119,6 +121,7 @@
   .carnival-blue {top:0;left:-2%;width:104%;height:48%}
   .carnival-title {top:26%;left:30%;width:40%}
   .carnival-gate {top:42%;left:28%;width:44%}
+  .hidden-khai {top:70%;width:19%}
   .lamp-a {top:9%;left:26%;width:4%}
   .lamp-b {top:1%;left:34%;width:6%}
   .lamp-c {top:21%;left:9%;width:8%}
@@ -134,6 +137,7 @@
   .carnival-wheel {top:12%;left:5%;width:90%}
   .carnival-title {top:32%;left:8%;width:84%}
   .carnival-gate {top:58%;left:3%;width:94%}
+  .hidden-khai {top:78%;width:34%}
   .lamp-e {top:52%;left:9%;width:14%}
   .lamp-f {top:55%;right:8%;width:12%}
 }
