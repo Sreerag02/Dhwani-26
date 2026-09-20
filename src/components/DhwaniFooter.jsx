@@ -906,9 +906,9 @@ export function DhwaniFooter() {
             <span className="bullet-sep">•</span>
             <span>ESTD. 1939</span>
           </p>
-          <p className="cultural-committee-subline">
+          {/* <p className="cultural-committee-subline">
             Organized by CET Cultural Committee © 2026. All Rights Reserved.
-          </p>
+          </p> */}
         </div>
       </div>
 
