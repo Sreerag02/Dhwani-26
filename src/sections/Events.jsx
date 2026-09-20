@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import "./Events.css";
 
 const EVENT_CATEGORIES = ["All", "Dance", "Music", "Proshow", "Cultural", "Dramatics"];
 
-const PLACEHOLDER_EVENTS = [
+const INITIAL_EVENTS = [
   {
     id: 1,
     title: "Choreo Night",
@@ -16,11 +16,13 @@ const PLACEHOLDER_EVENTS = [
     image: "/assets/elements/stalls.png",
     description: "Feel the floor vibrate as the premier dance crews from across the nation battle it out with high-octane choreography, synchronization, and electrifying stage presence.",
     rules: ["Team size: 8-24 members", "Time limit: 8-12 minutes", "Props permitted with prior approval"],
-    contact: "Ananya - 9876543210"
+    contact: "Ananya - 9876543210",
+    initialPos: { x: 50, y: 50 },
+    tilt: -2.5
   },
   {
     id: 2,
-    title: "Rhapsody: Battle of Bands",
+    title: "Battle of Bands",
     category: "Music",
     subtitle: "Rock & Fusion Live Showdown",
     date: "Oct 3 • 5:00 PM",
@@ -29,11 +31,13 @@ const PLACEHOLDER_EVENTS = [
     image: "/assets/mascot/sign-right.png",
     description: "Distorted guitars, roaring drums, and soul-stirring vocals. Witness the fiercest musical showdown where raw talent meets festival energy.",
     rules: ["Team size: 3-8 members", "Time limit: 20 minutes (setup included)", "Original compositions bonus points"],
-    contact: "Rahul - 9876543211"
+    contact: "Rahul - 9876543211",
+    initialPos: { x: 440, y: 30 },
+    tilt: 1.8
   },
   {
     id: 3,
-    title: "Carnival Proshow Night",
+    title: "Carnival Proshow",
     category: "Proshow",
     subtitle: "Star Concert Live Performance",
     date: "Oct 4 • 7:00 PM",
@@ -42,7 +46,9 @@ const PLACEHOLDER_EVENTS = [
     image: "/assets/footer/khai2.png",
     description: "The crown jewel of Dhwani '26! An unforgettable night featuring top headline artists, luminous lights, laser shows, and non-stop music.",
     rules: ["ID card required at entrance", "Gates open at 5:30 PM", "No re-entry permitted"],
-    contact: "Festival Desk - 9876543212"
+    contact: "Festival Desk - 9876543212",
+    initialPos: { x: 830, y: 70 },
+    tilt: -1.2
   },
   {
     id: 4,
@@ -55,7 +61,9 @@ const PLACEHOLDER_EVENTS = [
     image: "/assets/mascot/sign-left.png",
     description: "Powerful voices, beat of the dholak, and compelling storytelling addressing social themes under the open sky.",
     rules: ["Team size: 10-20 members", "Time limit: 15 minutes", "Microphones not allowed"],
-    contact: "Siddharth - 9876543213"
+    contact: "Siddharth - 9876543213",
+    initialPos: { x: 90, y: 460 },
+    tilt: 2.2
   },
   {
     id: 5,
@@ -68,7 +76,9 @@ const PLACEHOLDER_EVENTS = [
     image: "/assets/mascot/khai.png",
     description: "Showcase your vocal prowess across classical, semi-classical, and light music categories in front of eminent judges.",
     rules: ["Solo performance", "Time limit: 5 minutes", "One backing track allowed"],
-    contact: "Meera - 9876543214"
+    contact: "Meera - 9876543214",
+    initialPos: { x: 480, y: 440 },
+    tilt: -2.0
   },
   {
     id: 6,
@@ -81,7 +91,9 @@ const PLACEHOLDER_EVENTS = [
     image: "/assets/khai/outfits.png",
     description: "Step into the shoes of your favorite fantasy, anime, or pop-culture character. Runway walk, skit presentation, and costume design awards.",
     rules: ["Individual or Duo entry", "Prop safety check required", "2-minute stage walk/act"],
-    contact: "Vikram - 9876543215"
+    contact: "Vikram - 9876543215",
+    initialPos: { x: 870, y: 470 },
+    tilt: 1.5
   }
 ];
 
@@ -96,17 +108,13 @@ function RedPushpin({ className = "" }) {
           <stop offset="100%" stopColor="#400008" />
         </radialGradient>
         <filter id="pin-shadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="3" dy="6" stdDeviation="3" floodColor="#000" floodOpacity="0.45" />
+          <feDropShadow dx="3" dy="6" stdDeviation="3" floodColor="#000" floodOpacity="0.5" />
         </filter>
       </defs>
-      {/* Pin Needle */}
       <path d="M 20 28 L 20 48 L 17 28 Z" fill="#b0b0b0" filter="url(#pin-shadow)" />
       <path d="M 20 28 L 20 48 L 21 28 Z" fill="#ffffff" opacity="0.6" />
-      {/* Base ring */}
       <ellipse cx="20" cy="28" rx="8" ry="3.5" fill="#a00018" />
-      {/* Body bulb */}
       <path d="M 13 22 C 12 28, 28 28, 27 22 C 27 18, 23 16, 23 10 C 27 8, 25 2, 20 2 C 15 2, 13 8, 17 10 C 17 16, 13 18, 13 22 Z" fill="url(#pin-head-grad)" filter="url(#pin-shadow)" />
-      {/* Highlight glow */}
       <ellipse cx="17" cy="6" rx="3" ry="1.8" fill="#ffffff" opacity="0.65" transform="rotate(-20 17 6)" />
     </svg>
   );
@@ -115,10 +123,17 @@ function RedPushpin({ className = "" }) {
 export default function Events() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [resetKey, setResetKey] = useState(0);
+  const boardRef = useRef(null);
+  const isDraggingCardRef = useRef(false);
 
   const filteredEvents = activeCategory === "All"
-    ? PLACEHOLDER_EVENTS
-    : PLACEHOLDER_EVENTS.filter(e => e.category === activeCategory);
+    ? INITIAL_EVENTS
+    : INITIAL_EVENTS.filter(e => e.category === activeCategory);
+
+  const handleResetCanvas = () => {
+    setResetKey(prev => prev + 1);
+  };
 
   return (
     <section id="events" className="events-section" aria-label="Events Notice Board">
@@ -131,79 +146,122 @@ export default function Events() {
           <div className="notice-board-banner">
             <span className="notice-board-badge">DHWANI '26</span>
             <h2 className="notice-board-title">FESTIVAL NOTICE BOARD</h2>
-            <p className="notice-board-subtitle">Pin your spot at the biggest events of the year!</p>
+            <p className="notice-board-subtitle">
+              <span className="drag-hint">🖐 Drag board to pan view • Drag cards to rearrange</span>
+            </p>
           </div>
 
-          {/* Category Filter Tabs */}
-          <nav className="events-filter-tabs" aria-label="Event category filter">
-            {EVENT_CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                className={`events-tab-btn ${activeCategory === cat ? "is-active" : ""}`}
-                onClick={() => setActiveCategory(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </nav>
+          {/* Controls Bar */}
+          <div className="events-controls-row">
+            <nav className="events-filter-tabs" aria-label="Event category filter">
+              {EVENT_CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  className={`events-tab-btn ${activeCategory === cat ? "is-active" : ""}`}
+                  onClick={() => setActiveCategory(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </nav>
+
+            <button
+              className="reset-board-btn"
+              onClick={handleResetCanvas}
+              title="Reset Board Position"
+            >
+              🔄 Center View
+            </button>
+          </div>
         </header>
 
-        {/* Notice Board Area */}
-        <div className="notice-board-frame">
-          <div className="notice-board-cork">
-            <div className="events-grid">
-              {filteredEvents.map((event, index) => {
-                // Slight random rotation for pin note feel (-2.5deg to 2.5deg)
-                const rotations = [-2, 1.5, -1, 2, -1.8, 1.2];
-                const tiltAngle = rotations[index % rotations.length];
+        {/* Board Viewport Container - Covered 100% with paper texture */}
+        <div className="infinite-board-viewport" ref={boardRef}>
+          <motion.div
+            key={resetKey}
+            className="infinite-board-canvas"
+            drag
+            dragConstraints={{ left: -1800, right: 900, top: -1200, bottom: 600 }}
+            dragElastic={0.05}
+            dragMomentum={true}
+            whileTap={{ cursor: "grabbing" }}
+          >
+            {/* Paper Stamp */}
+            <div className="paper-stamp">DHWANI NOTICE BOARD • 2026</div>
 
-                return (
-                  <motion.article
-                    key={event.id}
-                    className="event-card"
-                    style={{ "--card-tilt": `${tiltAngle}deg` }}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: index * 0.08 }}
-                    whileHover={{ scale: 1.03, rotate: 0, zIndex: 10 }}
-                    onClick={() => setSelectedEvent(event)}
-                  >
-                    {/* Pushpin on top */}
-                    <div className="event-card__pin-wrapper">
-                      <RedPushpin />
+            {/* Cards Container Layer */}
+            <div className="paper-cards-layer">
+              {filteredEvents.map((event) => (
+                <motion.article
+                  key={event.id}
+                  className="event-card draggable-card"
+                  drag
+                  dragConstraints={boardRef}
+                  dragElastic={0.1}
+                  dragMomentum={false}
+                  onDragStart={(e) => {
+                    e.stopPropagation();
+                    isDraggingCardRef.current = true;
+                  }}
+                  onDragEnd={() => {
+                    // Reset dragging flag slightly after release so click isn't triggered on drag release
+                    setTimeout(() => {
+                      isDraggingCardRef.current = false;
+                    }, 120);
+                  }}
+                  initial={{ x: event.initialPos.x, y: event.initialPos.y, rotate: event.tilt }}
+                  whileHover={{ scale: 1.05, zIndex: 30 }}
+                  whileDrag={{ scale: 1.08, rotate: 0, zIndex: 100, cursor: "grabbing" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Do NOT open modal if user was dragging the card!
+                    if (isDraggingCardRef.current) return;
+                    setSelectedEvent(event);
+                  }}
+                >
+                  {/* Pushpin on top of card */}
+                  <div className="event-card__pin-wrapper">
+                    <RedPushpin />
+                  </div>
+
+                  {/* Washi tape accent */}
+                  <div className="event-card__tape" />
+
+                  {/* Photo Frame */}
+                  <div className="event-card__photo-frame">
+                    <img src={event.image} alt={event.title} className="event-card__img" loading="lazy" />
+                    <span className="event-card__badge">{event.category}</span>
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="event-card__content">
+                    <div className="event-card__meta">
+                      <span className="event-card__date">{event.date}</span>
+                      <span className="event-card__venue">{event.venue}</span>
                     </div>
+                    <h3 className="event-card__title">{event.title}</h3>
+                    <p className="event-card__subtitle">{event.subtitle}</p>
 
-                    {/* Paper tape element */}
-                    <div className="event-card__tape" />
-
-                    {/* Photo Container */}
-                    <div className="event-card__photo-frame">
-                      <img src={event.image} alt={event.title} className="event-card__img" loading="lazy" />
-                      <span className="event-card__badge">{event.category}</span>
+                    <div className="event-card__footer">
+                      <span className="event-card__prize">Prize: <strong>{event.prize}</strong></span>
+                      <button
+                        className="event-card__action-btn"
+                        aria-label={`View details for ${event.title}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!isDraggingCardRef.current) {
+                            setSelectedEvent(event);
+                          }
+                        }}
+                      >
+                        Details →
+                      </button>
                     </div>
-
-                    {/* Content */}
-                    <div className="event-card__content">
-                      <div className="event-card__meta">
-                        <span className="event-card__date">{event.date}</span>
-                        <span className="event-card__venue">{event.venue}</span>
-                      </div>
-                      <h3 className="event-card__title">{event.title}</h3>
-                      <p className="event-card__subtitle">{event.subtitle}</p>
-                      
-                      <div className="event-card__footer">
-                        <span className="event-card__prize">Prize: <strong>{event.prize}</strong></span>
-                        <button className="event-card__action-btn" aria-label={`View details for ${event.title}`}>
-                          Details →
-                        </button>
-                      </div>
-                    </div>
-                  </motion.article>
-                );
-              })}
+                  </div>
+                </motion.article>
+              ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
