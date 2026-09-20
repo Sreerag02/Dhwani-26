@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import SideNavbar from "./components/SideNavbar";
 import ScrollExperience from "./sections/ScrollExperience";
 import ComingSoon from "./sections/ComingSoon";
+import DhwaniFooter from "./components/DhwaniFooter";
 
 export default function App() {
   const nextPage = useRef(null);
@@ -26,7 +27,11 @@ export default function App() {
     {showHeader && <div className="global-navigation"><SideNavbar /></div>}
     <main className="dhwani-site">
       <ScrollExperience />
-      <div ref={nextPage}><ComingSoon /></div>
+      <div ref={nextPage}>
+        <ComingSoon />
+        <DhwaniFooter />
+      </div>
     </main>
   </>;
 }
+
