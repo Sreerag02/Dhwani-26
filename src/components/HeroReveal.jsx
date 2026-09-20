@@ -3,7 +3,7 @@ import { motion, useReducedMotion, useTransform } from "motion/react";
 import KhaiPuppet from "./KhaiPuppet";
 import "./MascotHero.css";
 const MASCOT = "/assets/mascot/";
-const CLOUDS = [["cloud-left.png","one"],["cloud-rightup.png","two"],["cloud-1.png","three"],["cloud-leftup.png","four"],["cloud-2.png","five"],["cloud-leftup.png","six"]];
+const CLOUDS = [["cloud-left.webp","one"],["cloud-rightup.webp","two"],["cloud-1.webp","three"],["cloud-leftup.webp","four"],["cloud-2.webp","five"],["cloud-leftup.webp","six"]];
 export default function KhaiHero({ progress }) {
   const scene = useRef(null);
   const [active, setActive] = useState(true);
@@ -48,7 +48,7 @@ export default function KhaiHero({ progress }) {
       {CLOUDS.map(([file,position],i) => <motion.div className={"poster-cloud poster-cloud-"+position} key={position}
         style={{ opacity: titleOpacity, x: reduced ? 0 : (i%2 ? signShift : leftShift), "--float-time": 5+i*0.5+"s"}}>
         <img src={MASCOT+file} alt="" draggable="false" /></motion.div>)}
-      <motion.div className="poster-foreground" style={{ opacity: entrance, y: reduced ? 0 : rise }}><img src={MASCOT+"cloud-main.png"} alt="" draggable="false" /></motion.div>
+      <motion.div className="poster-foreground" style={{ opacity: entrance, y: reduced ? 0 : rise }}><img src={MASCOT+"cloud-main.webp"} alt="" draggable="false" /></motion.div>
     </motion.section>
   );
 }

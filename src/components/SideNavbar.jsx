@@ -5,7 +5,7 @@ import "./Navigation.css";
 
 function Brand() {
   return <div className="nav-brand">
-    <img src="/assets/logo/dhwani-main.png" alt="Dhwani '26" />
+    <img src="/assets/logo/dhwani-text.png" alt="Dhwani '26" />
     <div><strong>Oct 2, 3, 4 · 2026</strong><span>College of Engineering, Trivandrum</span></div>
   </div>;
 }

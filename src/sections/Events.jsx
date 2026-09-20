@@ -206,7 +206,14 @@ export default function Events() {
           scale: sectionParallaxScale
         }}
         aria-hidden="true"
+<<<<<<< HEAD
       />
+=======
+        style={{ y: cloudParallaxY }}
+      >
+        <img src="/assets/mascot/cloud-main.webp" alt="" draggable="false" />
+      </motion.div>
+>>>>>>> 790a6914c883836610c660b1960422b75f2668e2
 
       {/* Floating particles for ambient effect */}
       <div className="events-particles" aria-hidden="true">
