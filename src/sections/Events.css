@@ -29,7 +29,7 @@
   position: absolute;
   inset: 0;
   background: url('/assets/events-section/event-bg.webp') center center / cover no-repeat;
-  filter: brightness(1.4) saturate(1.25);
+  filter: brightness(1.7) saturate(1.3);
   z-index: 0;
   pointer-events: none;
 }
