@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react";
 import "./Events.css";
 
 const INITIAL_EVENTS = [
@@ -134,9 +134,16 @@ export default function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [resetKey, setResetKey] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const sectionRef = useRef(null);
   const boardRef = useRef(null);
   const isDraggingCardRef = useRef(false);
+
+  // Mouse movement tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothMouseX = useSpring(mouseX, { stiffness: 100, damping: 30 });
+  const smoothMouseY = useSpring(mouseY, { stiffness: 100, damping: 30 });
 
   // Mobile detection
   useEffect(() => {
@@ -148,13 +155,31 @@ export default function Events() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Mouse movement handler
+  const handleMouseMove = (e) => {
+    if (isMobile) return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (rect) {
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      setMousePosition({ x, y });
+      mouseX.set(x);
+      mouseY.set(y);
+    }
+  };
+
   // Scroll Parallax Transforms
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
   });
 
+  const sectionParallaxY = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const sectionParallaxScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.02, 1]);
   const headerParallaxY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const boardParallaxX = useTransform(smoothMouseX, [-0.5, 0.5], [-20, 20]);
+  const boardParallaxY = useTransform(smoothMouseY, [-0.5, 0.5], [-15, 15]);
+  const boardParallaxRotate = useTransform(smoothMouseX, [-0.5, 0.5], [-2, 2]);
 
   const handleResetCanvas = () => {
     setResetKey(prev => prev + 1);
@@ -166,7 +191,49 @@ export default function Events() {
       id="events"
       className="events-section"
       aria-label="Events Notice Board"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => {
+        setMousePosition({ x: 0, y: 0 });
+        mouseX.set(0);
+        mouseY.set(0);
+      }}
     >
+      {/* Parallax background elements */}
+      <motion.div 
+        className="events-parallax-bg"
+        style={{ 
+          y: sectionParallaxY,
+          scale: sectionParallaxScale
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Floating particles for ambient effect */}
+      <div className="events-particles" aria-hidden="true">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="particle"
+            style={{
+              left: `${10 + i * 12}%`,
+              top: `${10 + (i % 3) * 25}%`,
+              scale: 0.5 + Math.random() * 0.5
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.3, 0.6, 0.3],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.2
+            }}
+          />
+        ))}
+      </div>
+
       <div className="events-container">
         {/* Notice Board Header with Bidirectional Scroll Entrance & Exit */}
         <motion.header
@@ -181,8 +248,13 @@ export default function Events() {
         </motion.header>
 
         {/* Board Viewport Container */}
-        <div
+        <motion.div
           className="infinite-board-viewport-perspective"
+          style={{
+            x: isMobile ? 0 : boardParallaxX,
+            y: isMobile ? 0 : boardParallaxY,
+            rotate: isMobile ? 0 : boardParallaxRotate
+          }}
         >
           <div className="infinite-board-viewport" ref={boardRef}>
             {/* Small Floating Center View Button on the Board */}
@@ -246,7 +318,12 @@ export default function Events() {
                     whileInView={{ x: pos.x, y: pos.y, opacity: 1, rotate: event.tilt, scale: 1 }}
                     viewport={{ once: false, amount: 0.1 }}
                     transition={{ duration: 0.55, delay: index * 0.07, ease: "easeOut" }}
-                    whileHover={{ scale: 1.06, zIndex: 30 }}
+                    whileHover={{ 
+                      scale: 1.06, 
+                      zIndex: 30,
+                      rotate: 0,
+                      boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)"
+                    }}
                     whileDrag={{ scale: 1.08, rotate: 0, zIndex: 100, cursor: "grabbing" }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -299,7 +376,7 @@ export default function Events() {
               </div>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Event Details Modal */}
