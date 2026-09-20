@@ -92,7 +92,7 @@
 }
 
 .notice-board-title {
-  font-family: Galavant, 'Cinzel', Georgia, serif;
+  font-family: 'Galavant', 'Cinzel', Georgia, serif;
   font-size: clamp(2.5rem, 5vw, 4.2rem);
   font-weight: 900;
   letter-spacing: 0.04em;
@@ -102,6 +102,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 4px 22px rgba(245, 158, 11, 0.5);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 /* Perspective Wrapper for 3D Parallax Tilt with Subtle Soft Shadow */
