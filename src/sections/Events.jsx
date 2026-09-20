@@ -15,7 +15,7 @@ const INITIAL_EVENTS = [
     description: "Feel the floor vibrate as the premier dance crews from across the nation battle it out with high-octane choreography, synchronization, and electrifying stage presence.",
     rules: ["Team size: 8-24 members", "Time limit: 8-12 minutes", "Props permitted with prior approval"],
     contact: "Ananya - 9876543210",
-    initialPos: { x: 50, y: 50 },
+    initialPos: { x: 240, y: 210 },
     tilt: -2.5
   },
   {
@@ -30,7 +30,7 @@ const INITIAL_EVENTS = [
     description: "Distorted guitars, roaring drums, and soul-stirring vocals. Witness the fiercest musical showdown where raw talent meets festival energy.",
     rules: ["Team size: 3-8 members", "Time limit: 20 minutes (setup included)", "Original compositions bonus points"],
     contact: "Rahul - 9876543211",
-    initialPos: { x: 440, y: 30 },
+    initialPos: { x: 600, y: 195 },
     tilt: 1.8
   },
   {
@@ -45,7 +45,7 @@ const INITIAL_EVENTS = [
     description: "The crown jewel of Dhwani '26! An unforgettable night featuring top headline artists, luminous lights, laser shows, and non-stop music.",
     rules: ["ID card required at entrance", "Gates open at 5:30 PM", "No re-entry permitted"],
     contact: "Festival Desk - 9876543212",
-    initialPos: { x: 830, y: 70 },
+    initialPos: { x: 960, y: 215 },
     tilt: -1.2
   },
   {
@@ -60,7 +60,7 @@ const INITIAL_EVENTS = [
     description: "Powerful voices, beat of the dholak, and compelling storytelling addressing social themes under the open sky.",
     rules: ["Team size: 10-20 members", "Time limit: 15 minutes", "Microphones not allowed"],
     contact: "Siddharth - 9876543213",
-    initialPos: { x: 90, y: 460 },
+    initialPos: { x: 250, y: 550 },
     tilt: 2.2
   },
   {
@@ -75,7 +75,7 @@ const INITIAL_EVENTS = [
     description: "Showcase your vocal prowess across classical, semi-classical, and light music categories in front of eminent judges.",
     rules: ["Solo performance", "Time limit: 5 minutes", "One backing track allowed"],
     contact: "Meera - 9876543214",
-    initialPos: { x: 480, y: 440 },
+    initialPos: { x: 610, y: 540 },
     tilt: -2.0
   },
   {
@@ -90,7 +90,7 @@ const INITIAL_EVENTS = [
     description: "Step into the shoes of your favorite fantasy, anime, or pop-culture character. Runway walk, skit presentation, and costume design awards.",
     rules: ["Individual or Duo entry", "Prop safety check required", "2-minute stage walk/act"],
     contact: "Vikram - 9876543215",
-    initialPos: { x: 870, y: 470 },
+    initialPos: { x: 970, y: 560 },
     tilt: 1.5
   }
 ];
@@ -216,7 +216,7 @@ export default function Events() {
             <button
               className="board-center-view-btn"
               onClick={handleResetCanvas}
-              title="Reset Board Position"
+              title="Center All Events in View"
             >
               🔄 Center View
             </button>
@@ -225,7 +225,7 @@ export default function Events() {
               key={resetKey}
               className="infinite-board-canvas"
               drag
-              dragConstraints={{ left: -1800, right: 900, top: -1200, bottom: 600 }}
+              dragConstraints={{ left: -1400, right: 600, top: -1000, bottom: 400 }}
               dragElastic={0.05}
               dragMomentum={true}
               whileTap={{ cursor: "grabbing" }}
