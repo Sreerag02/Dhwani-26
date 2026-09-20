@@ -6,7 +6,7 @@
 .world-intro h1 {font:400 clamp(52px,10vw,168px)/.92 Galavant,sans-serif;margin:0 0 clamp(8px,2svh,18px);text-shadow:5px 8px #af005f}
 .world-intro__wordmark {display:block;width:min(520px,80vw);max-width:100%;height:auto}
 .world-year {display:block;margin-top:clamp(14px,3svh,25px);font:400 clamp(32px,5vw,72px)/1 Galavant,sans-serif;color:#02caef}
-.reveal-journey {position:relative;height:590svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
+.reveal-journey {position:relative;height:860svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
 .journey-sticky {position:sticky;top:0;height:100svh;overflow:hidden;background:#1f1d66}
 .journey-scene {position:absolute;inset:0;height:100%;min-height:0;padding-top:0}
 .world-intro.journey-scene {z-index:40}
@@ -23,6 +23,18 @@
 .khai-journey .mascot-poster {height:100%;min-height:0}
 .khai-journey .poster-character-button,.khai-journey .poster-khai img,.khai-journey .poster-cloud,.khai-journey .poster-foreground {animation:none}
 .khai-journey .poster-cloud img,.khai-journey .poster-foreground img {animation-play-state:var(--poster-drift-state,paused)}
+/* Finale revealed in place: Khai fades out, then the merch poster fades in
+   over the empty navy scene as the pinned journey ends. No further scrolling
+   into a separate section. */
+.merch-journey {position:absolute;inset:0;z-index:46;overflow:hidden;background:#1f1d66}
+/* Full-viewport blue backdrop that follows the merch poster finale; the merch
+   kit (from Merch.jsx) sits in the top-right corner. */
+.after-merch {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background: #02c8ed;
+}
 @media(max-width:700px){
  .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 9 / 16));aspect-ratio:9/16}
  .scroll-mask img {width:88vw}

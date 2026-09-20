@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import KhaiHero from "../components/HeroReveal";
 import ThemeReveal from "./ThemeReveal";
+import Merch from "./Merch";
 import "../components/Opening.css";
 import "./ScrollExperience.css";
 
@@ -72,7 +73,13 @@ export default function ScrollExperience() {
   const dripOpacity = useTransform(progress, [.56, .60, .66, .70], [0, 1, 1, 0]);
   const dripVisibility = useTransform(progress, value => value < .56 || value >= .70 ? "hidden" : "visible");
   const heroVisibility = useTransform(progress, value => value < .60 ? "hidden" : "visible");
-  const hero = useTransform(progress, [.64, .94], [.50, 1]);
+  const hero = useTransform(progress, [.60, .96], [.50, 1.18]);
+  // Finale, in place: hold on fully-settled Khai, then Khai rises further and
+  // zooms toward the camera (z-axis), then the merch poster fades in right
+  // where it sits over him. Scroll driven, no fade on Khai, no element
+  // repositioning, no scrolling down into a separate section.
+  const khaiVisibility = useTransform(progress, value => value < .60 || value >= .97 ? "hidden" : "visible");
+  const merchVisibility = useTransform(progress, value => value < .96 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
@@ -81,7 +88,7 @@ export default function ScrollExperience() {
       <motion.div className="journey-scene" style={{ visibility: themeVisibility }}>
         <ThemeReveal progress={theme} embedded />
       </motion.div>
-      <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ visibility: heroVisibility }}>
+      <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ visibility: khaiVisibility }}>
         <KhaiHero progress={hero} />
       </motion.div>
       <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility }} aria-hidden="true">
@@ -116,6 +123,9 @@ export default function ScrollExperience() {
           <h1>WORLD OF</h1>
           <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.png" alt="DHWANI" />
         </motion.div>
+      </motion.div>
+      <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>
+        <Merch progress={progress} />
       </motion.div>
     </div>
   </section>;

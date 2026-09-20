@@ -1,0 +1,396 @@
+.merch {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  display: grid;
+  /* place-items: center; */
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+/* The poster lives on a 16:9 canvas. Every element is positioned in % of
+   this canvas, so the composition scales cleanly at any screen size. */
+.merch__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  isolation: isolate;
+  user-select: none;
+}
+
+/* ---------- Backgrounds ---------- */
+.merch__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.merch__bg--blue {
+  background: #02c8ed;
+}
+
+/* pink sits over the blue, covering the bottom half */
+.merch__bg--pink {
+  inset: auto 0 0 0;
+  height: 100%;
+  background: #af005f;
+  z-index: 1;
+}
+
+/* ---------- BG element ---------- */
+.merch__bg-element {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ---------- Logo ---------- */
+.merch__logo {
+  position: absolute;
+  width: 30%;
+  height: auto;
+  left: 50%;
+  top: 13%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---------- Tees ---------- */
+.merch__tee {
+  position: absolute;
+  width: 20%;
+  height: auto;
+  left: 50%;
+  top: 66%;
+  transform: translate(-50%, -90%);
+  z-index: 20;
+  pointer-events: none;
+}
+
+.merch__tee--back {
+  transform: translate(-50%, -96%) ;
+}
+
+.merch__tees-now {
+  position: absolute;
+  width: 8%;
+  height: auto;
+  left: 40%;
+  top: 45%;
+  transform: translate(-220%, -96%);
+  z-index: 21;
+  pointer-events: none;
+}
+
+.merch__tee--outline {
+  width: 23%;
+  z-index: 10;
+}
+
+.merch__tee--front-left {
+  left: 50%;
+  transform: translate(-94%, -80%);
+  width: 25%;
+  z-index: 1;
+}
+
+.merch__tee--front-right {
+  left: 50%;
+  transform: translate(-80%, -30%);
+  width: 25%;
+  z-index: 1;
+  rotate: 60deg;
+}
+
+/* ---------- Cloud (left of the left tee) ---------- */
+.merch__cloud--left-btm {
+  position: absolute;
+  left: 0;
+  bottom: 70px;
+  width: 20%;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.merch__cloud--left-mid {
+  position: absolute;
+  left: 0;
+  bottom: 60%;
+  width: 10%;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.merch__cloud--right-mid {
+  position: absolute;
+  right: 0;
+  bottom: 40%;
+  width: 20%;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ---------- Cloud animation (matches coming-soon/carnival sway) ---------- */
+.merch__cloud--left-btm,
+.merch__cloud--left-mid,
+.merch__cloud--right-mid {
+  animation: merch-cloud-drift 8.5s ease-in-out infinite;
+  transform-origin: 50% 10%;
+}
+
+.merch__cloud--left-mid,
+.merch__cloud--right-mid {
+  animation-delay: -4s;
+  animation-duration: 9.5s;
+}
+
+@keyframes merch-cloud-drift {
+  50% {
+    transform: translate3d(7px, -14px, 0) rotate(2deg);
+  }
+}
+
+/* ---------- Merch kit (blue backdrop below the poster) ---------- */
+.merch-kit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  /* gap: clamp(8px, 1.5svh, 16px); */
+  pointer-events: none;
+}
+
+.merch-kit__image {
+  width: auto;
+  height: min(74svh, calc(38vw * 1139 / 1020));
+  max-width: 88%;
+  object-fit: contain;
+}
+
+.merch-kit__label {
+  width: min(30vw, 280px);
+  height: auto;
+  top:-60%;
+}
+
+/* ---------- Lanterns ---------- */
+.merch__lantern {
+  position: absolute;
+  bottom: 10px;
+  right: 2%;
+  width: 14%;
+  height: auto;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.merch__lantern--l2 {
+  right: auto;
+  bottom: 53%;
+  left: 80%;
+  width: 7%;
+}
+
+.merch__lantern--plain {
+  right: auto;
+  bottom: 30%;
+  left: 20%;
+  width: 6%;
+}
+
+.merch__lantern--three {
+  right: auto;
+  bottom: 50%;
+  left: 9%;
+  width: 12%;
+}
+
+/* ---------- Lantern glow + gentle sway ---------- */
+.merch__lantern {
+  filter: drop-shadow(0 0 1.2cqw rgb(255 196 30 / 0.55));
+  animation: merch-glow 2.4s ease-in-out infinite, merch-lantern-sway 5.2s ease-in-out infinite;
+  transform-origin: 50% 15%;
+}
+
+.merch__lantern--l2 { animation-delay: -1.4s, -1.1s; }
+.merch__lantern--plain { animation-delay: -.7s, -2.4s; }
+.merch__lantern--three { animation-delay: -1.9s, -.4s; }
+
+@keyframes merch-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0.6cqw rgb(255 196 30 / 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 1.8cqw rgb(255 196 30 / 0.75));
+  }
+}
+
+@keyframes merch-lantern-sway {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0) rotate(2.5deg);
+  }
+}
+
+/* ---------- Order button ---------- */
+.merch__order-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 20%;
+  transform: translateX(-50%) rotate(-2deg);
+  z-index: 30;
+  padding: 0.95em 2.6em;
+  border: 3px solid rgb(255 248 232 / 0.9);
+  border-radius: 999px;
+  color: var(--midnight);
+  background: linear-gradient(180deg, #ffd24a 0%, var(--yellow) 100%);
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(12px, 1.3cqw, 20px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0.35em 0.4em 0 rgb(31 29 102 / 0.45);
+  animation: merch-order-wobble 2.6s ease-in-out infinite;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Playful sticker arrow, echoing the "GET YOUR TEES NOWWW" sticker vibe */
+.merch__order-btn::after {
+  content: "→";
+  margin-left: 0.6em;
+  font-size: 1.1em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Little sunshine sparkle on the left */
+.merch__order-btn::before {
+  content: "✦";
+  margin-right: 0.6em;
+  font-size: 0.8em;
+  line-height: 1;
+  color: var(--rose);
+}
+
+.merch__order-btn:hover {
+  background: linear-gradient(180deg, #ffea99 0%, #ffd24a 100%);
+  box-shadow: 0.5em 0.55em 0 rgb(31 29 102 / 0.5);
+  transform: translateX(-50%) rotate(-2deg) scale(1.04);
+}
+
+.merch__order-btn:active {
+  box-shadow: 0.15em 0.2em 0 rgb(31 29 102 / 0.45);
+  transform: translateX(-50%) rotate(-2deg) scale(0.97);
+}
+
+.merch__order-btn:focus-visible {
+  outline: 3px solid #02caef;
+  outline-offset: 4px;
+}
+
+@keyframes merch-order-wobble {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(2deg);
+  }
+}
+
+/* ---------- Reveal pop ----------
+   As the pinned journey ends the poster's elements pop in: each scales up in
+   place (--pop) with a soft overshoot, lifts a few px (--rise) and fades in
+   (--fade), all driven from the stage's scroll-linked CSS vars via independent
+   props, so every element's own transform/placement is left untouched. */
+.merch__stage .merch__logo,
+.merch__stage .merch__tee,
+.merch__stage .merch__tees-now,
+.merch__stage .merch__cloud--left-btm,
+.merch__stage .merch__cloud--left-mid,
+.merch__stage .merch__cloud--right-mid,
+.merch__stage .merch__lantern,
+.merch__stage .merch__order-btn {
+  opacity: var(--fade, 1);
+  translate: 0 var(--rise, 0px);
+  scale: var(--pop, 1);
+}
+
+@media (max-width: 700px) {
+  /* Portrait: drop the 16:9 canvas and use the whole viewport, re-distributing
+     the poster across the tall screen with device-safe spacing while keeping
+     the t-shirts as a balanced cluster. */
+  .merch__stage { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+  .merch__bg,
+  .merch__bg--pink { height: 100%; }
+  .merch__logo { width: 50%; top: calc(8% + env(safe-area-inset-top, 0px)); }
+  .merch__tees-now { width: 13%; left: 44%; top: 24%; }
+  .merch__tee { width: 46%; top: 57%; }
+  .merch__tee--outline { width: 50%; }
+  .merch__tee--front-left { width: 33%; transform: translate(-106%, -80%); }
+  .merch__tee--front-right { width: 33%; transform: translate(-62%, -30%); }
+  .merch__cloud--left-btm { width: 40%; bottom: calc(3% + env(safe-area-inset-bottom, 0px)); }
+  .merch__cloud--left-mid { width: 14%; bottom: 68%; }
+  .merch__cloud--right-mid { width: 32%; bottom: 44%; }
+  .merch__lantern { width: 15%; bottom: calc(2% + env(safe-area-inset-bottom, 0px)); right: 2%; }
+  .merch__lantern--l2 { right: auto; bottom: 58%; left: 80%; width: 9%; }
+  .merch__lantern--plain { right: auto; bottom: 38%; left: 12%; width: 8%; }
+  .merch__lantern--three { right: auto; bottom: 55%; left: 4%; width: 15%; }
+  .merch__order-btn { left: 50%; top: 62%; bottom: auto; font-size: clamp(14px, 1.8cqw, 21px); }
+}
+
+/* Extra-small phones: pull sizes back a notch and drop one mid lantern. */
+@media (max-width: 380px) {
+  .merch__logo { width: 45%; }
+  .merch__tees-now { width: 22%;left:60%;top: 28%; }
+  .merch__tee { width: 50%; }
+  .merch__tee--outline { width: 55%; }
+  .merch__tee--front-left,
+  .merch__tee--front-right { width: 45%; }
+  .merch__lantern--plain { display: none; }
+  .merch__order-btn { font-size: clamp(8px, 1.7cqw, 18px);
+                      top:67% }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .merch__order-btn,
+  .merch__lantern,
+  .merch__cloud--left-btm,
+  .merch__cloud--left-mid,
+  .merch__cloud--right-mid {
+    animation: none;
+  }
+  .merch__stage .merch__logo,
+  .merch__stage .merch__tee,
+  .merch__stage .merch__tees-now,
+  .merch__stage .merch__cloud--left-btm,
+  .merch__stage .merch__cloud--left-mid,
+  .merch__stage .merch__cloud--right-mid,
+  .merch__stage .merch__lantern,
+  .merch__stage .merch__order-btn {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}

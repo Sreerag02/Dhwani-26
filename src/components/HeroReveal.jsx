@@ -10,7 +10,8 @@ export default function KhaiHero({ progress }) {
   const [tap, setTap] = useState(0);
   const reduced = useReducedMotion();
   const entrance = useTransform(progress, [.60, .82], [0, 1]);
-  const rise = useTransform(progress, [.52, .88], [100, 0]);
+  const rise = useTransform(progress, [.52, .88, 1.06, 1.18], [100, 0, 0, -420]);
+  const carryScale = useTransform(progress, [1.06, 1.18], [1, 1.22]);
   const titleScale = useTransform(progress, [.68, .94], [.78, 1]);
   const titleOpacity = useTransform(progress, [.68, .85], [0, 1]);
   const signShift = useTransform(progress, [.65, .96], [120, 0]);
@@ -32,7 +33,7 @@ export default function KhaiHero({ progress }) {
       <div className="poster-khai"><motion.img style={{ opacity: titleOpacity, scale: reduced ? 1 : titleScale }} src={MASCOT + "khai.png"} alt="Khai" draggable="false" /></div>
       <div className="poster-character">
 <motion.button className="poster-character-button" type="button" aria-label="Make Khai dance"
-            style={{ opacity: entrance, y: reduced ? 0 : rise }}
+            style={{ opacity: entrance, y: reduced ? 0 : rise, scale: reduced ? 1 : carryScale }}
             onClick={() => setTap(n => n + 1)}
             whileTap={reduced ? undefined : { scale: 0.97 }}>
             <motion.div key={tap} className="poster-character-wrap"
