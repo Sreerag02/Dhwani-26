@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue, useReducedMotion } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "motion/react";
 import "./Events.css";
 
 const INITIAL_EVENTS = [
@@ -124,7 +124,6 @@ export default function Events() {
   const sectionRef = useRef(null);
   const boardRef = useRef(null);
   const isDraggingCardRef = useRef(false);
-  const reduced = useReducedMotion();
 
   // Scroll Parallax Transforms
   const { scrollYProgress } = useScroll({
@@ -134,28 +133,6 @@ export default function Events() {
 
   const cloudParallaxY = useTransform(scrollYProgress, [0, 1], [-40, 50]);
   const headerParallaxY = useTransform(scrollYProgress, [0, 1], [30, -30]);
-  const boardParallaxY = useTransform(scrollYProgress, [0, 1], [45, -35]);
-
-  // Mouse 3D Tilt Parallax
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [4, -4]), { stiffness: 120, damping: 18 });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4, 4]), { stiffness: 120, damping: 18 });
-
-  const handleMouseMove = (e) => {
-    if (reduced || !sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
 
   const handleResetCanvas = () => {
     setResetKey(prev => prev + 1);
@@ -167,14 +144,12 @@ export default function Events() {
       id="events"
       className="events-section"
       aria-label="Events Notice Board"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
     >
       {/* Flipped golden carnival cloud drape with scroll parallax */}
       <motion.div
         className="flipped-cloud-drape"
         aria-hidden="true"
-        style={{ y: reduced ? 0 : cloudParallaxY }}
+        style={{ y: cloudParallaxY }}
       >
         <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
       </motion.div>
@@ -189,7 +164,7 @@ export default function Events() {
         {/* Notice Board Header with Bidirectional Scroll Entrance & Exit */}
         <motion.header
           className="notice-board-header"
-          style={{ y: reduced ? 0 : headerParallaxY }}
+          style={{ y: headerParallaxY }}
           initial={{ opacity: 0, y: 50, scale: 0.92 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: false, amount: 0.3 }}
@@ -198,18 +173,9 @@ export default function Events() {
           <h2 className="notice-board-title">FESTIVAL EVENTS BOARD</h2>
         </motion.header>
 
-        {/* Board Viewport Container with 3D Entrance & Bidirectional Scroll Effects */}
-        <motion.div
+        {/* Board Viewport Container */}
+        <div
           className="infinite-board-viewport-perspective"
-          style={{
-            y: reduced ? 0 : boardParallaxY,
-            rotateX: reduced ? 0 : rotateX,
-            rotateY: reduced ? 0 : rotateY
-          }}
-          initial={{ opacity: 0, y: 80, scale: 0.92, rotateX: 6 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-          viewport={{ once: false, amount: 0.18 }}
-          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
         >
           <div className="infinite-board-viewport" ref={boardRef}>
             {/* Small Floating Center View Button on the Board */}
@@ -308,7 +274,7 @@ export default function Events() {
               </div>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Event Details Modal */}
