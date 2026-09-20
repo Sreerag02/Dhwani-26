@@ -78,7 +78,10 @@
   top: 63%;
   transform: translate(-50%, -90%);
   z-index: 20;
-  pointer-events: none;
+  pointer-events: auto;
+  animation: merch-tee-breathe 6s ease-in-out infinite;
+  transform-origin: center center;
+  transition: scale 0.25s ease, translate 0.25s ease, filter 0.25s ease;
 }
 
 .merch__tee--back {
@@ -93,12 +96,14 @@
   top: 45%;
   transform: translate(-220%, -96%);
   z-index: 21;
-  pointer-events: none;
+  pointer-events: auto;
+  transition: scale 0.25s ease, translate 0.25s ease, filter 0.25s ease;
 }
 
 .merch__tee--outline {
   width: 23%;
   z-index: 10;
+  pointer-events: none;
 }
 
 .merch__tee--front-left {
@@ -114,6 +119,63 @@
   width: 25%;
   z-index: 1;
   rotate: 60deg;
+}
+
+/* Too subtle to notice alone: the shirts pulse ~1% about their centre, faded
+   out of phase so the cluster feels gently alive. Runs via the individual
+   `scale` property, leaving each tee's translate anchor and tilt untouched. */
+.merch__tee--back { animation-delay: -1s; }
+.merch__tee--outline { animation-delay: -2s; }
+.merch__tee--front-left { animation-delay: -1.6s; }
+.merch__tee--front-right { animation-delay: -3.5s; }
+
+@keyframes merch-tee-breathe {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.01;
+  }
+}
+
+/* Mouse pointer animation, merch t-shirts only: each shirt glistens and lifts
+   as the pointer passes over it, breathing pauses while touched. Runs via the
+   individual `scale`/`translate` properties so the translate anchor and each
+   tee's static tilt (incl. the front-right 60deg rotate) stay intact. */
+@media (hover: hover) {
+  .merch__tee:hover,
+  .merch__tees-now:hover {
+    translate: 0 -6px;
+    animation-play-state: paused;
+  }
+
+  .merch__tee:hover {
+    scale: 1.06;
+    z-index: 30;
+    filter: drop-shadow(0 10px 16px rgb(31 29 102 / 0.35));
+  }
+
+  .merch__tees-now:hover {
+    scale: 1.05;
+    filter: drop-shadow(0 6px 10px rgb(31 29 102 / 0.3));
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: reduce) {
+  .merch__tee:hover,
+  .merch__tees-now:hover {
+    translate: 0 0;
+    filter: none;
+  }
+
+  .merch__tee:hover {
+    scale: 1.03;
+  }
+
+  .merch__tees-now:hover {
+    scale: 1.03;
+  }
 }
 
 /* ---------- Cloud (left of the left tee) ---------- */
@@ -404,7 +466,7 @@
 .merch__lantern {
   position: absolute;
   bottom: 10px;
-  right: 2%;
+  right: 10%;
   width: 14%;
   height: auto;
   z-index: 6;
@@ -553,7 +615,14 @@
 .merch__stage .merch__order-btn {
   opacity: var(--fade, 1);
   translate: 0 var(--rise, 0px);
+}
+
+/* The poster as a whole blooms from the screen centre: the scale lives on the
+   16:9 canvas (origin centre), while individual elements keep their own gentle
+   fade/rise — so nothing looks like it grows from an off-centre edge. */
+.merch__stage {
   scale: var(--pop, 1);
+  transform-origin: center center;
 }
 
 @media (max-width: 700px) {
@@ -647,6 +716,7 @@
 @media (prefers-reduced-motion: reduce) {
   .merch__order-btn,
   .merch-kit__cta,
+  .merch__tee,
   .merch__lantern,
   .merch__cloud--left-btm,
   .merch__cloud--left-mid,
@@ -669,7 +739,8 @@
   .merch__stage .merch__note--red,
   .merch__stage .merch__sticker-price,
   .merch__stage .merch__lantern,
-  .merch__stage .merch__order-btn {
+  .merch__stage .merch__order-btn,
+  .merch__stage {
     opacity: 1;
     translate: 0 0;
     scale: 1;

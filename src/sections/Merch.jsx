@@ -7,9 +7,9 @@ export default function Merch({ progress }) {
   // each element scales up slightly with a tiny overshoot and lifts a few px,
   // all via the stage's CSS vars (--pop/--rise/--fade) composed through
   // independent props so the elements' own transforms stay untouched.
-  const enter = useTransform(progress, [.95, .995], [0, 1]);
-  const scale = useTransform(enter, [0, .5, 1], [.94, 1.02, 1]);
-  const rise = useTransform(enter, [0, 1], ["10px", "0px"]);
+  const enter = useTransform(progress, [.90, .942], [0, 1]);
+  const scale = useTransform(enter, [0, .5, 1], [.985, 1.004, 1]);
+  const rise = useTransform(enter, [0, 1], ["6px", "0px"]);
   return (
     <section id="merch" className="merch" aria-label="Dhwani 26 merchandise">
       <motion.div

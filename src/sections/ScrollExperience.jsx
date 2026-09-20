@@ -79,12 +79,12 @@ export default function ScrollExperience() {
   // small tee over Khai, a navy cover wipes him away behind the growing shirt
   // silhouette, the poster pops in under it, and the giant shirt fades out to
   // resolve into the poster's own outline tee. Scroll driven throughout.
-  const revealBg = useTransform(progress, [.86, .92], [0, 1]);
-  const revealScale = useTransform(progress, [.86, .955], [.4, 3.2]);
-  const revealOpacity = useTransform(progress, [.86, .955, .99], [0, 1, 0]);
-  const revealVisibility = useTransform(progress, value => value < .86 || value >= .99 ? "hidden" : "visible");
-  const khaiVisibility = useTransform(progress, value => value < .60 || value >= .975 ? "hidden" : "visible");
-  const merchVisibility = useTransform(progress, value => value < .95 ? "hidden" : "visible");
+  const revealBg = useTransform(progress, [.84, .90], [0, 1]);
+  const revealScale = useTransform(progress, [.84, .92], [.4, 3.2]);
+  const revealOpacity = useTransform(progress, [.84, .92, .942], [0, 1, 0]);
+  const revealVisibility = useTransform(progress, value => value < .84 || value >= .942 ? "hidden" : "visible");
+  const khaiVisibility = useTransform(progress, value => value < .60 || value >= .94 ? "hidden" : "visible");
+  const merchVisibility = useTransform(progress, value => value < .90 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
