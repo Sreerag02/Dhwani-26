@@ -74,12 +74,17 @@ export default function ScrollExperience() {
   const dripVisibility = useTransform(progress, value => value < .56 || value >= .70 ? "hidden" : "visible");
   const heroVisibility = useTransform(progress, value => value < .60 ? "hidden" : "visible");
   const hero = useTransform(progress, [.60, .96], [.50, 1.18]);
-  // Finale, in place: hold on fully-settled Khai, then Khai rises further and
-  // zooms toward the camera (z-axis), then the merch poster fades in right
-  // where it sits over him. Scroll driven, no fade on Khai, no element
-  // repositioning, no scrolling down into a separate section.
-  const khaiVisibility = useTransform(progress, value => value < .60 || value >= .97 ? "hidden" : "visible");
-  const merchVisibility = useTransform(progress, value => value < .96 ? "hidden" : "visible");
+  // Finale, in place: hold on fully-settled Khai, then the t-shirt gateway
+  // reveal hands off to the merch poster. The tshirt outline scales up from a
+  // small tee over Khai, a navy cover wipes him away behind the growing shirt
+  // silhouette, the poster pops in under it, and the giant shirt fades out to
+  // resolve into the poster's own outline tee. Scroll driven throughout.
+  const revealBg = useTransform(progress, [.86, .92], [0, 1]);
+  const revealScale = useTransform(progress, [.86, .955], [.4, 3.2]);
+  const revealOpacity = useTransform(progress, [.86, .955, .99], [0, 1, 0]);
+  const revealVisibility = useTransform(progress, value => value < .86 || value >= .99 ? "hidden" : "visible");
+  const khaiVisibility = useTransform(progress, value => value < .60 || value >= .975 ? "hidden" : "visible");
+  const merchVisibility = useTransform(progress, value => value < .95 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
@@ -126,6 +131,11 @@ export default function ScrollExperience() {
       </motion.div>
       <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>
         <Merch progress={progress} />
+      </motion.div>
+      <motion.div className="merch-reveal-bg" style={{ opacity: revealBg }} aria-hidden="true" />
+      <motion.div className="merch-reveal" style={{ opacity: revealOpacity, visibility: revealVisibility }} aria-hidden="true">
+        <motion.img src="/assets/tshirt outlne.png" alt="" draggable="false"
+          style={{ scale: reduced ? 1 : revealScale }} />
       </motion.div>
     </div>
   </section>;

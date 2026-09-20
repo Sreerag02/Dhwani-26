@@ -27,17 +27,42 @@
    over the empty navy scene as the pinned journey ends. No further scrolling
    into a separate section. */
 .merch-journey {position:absolute;inset:0;z-index:46;overflow:hidden;background:#1f1d66}
-/* Full-viewport blue backdrop that follows the merch poster finale; the merch
-   kit (from Merch.jsx) sits in the top-right corner. */
+/* T-shirt gateway: a navy cover wipes Khai away while the tshirt outline
+   scales up to fill the frame, then the poster arrives under it and the giant
+   shirt resolves into the poster's own outline tee. */
+.merch-reveal-bg {position:absolute;inset:0;z-index:45;background:#1f1d66;pointer-events:none}
+.merch-reveal {position:absolute;inset:0;z-index:47;display:grid;place-items:center;overflow:hidden;pointer-events:none}
+.merch-reveal img {width:min(65vw,70svh);height:80%;object-fit:contain}
+/* Full-viewport blue backdrop that follows the merch poster finale; the
+   designed `bg blue.png` art is the base with the `bg element.png` overlay
+   screened on top, and the merch kit/catalogue (from Merch.jsx) sits on it. */
 .after-merch {
   position: relative;
   width: 100%;
   height: 100svh;
-  background: #02c8ed;
+  background-color: #02c8ed;
+  background-image: url("/assets/merch/bg/bg blue.png");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.after-merch__bg-element {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  z-index: 0;
 }
 @media(max-width:700px){
- .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 9 / 16));aspect-ratio:9/16}
- .scroll-mask img {width:88vw}
+  .after-merch {height:auto;min-height:100svh}
+  .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 9 / 16));aspect-ratio:9/16}
+  .scroll-mask img {width:88vw}
+  .merch-reveal img {width:88vw;height:auto}
 }
 
 /* Center each cloud on an elliptical ring; scroll moves it radially outward. */
