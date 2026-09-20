@@ -130,11 +130,6 @@ export default function Events() {
 
   return (
     <section id="events" className="events-section" aria-label="Events Notice Board">
-      {/* Natural golden cloud bridge extending from Khai section */}
-      <div className="khai-cloud-bridge" aria-hidden="true">
-        <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
-      </div>
-
       {/* Top transition drape for smooth scrolling */}
       <div className="events-transition-top" />
 
