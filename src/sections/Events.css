@@ -10,7 +10,34 @@
   box-sizing: border-box;
 }
 
-/* Smooth top gradient transition connecting Khai section seamlessly (#1f1d66 to event-bg) */
+/* Golden Cloud Bridge extending naturally from Khai section */
+.khai-cloud-bridge {
+  position: absolute;
+  top: -130px;
+  left: -2%;
+  width: 104%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+@keyframes cloud-bridge-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0);
+  }
+}
+
+.khai-cloud-bridge img {
+  width: 100%;
+  height: auto;
+  display: block;
+  animation: cloud-bridge-float 8s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+}
+
+/* Smooth top gradient transition connecting Khai section seamlessly */
 .events-transition-top {
   position: absolute;
   top: 0;
@@ -511,6 +538,10 @@
 }
 
 @media (max-width: 640px) {
+  .khai-cloud-bridge {
+    top: -60px;
+  }
+
   .events-section {
     padding: 2.5rem 0.5rem 4rem;
   }
