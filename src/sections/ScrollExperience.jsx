@@ -111,10 +111,10 @@ export default function ScrollExperience() {
         <motion.img src="/assets/mascot/mascot%20mask.svg" alt="" draggable="false" style={{ scale: reduced ? 1 : maskScale }} />
       </motion.div>
       <motion.div className="world-intro journey-scene" style={{ opacity: introOpacity, visibility: introVisibility }}>
-        <motion.div style={{ y: reduced ? 0 : introY }}>
+        <motion.div style={{ y: reduced ? 0 : introY }} className="world-intro__stack">
           <p>COLLEGE OF ENGINEERING, TRIVANDRUM</p>
-          <h1><span>WORLD OF</span>DHWANI</h1>
-          <span className="world-year">’26</span>
+          <h1>WORLD OF</h1>
+          <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.png" alt="DHWANI" />
         </motion.div>
       </motion.div>
     </div>
