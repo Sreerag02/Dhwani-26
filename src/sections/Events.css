@@ -91,7 +91,7 @@
 .infinite-board-viewport {
   position: relative;
   width: 100%;
-  height: 740px;
+  height: 850px;
   overflow: hidden;
   border-radius: 24px;
   border: 4px solid rgba(251, 191, 36, 0.45);
@@ -102,6 +102,7 @@
   background: url('/assets/events-section/texture.jpg') center center / cover repeat #dfd0bb;
   user-select: none;
   cursor: grab;
+  touch-action: none;
 }
 
 .infinite-board-viewport:active {
@@ -136,13 +137,14 @@
 /* Canvas Draggable Board Layer */
 .infinite-board-canvas {
   position: absolute;
-  width: 2200px;
-  height: 1600px;
-  top: -180px;
-  left: -160px;
+  width: 2400px;
+  height: 1800px;
+  top: -200px;
+  left: -200px;
   background: url('/assets/events-section/texture.jpg') center center / cover repeat transparent;
   box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.15);
   cursor: grab;
+  touch-action: none;
 }
 
 .infinite-board-canvas:active {
@@ -152,8 +154,8 @@
 /* Paper Stamp */
 .paper-stamp {
   position: absolute;
-  top: 760px;
-  right: 1200px;
+  top: 850px;
+  right: 1300px;
   font-family: Galavant, Georgia, serif;
   font-size: 1.1rem;
   font-weight: 900;
@@ -176,7 +178,7 @@
 /* Draggable Event Cards */
 .event-card.draggable-card {
   position: absolute;
-  width: 310px;
+  width: 320px;
   background: #fffefb;
   color: #1f2937;
   border-radius: 10px;
@@ -190,6 +192,7 @@
   border: 1px solid rgba(220, 210, 195, 0.7);
   display: flex;
   flex-direction: column;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Carnival Card Style Variations */
@@ -426,6 +429,25 @@
 
 .event-card.draggable-card:active {
   cursor: grabbing;
+}
+
+/* Touch optimizations for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .event-card.draggable-card {
+    cursor: grab;
+  }
+
+  .event-card.draggable-card:active {
+    cursor: grabbing;
+  }
+
+  .infinite-board-viewport {
+    cursor: grab;
+  }
+
+  .infinite-board-viewport:active {
+    cursor: grabbing;
+  }
 }
 
 /* Pushpin SVG on top of card */
@@ -758,9 +780,25 @@
 /* Responsive Media Queries */
 @media (max-width: 900px) {
   .infinite-board-viewport {
-    height: 620px;
+    height: 650px;
   }
-  
+
+  .infinite-board-canvas {
+    width: 2000px;
+    height: 1500px;
+    top: -150px;
+    left: -150px;
+  }
+
+  .paper-stamp {
+    top: 700px;
+    right: 1100px;
+  }
+
+  .event-card.draggable-card {
+    width: 290px;
+  }
+
   .event-modal-grid {
     grid-template-columns: 1fr;
   }
@@ -788,8 +826,21 @@
   }
 
   .infinite-board-viewport {
-    height: 560px;
+    height: 600px;
     border-radius: 16px;
+  }
+
+  .infinite-board-canvas {
+    width: 1800px;
+    height: 1400px;
+    top: -120px;
+    left: -120px;
+  }
+
+  .paper-stamp {
+    top: 650px;
+    right: 1000px;
+    font-size: 0.9rem;
   }
 
   .board-center-view-btn {
@@ -800,7 +851,7 @@
   }
 
   .event-card.draggable-card {
-    width: 270px;
+    width: 260px;
   }
 
   .event-modal-card {
