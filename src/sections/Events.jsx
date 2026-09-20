@@ -151,7 +151,7 @@ export default function Events() {
         aria-hidden="true"
         style={{ y: cloudParallaxY }}
       >
-        <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
+        <img src="/assets/mascot/cloud-main.webp" alt="" draggable="false" />
       </motion.div>
 
       {/* Seam blur overlay */}

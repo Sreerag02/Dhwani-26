@@ -92,6 +92,6 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
       {lanterns.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 110 : -110} float />)}
       {notes.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 60 : -60} float />)}
     </div>
-    <RevealLayer className="carnival-base-clouds" src={E+"theme-cloud.png"} float />
+    <RevealLayer className="carnival-base-clouds" src={E+"theme-cloud.webp"} float />
   </section></TimelineContext.Provider>;
 }
