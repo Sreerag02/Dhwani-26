@@ -13,12 +13,12 @@
 /* Golden Carnival Cloud Overflow from Khai */
 .events-cloud-overflow {
   position: absolute;
-  top: 0;
+  top: -80px;
   left: -2%;
   width: 104%;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.95;
+  opacity: 0.98;
 }
 
 @keyframes events-cloud-float {
@@ -26,7 +26,7 @@
     transform: scaleY(-1) translate3d(0, 0, 0);
   }
   50% {
-    transform: scaleY(-1) translate3d(0, -13px, 0);
+    transform: scaleY(-1) translate3d(0, 13px, 0);
   }
 }
 
@@ -547,7 +547,7 @@
 
 @media (max-width: 640px) {
   .events-cloud-overflow {
-    top: 0;
+    top: -40px;
   }
 
   .events-section {
