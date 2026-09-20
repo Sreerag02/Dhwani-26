@@ -104,21 +104,21 @@ export default function Merch({ progress }) {
   );
 }
 
-export function MerchKit() {
-  return (
-    <div className="merch-kit">
-      <img
-        src="/assets/MERCH KIT IMAGE.png"
-        alt="Dhwani 26 merch kit"
-        className="merch-kit__image"
-        draggable="false"
-      />
-      <img
-        src="/assets/merch kit.png"
-        alt="Merch kit"
-        className="merch-kit__label"
-        draggable="false"
-      />
-    </div>
-  );
-}
+// export function MerchKit() {
+//   return (
+//     <div className="merch-kit">
+//       <img
+//         src="/assets/MERCH KIT IMAGE.png"
+//         alt="Dhwani 26 merch kit"
+//         className="merch-kit__image"
+//         draggable="false"
+//       />
+//       <img
+//         src="/assets/merch kit.png"
+//         alt="Merch kit"
+//         className="merch-kit__label"
+//         draggable="false"
+//       />
+//     </div>
+//   );
+// }
