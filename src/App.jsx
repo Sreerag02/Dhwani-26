@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import SideNavbar from "./components/SideNavbar";
 import ScrollExperience from "./sections/ScrollExperience";
+import Events from "./sections/Events";
 import ComingSoon from "./sections/ComingSoon";
 import DhwaniFooter from "./components/DhwaniFooter";
 
@@ -28,6 +29,7 @@ export default function App() {
     <main className="dhwani-site">
       <ScrollExperience />
       <div ref={nextPage}>
+        <Events />
         <ComingSoon />
         <DhwaniFooter />
       </div>
