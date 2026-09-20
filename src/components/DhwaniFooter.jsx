@@ -10,9 +10,8 @@ const InstagramIcon = ({ className = '', size = 20 }) => (
 );
 
 const YoutubeIcon = ({ className = '', size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
-    <polygon points="10 15 15 12 10 9 10 15" fill="currentColor"/>
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
   </svg>
 );
 
@@ -436,11 +435,39 @@ export function DhwaniFooter() {
         }
 
         .dhwani-social-atelier {
+          position: relative;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 20px;
           margin-bottom: 34px;
+        }
+
+        .yellow-badge-container {
+          position: relative;
+          width: 200px;
+          height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .yellow-badge-img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          z-index: 1;
+        }
+
+        .social-icons-inside-badge {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 15px;
+          padding: 0;
+          margin-top: 5px;
         }
 
         .social-atelier-link {
@@ -448,41 +475,50 @@ export function DhwaniFooter() {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 46px;
-          height: 46px;
+          width: 38px;
+          height: 38px;
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          color: #f1f5f9;
+          background: rgba(255, 255, 255, 0.95);
           text-decoration: none;
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-ig {
+          color: #E1306C;
         }
 
         .social-ig:hover {
           background: linear-gradient(135deg, #e1306c, #fd1d1d);
-          border-color: #fd1d1d;
-          box-shadow: 0 0 25px rgba(225, 48, 108, 0.85);
-          transform: translateY(-4px) scale(1.12);
           color: #ffffff;
+          transform: translateY(-3px) scale(1.15);
+          box-shadow: 0 4px 20px rgba(225, 48, 108, 0.6);
+        }
+
+        .social-yt {
+          color: #FF0000;
         }
 
         .social-yt:hover {
           background: #ff0000;
-          border-color: #ff0000;
-          box-shadow: 0 0 25px rgba(255, 0, 0, 0.85);
-          transform: translateY(-4px) scale(1.12);
           color: #ffffff;
+          transform: translateY(-3px) scale(1.15);
+          box-shadow: 0 4px 20px rgba(255, 0, 0, 0.6);
+        }
+
+        .social-yt svg {
+          transition: color 0.3s ease;
+        }
+
+        .social-fb {
+          color: #1877F2;
         }
 
         .social-fb:hover {
           background: #1877f2;
-          border-color: #1877f2;
-          box-shadow: 0 0 25px rgba(24, 119, 242, 0.85);
-          transform: translateY(-4px) scale(1.12);
           color: #ffffff;
+          transform: translateY(-3px) scale(1.15);
+          box-shadow: 0 4px 20px rgba(24, 119, 242, 0.6);
         }
 
 
@@ -660,13 +696,21 @@ export function DhwaniFooter() {
           }
 
           .dhwani-social-atelier {
-            gap: 16px;
             margin-bottom: 28px;
           }
 
+          .yellow-badge-container {
+            width: 160px;
+            height: 160px;
+          }
+
+          .social-icons-inside-badge {
+            gap: 12px;
+          }
+
           .social-atelier-link {
-            width: 44px;
-            height: 44px;
+            width: 34px;
+            height: 34px;
           }
 
           .college-heritage-line {
@@ -732,9 +776,18 @@ export function DhwaniFooter() {
             padding: 6px 4px;
           }
 
+          .yellow-badge-container {
+            width: 140px;
+            height: 140px;
+          }
+
+          .social-icons-inside-badge {
+            gap: 10px;
+          }
+
           .social-atelier-link {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
           }
         }
       `}</style>
@@ -869,33 +922,42 @@ export function DhwaniFooter() {
 
         {/* Refined Social Connections */}
         <div className="dhwani-social-atelier">
-          <a 
-            href="https://instagram.com/dhwanicet" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="social-atelier-link social-ig" 
-            aria-label="Follow Dhwani on Instagram"
-          >
-            <InstagramIcon size={19} />
-          </a>
-          <a 
-            href="https://youtube.com/dhwanicet" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="social-atelier-link social-yt" 
-            aria-label="Subscribe to Dhwani YouTube Channel"
-          >
-            <YoutubeIcon size={19} />
-          </a>
-          <a 
-            href="https://facebook.com/dhwanicet" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="social-atelier-link social-fb" 
-            aria-label="Follow Dhwani on Facebook"
-          >
-            <FacebookIcon size={19} />
-          </a>
+          <div className="yellow-badge-container">
+            <img 
+              src="/assets/footer/yellowbadge.png" 
+              alt="Yellow Badge" 
+              className="yellow-badge-img"
+            />
+            <div className="social-icons-inside-badge">
+              <a 
+                href="https://instagram.com/dhwanicet" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="social-atelier-link social-ig" 
+                aria-label="Follow Dhwani on Instagram"
+              >
+                <InstagramIcon size={18} />
+              </a>
+              <a 
+                href="https://youtube.com/dhwanicet" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="social-atelier-link social-yt" 
+                aria-label="Subscribe to Dhwani YouTube Channel"
+              >
+                <YoutubeIcon size={18} />
+              </a>
+              <a 
+                href="https://facebook.com/dhwanicet" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="social-atelier-link social-fb" 
+                aria-label="Follow Dhwani on Facebook"
+              >
+                <FacebookIcon size={18} />
+              </a>
+            </div>
+          </div>
         </div>
 
 
