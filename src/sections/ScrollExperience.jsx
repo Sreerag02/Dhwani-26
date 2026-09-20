@@ -117,6 +117,13 @@ export default function ScrollExperience() {
           <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.png" alt="DHWANI" />
         </motion.div>
       </motion.div>
+      
+      {/* Seamless transition overlay to Events section */}
+      <div className="journey-transition-overlay" aria-hidden="true" />
+      <div className="transition-clouds" aria-hidden="true">
+        <img src="/assets/mascot/cloud-main.png" alt="" className="transition-cloud-1" />
+        <img src="/assets/mascot/cloud-main.png" alt="" className="transition-cloud-2" />
+      </div>
     </div>
   </section>;
 }

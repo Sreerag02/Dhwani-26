@@ -16,7 +16,8 @@ const INITIAL_EVENTS = [
     rules: ["Team size: 8-24 members", "Time limit: 8-12 minutes", "Props permitted with prior approval"],
     contact: "Ananya - 9876543210",
     initialPos: { x: 240, y: 210 },
-    tilt: -2.5
+    tilt: -2.5,
+    cardStyle: "carnival-red"
   },
   {
     id: 2,
@@ -31,7 +32,8 @@ const INITIAL_EVENTS = [
     rules: ["Team size: 3-8 members", "Time limit: 20 minutes (setup included)", "Original compositions bonus points"],
     contact: "Rahul - 9876543211",
     initialPos: { x: 600, y: 195 },
-    tilt: 1.8
+    tilt: 1.8,
+    cardStyle: "carnival-purple"
   },
   {
     id: 3,
@@ -46,7 +48,8 @@ const INITIAL_EVENTS = [
     rules: ["ID card required at entrance", "Gates open at 5:30 PM", "No re-entry permitted"],
     contact: "Festival Desk - 9876543212",
     initialPos: { x: 960, y: 215 },
-    tilt: -1.2
+    tilt: -1.2,
+    cardStyle: "carnival-blue"
   },
   {
     id: 4,
@@ -61,7 +64,8 @@ const INITIAL_EVENTS = [
     rules: ["Team size: 10-20 members", "Time limit: 15 minutes", "Microphones not allowed"],
     contact: "Siddharth - 9876543213",
     initialPos: { x: 250, y: 550 },
-    tilt: 2.2
+    tilt: 2.2,
+    cardStyle: "carnival-green"
   },
   {
     id: 5,
@@ -76,7 +80,8 @@ const INITIAL_EVENTS = [
     rules: ["Solo performance", "Time limit: 5 minutes", "One backing track allowed"],
     contact: "Meera - 9876543214",
     initialPos: { x: 610, y: 540 },
-    tilt: -2.0
+    tilt: -2.0,
+    cardStyle: "carnival-orange"
   },
   {
     id: 6,
@@ -91,7 +96,8 @@ const INITIAL_EVENTS = [
     rules: ["Individual or Duo entry", "Prop safety check required", "2-minute stage walk/act"],
     contact: "Vikram - 9876543215",
     initialPos: { x: 970, y: 560 },
-    tilt: 1.5
+    tilt: 1.5,
+    cardStyle: "carnival-pink"
   }
 ];
 
@@ -131,7 +137,6 @@ export default function Events() {
     offset: ["start end", "end start"]
   });
 
-  const cloudParallaxY = useTransform(scrollYProgress, [0, 1], [-40, 50]);
   const headerParallaxY = useTransform(scrollYProgress, [0, 1], [30, -30]);
 
   const handleResetCanvas = () => {
@@ -145,21 +150,6 @@ export default function Events() {
       className="events-section"
       aria-label="Events Notice Board"
     >
-      {/* Flipped golden carnival cloud drape with scroll parallax */}
-      <motion.div
-        className="flipped-cloud-drape"
-        aria-hidden="true"
-        style={{ y: cloudParallaxY }}
-      >
-        <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
-      </motion.div>
-
-      {/* Seam blur overlay */}
-      <div className="events-seam-blur" aria-hidden="true" />
-
-      {/* Top transition drape for smooth scrolling */}
-      <div className="events-transition-top" />
-
       <div className="events-container">
         {/* Notice Board Header with Bidirectional Scroll Entrance & Exit */}
         <motion.header
@@ -204,7 +194,7 @@ export default function Events() {
                 {INITIAL_EVENTS.map((event, index) => (
                   <motion.article
                     key={event.id}
-                    className="event-card draggable-card"
+                    className={`event-card draggable-card event-card--${event.cardStyle}`}
                     drag
                     dragConstraints={boardRef}
                     dragElastic={0.1}

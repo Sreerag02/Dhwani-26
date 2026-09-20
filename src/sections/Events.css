@@ -10,8 +10,21 @@
   box-sizing: border-box;
 }
 
-/* Brightened background layer overlay */
+/* Seamless transition from Khai section */
 .events-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(to bottom, #1f1d66 0%, rgba(31, 29, 102, 0.8) 30%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Brightened background layer overlay */
+.events-section::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -21,67 +34,11 @@
   pointer-events: none;
 }
 
-/* Flipped Golden Carnival Cloud Drape - Perfect Replica Mirror */
-.flipped-cloud-drape {
-  position: absolute;
-  top: 0;
-  left: -1%;
-  width: 102%;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0.98;
-}
-
-@keyframes flipped-cloud-float-sync {
-  0%, 100% {
-    transform: scaleY(-1) translate3d(0, 0, 0);
-  }
-  50% {
-    transform: scaleY(-1) translate3d(0, -13px, 0);
-  }
-}
-
-.flipped-cloud-drape img {
-  width: 100%;
-  height: auto;
-  display: block;
-  animation: flipped-cloud-float-sync 8s ease-in-out infinite;
-  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5));
-}
-
-/* Seam Blur & Soft Glow Overlay to dissolve any line between sections */
-.events-seam-blur {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 15px;
-  transform: translateY(-50%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: linear-gradient(to bottom, rgba(251, 191, 36, 0.2) 0%, rgba(31, 29, 102, 0.5) 50%, rgba(251, 191, 36, 0.2) 100%);
-  box-shadow: 0 0 30px rgba(31, 29, 102, 0.8);
-  z-index: 4;
-  pointer-events: none;
-}
-
-/* Smooth top gradient transition connecting Khai section seamlessly */
-.events-transition-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 140px;
-  background: linear-gradient(to bottom, #1f1d66 0%, rgba(31, 29, 102, 0.4) 50%, transparent 100%);
-  pointer-events: none;
-  z-index: 2;
-}
-
 .events-container {
   position: relative;
   max-width: 1380px;
   margin: 0 auto;
-  z-index: 4;
+  z-index: 3;
 }
 
 /* Notice Board Header - Clean Heading Only */
@@ -93,7 +50,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  z-index: 5;
+  z-index: 3;
 }
 
 .notice-board-badge {
@@ -113,6 +70,7 @@
   letter-spacing: 0.04em;
   margin: 0;
   background: linear-gradient(135deg, #ffffff 0%, #fef08a 50%, #f59e0b 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 4px 22px rgba(245, 158, 11, 0.5);
@@ -125,6 +83,8 @@
   width: 100%;
   will-change: transform;
   filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.45));
+  position: relative;
+  z-index: 3;
 }
 
 /* Infinite Board Viewport Container - 100% Filled with texture.jpg */
@@ -153,7 +113,7 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  z-index: 20;
+  z-index: 10;
   background: rgba(15, 10, 28, 0.88);
   color: #fbbf24;
   border: 1px solid rgba(251, 191, 36, 0.55);
@@ -230,6 +190,238 @@
   border: 1px solid rgba(220, 210, 195, 0.7);
   display: flex;
   flex-direction: column;
+}
+
+/* Carnival Card Style Variations */
+
+/* Style 1 - Red & Gold Carnival */
+.event-card--carnival-red {
+  background: linear-gradient(135deg, #fff5f5 0%, #fff 50%, #fef3c7 100%);
+  border: 3px solid #dc2626;
+  border-radius: 12px;
+}
+
+.event-card--carnival-red::before {
+  content: "🎪";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.event-card--carnival-red .event-card__tape {
+  background: linear-gradient(45deg, #dc2626, #f59e0b);
+  width: 70px;
+  transform: rotate(-8deg);
+}
+
+.event-card--carnival-red .event-card__photo-frame {
+  border: 3px solid #f59e0b;
+  border-radius: 8px;
+}
+
+.event-card--carnival-red .event-card__badge {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: #fef3c7;
+  border: 2px solid #f59e0b;
+}
+
+/* Style 2 - Purple & Pink Magic */
+.event-card--carnival-purple {
+  background: linear-gradient(135deg, #faf5ff 0%, #fff 50%, #fdf2f8 100%);
+  border: 3px solid #9333ea;
+  border-radius: 8px;
+}
+
+.event-card--carnival-purple::before {
+  content: "✨";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.event-card--carnival-purple::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(147, 51, 234, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.event-card--carnival-purple .event-card__tape {
+  background: linear-gradient(45deg, #9333ea, #ec4899);
+  width: 60px;
+  transform: rotate(15deg);
+}
+
+.event-card--carnival-purple .event-card__photo-frame {
+  border: 3px solid #ec4899;
+  border-radius: 6px;
+}
+
+.event-card--carnival-purple .event-card__badge {
+  background: linear-gradient(135deg, #9333ea, #7c3aed);
+  color: #fdf2f8;
+  border: 2px solid #ec4899;
+}
+
+/* Style 3 - Blue & Silver Elegance */
+.event-card--carnival-blue {
+  background: linear-gradient(135deg, #eff6ff 0%, #fff 50%, #f0f9ff 100%);
+  border: 3px solid #2563eb;
+  border-radius: 14px;
+}
+
+.event-card--carnival-blue::before {
+  content: "🎭";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.event-card--carnival-blue .event-card__tape {
+  background: linear-gradient(45deg, #2563eb, #94a3b8);
+  width: 65px;
+  transform: rotate(-12deg);
+}
+
+.event-card--carnival-blue .event-card__photo-frame {
+  border: 3px solid #94a3b8;
+  border-radius: 10px;
+}
+
+.event-card--carnival-blue .event-card__badge {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #f0f9ff;
+  border: 2px solid #94a3b8;
+}
+
+/* Style 4 - Green & Gold Nature */
+.event-card--carnival-green {
+  background: linear-gradient(135deg, #f0fdf4 0%, #fff 50%, #ecfdf5 100%);
+  border: 3px solid #16a34a;
+  border-radius: 10px;
+}
+
+.event-card--carnival-green::before {
+  content: "🌟";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.event-card--carnival-green .event-card__tape {
+  background: linear-gradient(45deg, #16a34a, #eab308);
+  width: 55px;
+  transform: rotate(8deg);
+}
+
+.event-card--carnival-green .event-card__photo-frame {
+  border: 3px solid #eab308;
+  border-radius: 7px;
+}
+
+.event-card--carnival-green .event-card__badge {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #ecfdf5;
+  border: 2px solid #eab308;
+}
+
+/* Style 5 - Orange & Copper Warmth */
+.event-card--carnival-orange {
+  background: linear-gradient(135deg, #fff7ed 0%, #fff 50%, #ffedd5 100%);
+  border: 3px solid #ea580c;
+  border-radius: 12px;
+}
+
+.event-card--carnival-orange::before {
+  content: "🎨";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.event-card--carnival-orange .event-card__tape {
+  background: linear-gradient(45deg, #ea580c, #d97706);
+  width: 68px;
+  transform: rotate(-5deg);
+}
+
+.event-card--carnival-orange .event-card__photo-frame {
+  border: 3px solid #d97706;
+  border-radius: 9px;
+}
+
+.event-card--carnival-orange .event-card__badge {
+  background: linear-gradient(135deg, #ea580c, #c2410c);
+  color: #ffedd5;
+  border: 2px solid #d97706;
+}
+
+/* Style 6 - Pink & Rose Romance */
+.event-card--carnival-pink {
+  background: linear-gradient(135deg, #fdf2f8 0%, #fff 50%, #fce7f3 100%);
+  border: 3px solid #db2777;
+  border-radius: 11px;
+}
+
+.event-card--carnival-pink::before {
+  content: "🎪";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.event-card--carnival-pink::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(219, 39, 119, 0.08) 0%, transparent 40%),
+              radial-gradient(circle at 70% 30%, rgba(244, 114, 182, 0.08) 0%, transparent 40%);
+  pointer-events: none;
+  border-radius: 11px;
+}
+
+.event-card--carnival-pink .event-card__tape {
+  background: linear-gradient(45deg, #db2777, #f472b6);
+  width: 62px;
+  transform: rotate(12deg);
+}
+
+.event-card--carnival-pink .event-card__photo-frame {
+  border: 3px solid #f472b6;
+  border-radius: 8px;
+}
+
+.event-card--carnival-pink .event-card__badge {
+  background: linear-gradient(135deg, #db2777, #be185d);
+  color: #fce7f3;
+  border: 2px solid #f472b6;
 }
 
 .event-card.draggable-card:active {
@@ -579,16 +771,16 @@
 }
 
 @media (max-width: 640px) {
-  .flipped-cloud-drape {
-    top: -50px;
-  }
-
   .notice-board-header {
     margin-top: 4.5rem;
   }
 
   .events-section {
     padding: 2.5rem 0.5rem 4rem;
+  }
+
+  .events-section::before {
+    height: 120px;
   }
 
   .notice-board-title {
