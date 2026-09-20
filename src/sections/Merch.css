@@ -181,7 +181,7 @@
 /* ---------- Cloud (left of the left tee) ---------- */
 .merch__cloud--left-btm {
   position: absolute;
-  left: 0;
+  left: -7px;
   bottom: 70px;
   width: 20%;
   height: auto;
@@ -191,7 +191,7 @@
 
 .merch__cloud--left-mid {
   position: absolute;
-  left: 0;
+  left: -7px;
   bottom: 60%;
   width: 10%;
   height: auto;
@@ -640,11 +640,11 @@
   .merch__tee--front-right { width: 45%; transform: translate(-75%, -40%); }
   .merch__cloud--left-btm { width: 40%; bottom: calc(3% + env(safe-area-inset-bottom, 0px)); }
   .merch__cloud--left-mid { width: 24%; bottom: 40%; }
-  .merch__cloud--right-mid { width: 32%; bottom: 44%; }
+  .merch__cloud--right-mid { width: 32%; bottom: 18%; }
   .merch__lantern { width: 15%; bottom: 0px; right: 2%; }
-  .merch__lantern--l2 { right: auto; bottom: 5%; left: 25%; width: 9%; }
+  .merch__lantern--l2 { right: auto; bottom: 5%; left: 45%; width: 9%; }
   .merch__lantern--plain { right: auto; bottom: 32%; left: 12%; width: 8%; }
-  .merch__lantern--three { right: auto; bottom: 64%; left: 4%; width: 15%; }
+  .merch__lantern--three { right: auto; bottom: 64%; left: 1%; width: 15%; }
   .merch__lantern--one { right: 3%; bottom: 30%; width: 11%; }
   .merch__sticker-price { left: 6%; top: 34%; width: 20%; }
   .merch__note--red { left: auto; right: 10%; top: 15%; width: 9%; }
