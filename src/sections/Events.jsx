@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react";
 import "./Events.css";
 
 const INITIAL_EVENTS = [
@@ -15,8 +15,10 @@ const INITIAL_EVENTS = [
     description: "Feel the floor vibrate as the premier dance crews from across the nation battle it out with high-octane choreography, synchronization, and electrifying stage presence.",
     rules: ["Team size: 8-24 members", "Time limit: 8-12 minutes", "Props permitted with prior approval"],
     contact: "Ananya - 9876543210",
-    initialPos: { x: 240, y: 210 },
-    tilt: -2.5
+    initialPos: { x: 300, y: 250 },
+    mobilePos: { x: 180, y: 180 },
+    tilt: -2.5,
+    cardStyle: "carnival-red"
   },
   {
     id: 2,
@@ -30,8 +32,10 @@ const INITIAL_EVENTS = [
     description: "Distorted guitars, roaring drums, and soul-stirring vocals. Witness the fiercest musical showdown where raw talent meets festival energy.",
     rules: ["Team size: 3-8 members", "Time limit: 20 minutes (setup included)", "Original compositions bonus points"],
     contact: "Rahul - 9876543211",
-    initialPos: { x: 600, y: 195 },
-    tilt: 1.8
+    initialPos: { x: 750, y: 230 },
+    mobilePos: { x: 520, y: 160 },
+    tilt: 1.8,
+    cardStyle: "carnival-purple"
   },
   {
     id: 3,
@@ -45,8 +49,10 @@ const INITIAL_EVENTS = [
     description: "The crown jewel of Dhwani '26! An unforgettable night featuring top headline artists, luminous lights, laser shows, and non-stop music.",
     rules: ["ID card required at entrance", "Gates open at 5:30 PM", "No re-entry permitted"],
     contact: "Festival Desk - 9876543212",
-    initialPos: { x: 960, y: 215 },
-    tilt: -1.2
+    initialPos: { x: 1200, y: 260 },
+    mobilePos: { x: 860, y: 200 },
+    tilt: -1.2,
+    cardStyle: "carnival-blue"
   },
   {
     id: 4,
@@ -60,8 +66,10 @@ const INITIAL_EVENTS = [
     description: "Powerful voices, beat of the dholak, and compelling storytelling addressing social themes under the open sky.",
     rules: ["Team size: 10-20 members", "Time limit: 15 minutes", "Microphones not allowed"],
     contact: "Siddharth - 9876543213",
-    initialPos: { x: 250, y: 550 },
-    tilt: 2.2
+    initialPos: { x: 320, y: 650 },
+    mobilePos: { x: 200, y: 520 },
+    tilt: 2.2,
+    cardStyle: "carnival-green"
   },
   {
     id: 5,
@@ -75,8 +83,10 @@ const INITIAL_EVENTS = [
     description: "Showcase your vocal prowess across classical, semi-classical, and light music categories in front of eminent judges.",
     rules: ["Solo performance", "Time limit: 5 minutes", "One backing track allowed"],
     contact: "Meera - 9876543214",
-    initialPos: { x: 610, y: 540 },
-    tilt: -2.0
+    initialPos: { x: 780, y: 630 },
+    mobilePos: { x: 540, y: 500 },
+    tilt: -2.0,
+    cardStyle: "carnival-orange"
   },
   {
     id: 6,
@@ -90,8 +100,10 @@ const INITIAL_EVENTS = [
     description: "Step into the shoes of your favorite fantasy, anime, or pop-culture character. Runway walk, skit presentation, and costume design awards.",
     rules: ["Individual or Duo entry", "Prop safety check required", "2-minute stage walk/act"],
     contact: "Vikram - 9876543215",
-    initialPos: { x: 970, y: 560 },
-    tilt: 1.5
+    initialPos: { x: 1230, y: 670 },
+    mobilePos: { x: 880, y: 540 },
+    tilt: 1.5,
+    cardStyle: "carnival-pink"
   }
 ];
 
@@ -121,9 +133,40 @@ function RedPushpin({ className = "" }) {
 export default function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [resetKey, setResetKey] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const sectionRef = useRef(null);
   const boardRef = useRef(null);
   const isDraggingCardRef = useRef(false);
+
+  // Mouse movement tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothMouseX = useSpring(mouseX, { stiffness: 100, damping: 30 });
+  const smoothMouseY = useSpring(mouseY, { stiffness: 100, damping: 30 });
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Mouse movement handler
+  const handleMouseMove = (e) => {
+    if (isMobile) return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (rect) {
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      setMousePosition({ x, y });
+      mouseX.set(x);
+      mouseY.set(y);
+    }
+  };
 
   // Scroll Parallax Transforms
   const { scrollYProgress } = useScroll({
@@ -131,8 +174,12 @@ export default function Events() {
     offset: ["start end", "end start"]
   });
 
-  const cloudParallaxY = useTransform(scrollYProgress, [0, 1], [-40, 50]);
+  const sectionParallaxY = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const sectionParallaxScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.02, 1]);
   const headerParallaxY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const boardParallaxX = useTransform(smoothMouseX, [-0.5, 0.5], [-20, 20]);
+  const boardParallaxY = useTransform(smoothMouseY, [-0.5, 0.5], [-15, 15]);
+  const boardParallaxRotate = useTransform(smoothMouseX, [-0.5, 0.5], [-2, 2]);
 
   const handleResetCanvas = () => {
     setResetKey(prev => prev + 1);
@@ -144,21 +191,48 @@ export default function Events() {
       id="events"
       className="events-section"
       aria-label="Events Notice Board"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => {
+        setMousePosition({ x: 0, y: 0 });
+        mouseX.set(0);
+        mouseY.set(0);
+      }}
     >
-      {/* Flipped golden carnival cloud drape with scroll parallax */}
+      {/* Parallax background elements */}
       <motion.div
-        className="flipped-cloud-drape"
+        className="events-parallax-bg"
+        style={{
+          y: sectionParallaxY,
+          scale: sectionParallaxScale
+        }}
         aria-hidden="true"
-        style={{ y: cloudParallaxY }}
-      >
-        <img src="/assets/mascot/cloud-main.webp" alt="" draggable="false" />
-      </motion.div>
+      />
 
-      {/* Seam blur overlay */}
-      <div className="events-seam-blur" aria-hidden="true" />
-
-      {/* Top transition drape for smooth scrolling */}
-      <div className="events-transition-top" />
+      {/* Floating particles for ambient effect */}
+      <div className="events-particles" aria-hidden="true">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="particle"
+            style={{
+              left: `${10 + i * 12}%`,
+              top: `${10 + (i % 3) * 25}%`,
+              scale: 0.5 + Math.random() * 0.5
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.3, 0.6, 0.3],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.2
+            }}
+          />
+        ))}
+      </div>
 
       <div className="events-container">
         {/* Notice Board Header with Bidirectional Scroll Entrance & Exit */}
@@ -174,8 +248,13 @@ export default function Events() {
         </motion.header>
 
         {/* Board Viewport Container */}
-        <div
+        <motion.div
           className="infinite-board-viewport-perspective"
+          style={{
+            x: isMobile ? 0 : boardParallaxX,
+            y: isMobile ? 0 : boardParallaxY,
+            rotate: isMobile ? 0 : boardParallaxRotate
+          }}
         >
           <div className="infinite-board-viewport" ref={boardRef}>
             {/* Small Floating Center View Button on the Board */}
@@ -191,38 +270,60 @@ export default function Events() {
               key={resetKey}
               className="infinite-board-canvas"
               drag
-              dragConstraints={{ left: -1400, right: 600, top: -1000, bottom: 400 }}
-              dragElastic={0.05}
-              dragMomentum={true}
+              dragConstraints={boardRef}
+              dragElastic={0.02}
+              dragMomentum={false}
+              dragTransition={{ bounceStiffness: 100, bounceDamping: 10 }}
               whileTap={{ cursor: "grabbing" }}
+              onDragStart={() => {
+                isDraggingCardRef.current = false;
+              }}
+              onDragEnd={() => {
+                setTimeout(() => {
+                  isDraggingCardRef.current = false;
+                }, 100);
+              }}
             >
               {/* Paper Stamp */}
               <div className="paper-stamp">DHWANI NOTICE BOARD • 2026</div>
 
               {/* Cards Container Layer */}
               <div className="paper-cards-layer">
-                {INITIAL_EVENTS.map((event, index) => (
+                {INITIAL_EVENTS.map((event, index) => {
+                  const pos = isMobile ? event.mobilePos : event.initialPos;
+                  return (
                   <motion.article
                     key={event.id}
-                    className="event-card draggable-card"
+                    className={`event-card draggable-card event-card--${event.cardStyle}`}
                     drag
                     dragConstraints={boardRef}
-                    dragElastic={0.1}
+                    dragElastic={0.05}
                     dragMomentum={false}
+                    dragTransition={{ bounceStiffness: 100, bounceDamping: 10 }}
                     onDragStart={(e) => {
                       e.stopPropagation();
                       isDraggingCardRef.current = true;
                     }}
-                    onDragEnd={() => {
-                      setTimeout(() => {
+                    onDragEnd={(e, info) => {
+                      // Only consider it a drag if moved more than 5px
+                      if (Math.abs(info.offset.x) > 5 || Math.abs(info.offset.y) > 5) {
+                        setTimeout(() => {
+                          isDraggingCardRef.current = false;
+                        }, 200);
+                      } else {
                         isDraggingCardRef.current = false;
-                      }, 120);
+                      }
                     }}
-                    initial={{ x: event.initialPos.x, y: event.initialPos.y + 30, opacity: 0, rotate: event.tilt, scale: 0.9 }}
-                    whileInView={{ x: event.initialPos.x, y: event.initialPos.y, opacity: 1, rotate: event.tilt, scale: 1 }}
+                    initial={{ x: pos.x, y: pos.y + 30, opacity: 0, rotate: event.tilt, scale: 0.9 }}
+                    whileInView={{ x: pos.x, y: pos.y, opacity: 1, rotate: event.tilt, scale: 1 }}
                     viewport={{ once: false, amount: 0.1 }}
                     transition={{ duration: 0.55, delay: index * 0.07, ease: "easeOut" }}
-                    whileHover={{ scale: 1.06, zIndex: 30 }}
+                    whileHover={{ 
+                      scale: 1.06, 
+                      zIndex: 30,
+                      rotate: 0,
+                      boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)"
+                    }}
                     whileDrag={{ scale: 1.08, rotate: 0, zIndex: 100, cursor: "grabbing" }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -270,11 +371,12 @@ export default function Events() {
                       </div>
                     </div>
                   </motion.article>
-                ))}
+                  );
+                })}
               </div>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Event Details Modal */}

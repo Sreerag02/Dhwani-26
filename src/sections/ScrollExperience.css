@@ -26,6 +26,10 @@
 @media(max-width:700px){
  .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 9 / 16));aspect-ratio:9/16}
  .scroll-mask img {width:88vw}
+ .transition-cloud-1, .transition-cloud-2 {width:200px}
+ .transition-cloud-1 {left:5%;bottom:10px}
+ .transition-cloud-2 {right:10%;bottom:30px;width:180px}
+ .journey-transition-overlay {height:150px}
 }
 
 /* Center each cloud on an elliptical ring; scroll moves it radially outward. */
@@ -43,4 +47,68 @@
 }
 @media(prefers-reduced-motion:reduce){
   .cloud-curtain .cloud-bloom-layer {will-change:auto}
+}
+
+/* Seamless transition to Events section */
+.journey-transition-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to top, #1f1d66 0%, transparent 100%);
+  z-index: 45;
+  pointer-events: none;
+}
+
+.transition-clouds {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  right: 0;
+  height: 150px;
+  z-index: 44;
+  pointer-events: none;
+}
+
+.transition-cloud-1,
+.transition-cloud-2 {
+  position: absolute;
+  width: 300px;
+  height: auto;
+  opacity: 0.3;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+}
+
+.transition-cloud-1 {
+  bottom: 20px;
+  left: 10%;
+  animation: transition-cloud-float-1 25s ease-in-out infinite;
+}
+
+.transition-cloud-2 {
+  width: 250px;
+  bottom: 40px;
+  right: 15%;
+  opacity: 0.25;
+  animation: transition-cloud-float-2 30s ease-in-out infinite;
+  animation-delay: -10s;
+}
+
+@keyframes transition-cloud-float-1 {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(30px) translateY(-15px);
+  }
+}
+
+@keyframes transition-cloud-float-2 {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-40px) translateY(20px);
+  }
 }
