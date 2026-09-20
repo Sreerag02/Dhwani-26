@@ -10,16 +10,51 @@
   box-sizing: border-box;
 }
 
-/* Smooth gradient top transition from Khai section */
+/* Golden Carnival Cloud Overflow from Khai */
+.events-cloud-overflow {
+  position: absolute;
+  top: 0;
+  left: -2%;
+  width: 104%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+@keyframes events-cloud-float {
+  0%, 100% {
+    transform: scaleY(-1) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scaleY(-1) translate3d(0, -13px, 0);
+  }
+}
+
+.events-cloud-overflow img {
+  width: 100%;
+  height: auto;
+  display: block;
+  animation: events-cloud-float 8s ease-in-out infinite;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .events-cloud-overflow img {
+    animation: none;
+    transform: scaleY(-1);
+  }
+}
+
+/* Soft transition gradient overlay */
 .events-transition-top {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 140px;
-  background: linear-gradient(to bottom, #1f1d66 0%, rgba(31, 29, 102, 0.75) 40%, transparent 100%);
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(31, 29, 102, 0.45) 0%, rgba(19, 10, 42, 0.65) 50%, transparent 100%);
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
 }
 
 .events-container {
@@ -511,6 +546,10 @@
 }
 
 @media (max-width: 640px) {
+  .events-cloud-overflow {
+    top: 0;
+  }
+
   .events-section {
     padding: 2.5rem 0.5rem 4rem;
   }
