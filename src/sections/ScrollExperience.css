@@ -6,13 +6,13 @@
 .world-intro h1 {font:400 clamp(52px,10vw,168px)/.92 Galavant,sans-serif;margin:0 0 clamp(8px,2svh,18px);text-shadow:5px 8px #af005f}
 .world-intro__wordmark {display:block;width:min(520px,80vw);max-width:100%;height:auto}
 .world-year {display:block;margin-top:clamp(14px,3svh,25px);font:400 clamp(32px,5vw,72px)/1 Galavant,sans-serif;color:#02caef}
-.reveal-journey {position:relative;height:590svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
+.reveal-journey {position:relative;height:750svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
 .journey-sticky {position:sticky;top:0;height:100svh;overflow:hidden;background:#1f1d66}
 .journey-scene {position:absolute;inset:0;height:100%;min-height:0;padding-top:0}
 .world-intro.journey-scene {z-index:40}
 .journey-anchor {position:absolute;left:0;width:1px;height:1px;scroll-margin-top:var(--festival-header-height)}
-.theme-anchor {top:calc(490svh * .30)}
-.khai-anchor {top:calc(490svh * .64)}
+.theme-anchor {top:calc(650svh * .30)}
+.khai-anchor {top:calc(650svh * .64)}
 .carnival-embedded {height:100%;padding:0;display:grid;place-items:center;margin:0}
 .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 16 / 9));height:auto;aspect-ratio:16/9}
 .scroll-mask {position:absolute;inset:0;z-index:50;display:grid;place-items:center;overflow:hidden;background:transparent;pointer-events:none}
