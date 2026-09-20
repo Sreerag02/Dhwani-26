@@ -130,11 +130,6 @@ export default function Events() {
 
   return (
     <section id="events" className="events-section" aria-label="Events Notice Board">
-      {/* Top golden cloud drape for seamless continuity from Khai section */}
-      <div className="events-cloud-overflow" aria-hidden="true">
-        <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
-      </div>
-
       {/* Top transition drape for smooth scrolling */}
       <div className="events-transition-top" />
 
