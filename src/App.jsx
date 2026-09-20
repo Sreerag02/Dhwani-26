@@ -30,7 +30,7 @@ export default function App() {
       <ScrollExperience />
       <div ref={nextPage}>
         <Events />
-        {/* <ComingSoon /> */}
+        <ComingSoon />
         <DhwaniFooter />
       </div>
     </main>
