@@ -130,6 +130,11 @@ export default function Events() {
 
   return (
     <section id="events" className="events-section" aria-label="Events Notice Board">
+      {/* Flipped golden carnival cloud drape extending into Events section */}
+      <div className="flipped-cloud-drape" aria-hidden="true">
+        <img src="/assets/mascot/cloud-main.png" alt="" draggable="false" />
+      </div>
+
       {/* Top transition drape for smooth scrolling */}
       <div className="events-transition-top" />
 
