@@ -3,7 +3,7 @@
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: url('/assets/events-section/events-bg.webp') center top / cover no-repeat fixed #130a2a;
+  background: url('/assets/events-section/events-bg.webp') center top / cover no-repeat #130a2a;
   color: #ffffff;
   padding: 4rem 1.5rem 6rem;
   overflow: hidden;

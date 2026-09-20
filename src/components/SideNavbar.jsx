@@ -74,7 +74,7 @@ export default function SideNavbar() {
           </div>
           <div className="nav-sheet-wheel">
             <OptionWheel
-              items={['Theme', 'Khai', 'Coming Soon']}
+              items={['Theme', 'Khai', 'Events', 'Coming Soon']}
               defaultSelected={2}
               textColor="#a6a6a6"
               activeColor="#ffffff"
@@ -93,7 +93,7 @@ export default function SideNavbar() {
               soundUrl="/sounds/click-soft.mp3"
               soundVolume={0.5}
               onChange={(index, item) => {
-                const href = { 'Theme': '#theme-reveal', 'Khai': '#khai', 'Coming Soon': '#coming-soon' }[item];
+                const href = { 'Theme': '#theme-reveal', 'Khai': '#khai', 'Events': '#events', 'Coming Soon': '#coming-soon' }[item];
                 if (href) goTo({ preventDefault() {} }, href);
               }}
             />
