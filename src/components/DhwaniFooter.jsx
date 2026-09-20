@@ -845,9 +845,9 @@ export function DhwaniFooter() {
                 className="dhwani-title-img"
               />
             </h2>
-            <p className="fest-institution-tag">
+            {/* <p className="fest-institution-tag">
               The Annual Cultural Conclave of College of Engineering Trivandrum
-            </p>
+            </p> */}
           </div>
         </div>
 
