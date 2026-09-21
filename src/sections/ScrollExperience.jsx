@@ -7,11 +7,11 @@ import "../components/Opening.css";
 import "./ScrollExperience.css";
 
 // Clouds sweep right-to-left across a dense 4x8 tile grid.  Every cloud crosses
-// the centre of its tile at ~.26, so the viewport is fully covered in one
-// shared moment right as the theme settles (.309), then all clear by ~.34,
-// just before the navy wipe opens at .379. Parallax comes from travel distance
-// (front ring sweeps further/faster), while timing stays in a common window
-// so the sheet never tears.
+// the centre of its tile at ~.22, so the viewport is fully covered in one
+// shared moment a little before the theme settles (.309), then all clear by
+// ~.30, ahead of the navy wipe opening at .379. Parallax comes from travel
+// distance (front ring sweeps further/faster), while timing stays in a common
+// window so the sheet never tears.
 const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
   const row = Math.floor(index / 4);
   const col = index % 4;
@@ -21,8 +21,8 @@ const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
   const micro = ((row * 3 + col * 5) % 7) - 3;
   const microY = ((col * 7 + row * 11) % 5) - 2;
   const travel = ring ? 125 + col * 15 : 195 + col * 20;
-  const mid = .26 + Math.floor(index / 8) * .006;
-  const start = mid - .26 + (row % 2) * .014 + col * .004;
+  const mid = .22 + Math.floor(index / 8) * .006;
+  const start = mid - .22 + (row % 2) * .014 + col * .004;
   const end = mid + .075 + (col % 2) * .008;
   return {
     id: index,
