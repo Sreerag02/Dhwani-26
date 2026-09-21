@@ -173,7 +173,6 @@ export default function ScrollExperience() {
       <motion.div className="video-transition-wrapper" style={{ opacity: videoFade, visibility: videoVisibility }}>
         <VideoTransition
           progress={progress}
-          src="/assets/skate.mp4"
           start={.735}
           end={.800}
         />

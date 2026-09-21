@@ -1,5 +1,5 @@
 /* ============================================================
-   VideoTransition — fullscreen scroll-scrubbed video
+   VideoTransition — fullscreen scroll-scrubbed canvas
    ============================================================ */
 
 .video-transition {
@@ -11,12 +11,10 @@
   pointer-events: none;
 }
 
-/* Full-bleed video, no filters, no letterbox */
-.video-transition__video {
+.video-transition__canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
 }
