@@ -5,10 +5,9 @@
 .video-transition {
   position: absolute;
   inset: 0;
-  z-index: 48; /* above merch-tunnel (47), below nothing */
+  z-index: 48;
   overflow: hidden;
   background: #000;
-  opacity: var(--vt-fade, 0);
   pointer-events: none;
 }
 
@@ -60,9 +59,6 @@
     0 2px 32px rgba(255, 196, 30, 0.55),
     0 0 8px rgba(255, 196, 30, 0.3);
   mix-blend-mode: overlay;
-  /* Subtle scale-in driven by the container fade */
-  transform: translateY(calc((1 - var(--vt-fade, 0)) * 18px));
-  transition: transform 0.05s linear;
 }
 
 @media (max-width: 700px) {
