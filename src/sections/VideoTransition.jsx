@@ -2,74 +2,98 @@ import { useEffect, useRef } from "react";
 import { useMotionValueEvent } from "motion/react";
 import "./VideoTransition.css";
 
+const FRAME_COUNT = 92;
+const FRAME_PATH = "/assets/skate-frames/frame-";
+
+// Build padded filenames once: frame-0001.webp … frame-0092.webp
+const FRAME_SRCS = Array.from({ length: FRAME_COUNT }, (_, i) => {
+  const num = String(i + 1).padStart(4, "0");
+  return `${FRAME_PATH}${num}.webp`;
+});
+
 /**
- * VideoTransition — a scroll-scrubbed full-bleed cinematic video.
+ * VideoTransition — scroll-scrubbed canvas image-sequence.
  *
- * `progress`  MotionValue<number> from the parent scroll experience.
- * `src`       Path to the video file (e.g. "/assets/skate.mp4").
- * `start`     Progress value at which the video starts scrubbing (0-1).
- * `end`       Progress value at which the video reaches its end frame (0-1).
- *
- * The video element is muted + playsInline so autoplay policies never block
- * it. Smooth scrubbing is achieved by lerping currentTime towards the
- * target on every animation frame, avoiding the jitter of raw scroll-driven
- * seeks.
+ * All frames are preloaded into Image objects on mount, then the
+ * correct frame is painted onto a <canvas> each animation frame.
+ * This gives instant random-access with zero decode lag.
  */
-export default function VideoTransition({ progress, src, start, end }) {
-  const videoRef = useRef(null);
-  const durationRef = useRef(0);
-  const targetTimeRef = useRef(0);
-  const currentTimeRef = useRef(0);
+export default function VideoTransition({ progress, start, end }) {
+  const canvasRef = useRef(null);
+  const imagesRef = useRef([]);
+  const currentFrameRef = useRef(0);
+  const targetFrameRef = useRef(0);
   const rafRef = useRef(null);
 
+  // Preload all frames into Image objects
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    const onMeta = () => { durationRef.current = video.duration; };
-    video.addEventListener("loadedmetadata", onMeta);
-    if (video.readyState >= 1) durationRef.current = video.duration;
-    return () => video.removeEventListener("loadedmetadata", onMeta);
+    const images = FRAME_SRCS.map((src) => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    });
+    imagesRef.current = images;
   }, []);
 
-  // Smooth animation loop: lerp currentTime towards targetTime each frame
+  // Paint loop: draws the current frame onto the canvas every rAF tick
   useEffect(() => {
-    const LERP = 0.45; // smoothing factor — higher = more responsive
-    const tick = () => {
-      const video = videoRef.current;
-      if (video && durationRef.current) {
-        const target = targetTimeRef.current;
-        const current = currentTimeRef.current;
-        const diff = target - current;
-        const next = Math.abs(diff) < 0.01 ? target : current + diff * LERP;
-        currentTimeRef.current = next;
-        video.currentTime = next;
+    const draw = () => {
+      const canvas = canvasRef.current;
+      const images = imagesRef.current;
+      if (!canvas || !images.length) {
+        rafRef.current = requestAnimationFrame(draw);
+        return;
       }
-      rafRef.current = requestAnimationFrame(tick);
+
+      // Lerp towards target frame for smoothness
+      const target = targetFrameRef.current;
+      const current = currentFrameRef.current;
+      const diff = target - current;
+      const next = Math.abs(diff) < 0.5 ? target : current + diff * 0.4;
+      currentFrameRef.current = next;
+
+      const frameIndex = Math.round(next);
+      const img = images[frameIndex];
+      if (img && img.complete && img.naturalWidth) {
+        const ctx = canvas.getContext("2d");
+        // Match canvas internal size to its display size for sharpness
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const w = rect.width * dpr;
+        const h = rect.height * dpr;
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+        }
+        // Draw with object-fit:cover behaviour
+        const imgRatio = img.naturalWidth / img.naturalHeight;
+        const canvasRatio = w / h;
+        let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+        if (imgRatio > canvasRatio) {
+          sw = img.naturalHeight * canvasRatio;
+          sx = (img.naturalWidth - sw) / 2;
+        } else {
+          sh = img.naturalWidth / canvasRatio;
+          sy = (img.naturalHeight - sh) / 2;
+        }
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+      }
+
+      rafRef.current = requestAnimationFrame(draw);
     };
-    rafRef.current = requestAnimationFrame(tick);
+    rafRef.current = requestAnimationFrame(draw);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
-  // Update target time on scroll
+  // Map scroll progress to target frame index
   useMotionValueEvent(progress, "change", (v) => {
-    const duration = durationRef.current;
-    if (!duration) return;
     const t = Math.max(0, Math.min(1, (v - start) / (end - start)));
-    targetTimeRef.current = t * duration;
+    targetFrameRef.current = t * (FRAME_COUNT - 1);
   });
 
   return (
     <div className="video-transition" aria-hidden="true">
-      <video
-        ref={videoRef}
-        className="video-transition__video"
-        src={src}
-        muted
-        playsInline
-        preload="auto"
-        disablePictureInPicture
-        tabIndex={-1}
-      />
+      <canvas ref={canvasRef} className="video-transition__canvas" />
     </div>
   );
 }
