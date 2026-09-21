@@ -118,6 +118,10 @@ export default function ScrollExperience() {
   // internals stay exactly as authored.
   const remappedMerchProgress = useTransform(progress, [.780, 1], [.84, 1]);
   const merchVisibility = useTransform(progress, value => value < .780 ? "hidden" : "visible");
+  
+  // Bridge the gap left by the removed video section with a solid background fade
+  const transitionFade = useTransform(progress, [.680, .720, .780, .810], [0, 1, 1, 0]);
+  const transitionVisibility = useTransform(progress, value => value < .680 || value >= .810 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
@@ -129,6 +133,7 @@ export default function ScrollExperience() {
       <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ opacity: khaiOpacity, visibility: khaiVisibility }}>
         <KhaiHero progress={hero} />
       </motion.div>
+      <motion.div className="section-transition-fade" style={{ opacity: transitionFade, visibility: transitionVisibility, position: 'absolute', inset: 0, backgroundColor: '#11103b', zIndex: 1 }} aria-hidden="true" />
       <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility }} aria-hidden="true">
         <motion.div className="cloud-curtain-ground" style={{ opacity: ground }} />
         {CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={progress} />)}
