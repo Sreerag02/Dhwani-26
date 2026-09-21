@@ -13,31 +13,31 @@ import "./ScrollExperience.css";
 // ~.30, ahead of the navy wipe opening at .379. Parallax comes from travel
 // distance (front ring sweeps further/faster), while timing stays in a common
 // window so the sheet never tears.
-const CLOUD_LAYERS = Array.from({ length: 12 }, (_, index) => {
-  const row = Math.floor(index / 3);
-  const col = index % 3;
+const CLOUD_LAYERS = Array.from({ length: 20 }, (_, index) => {
+  const row = Math.floor(index / 5);
+  const col = index % 5;
   const ring = row >= 2 ? 1 : 0;
-  const colsX = [10, 50, 90];
-  const rowsY = [15, 35, 55, 75];
+  const colsX = [5, 27, 50, 73, 95];
+  const rowsY = [10, 35, 60, 85];
   const micro = ((row * 3 + col * 5) % 7) - 3;
   const microY = ((col * 7 + row * 11) % 5) - 2;
-  const travel = ring ? 125 + col * 20 : 195 + col * 30;
-  const mid = .22 + Math.floor(index / 3) * .010;
+  const travel = ring ? 125 + col * 15 : 195 + col * 20;
+  const mid = .22 + Math.floor(index / 5) * .010;
   const start = mid - .22 + (row % 2) * .014 + col * .006;
   const end = mid + .075 + (col % 2) * .012;
   return {
     id: index,
     file: 2 + (row + col * 2) % 7,
     ring,
-    left: colsX[col] + micro - 10,
+    left: colsX[col] + micro - 5,
     top: rowsY[row] + microY,
     from: `${travel}vw`,
     to: `-${travel}vw`,
-    y: `${(row % 2 ? -1 : 1) * (12 + col * 6)}svh`,
+    y: `${(row % 2 ? -1 : 1) * (10 + col * 5)}svh`,
     start,
     mid,
     end,
-    turn: (row % 2 ? 1 : -1) * (ring ? 3 : 2) * (.5 + col / 2),
+    turn: (row % 2 ? 1 : -1) * (ring ? 3 : 2) * (.5 + col / 2.5),
   };
 });
 
