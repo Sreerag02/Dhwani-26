@@ -13,31 +13,31 @@ import "./ScrollExperience.css";
 // ~.30, ahead of the navy wipe opening at .379. Parallax comes from travel
 // distance (front ring sweeps further/faster), while timing stays in a common
 // window so the sheet never tears.
-const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
-  const row = Math.floor(index / 4);
-  const col = index % 4;
-  const ring = row >= 4 ? 1 : 0;
-  const colsX = [4, 33, 62, 92];
-  const rowsY = [8, 19, 30, 41, 53, 64, 75, 86];
+const CLOUD_LAYERS = Array.from({ length: 12 }, (_, index) => {
+  const row = Math.floor(index / 3);
+  const col = index % 3;
+  const ring = row >= 2 ? 1 : 0;
+  const colsX = [10, 50, 90];
+  const rowsY = [15, 35, 55, 75];
   const micro = ((row * 3 + col * 5) % 7) - 3;
   const microY = ((col * 7 + row * 11) % 5) - 2;
-  const travel = ring ? 125 + col * 15 : 195 + col * 20;
-  const mid = .22 + Math.floor(index / 8) * .006;
-  const start = mid - .22 + (row % 2) * .014 + col * .004;
-  const end = mid + .075 + (col % 2) * .008;
+  const travel = ring ? 125 + col * 20 : 195 + col * 30;
+  const mid = .22 + Math.floor(index / 3) * .010;
+  const start = mid - .22 + (row % 2) * .014 + col * .006;
+  const end = mid + .075 + (col % 2) * .012;
   return {
     id: index,
     file: 2 + (row + col * 2) % 7,
     ring,
-    left: colsX[col] + micro,
+    left: colsX[col] + micro - 10,
     top: rowsY[row] + microY,
     from: `${travel}vw`,
     to: `-${travel}vw`,
-    y: `${(row % 2 ? -1 : 1) * (8 + col * 4)}svh`,
+    y: `${(row % 2 ? -1 : 1) * (12 + col * 6)}svh`,
     start,
     mid,
     end,
-    turn: (row % 2 ? 1 : -1) * (ring ? 3 : 2) * (.5 + col / 3),
+    turn: (row % 2 ? 1 : -1) * (ring ? 3 : 2) * (.5 + col / 2),
   };
 });
 
@@ -67,9 +67,9 @@ export default function ScrollExperience() {
   const cloudVisibility = useTransform(progress, value => value >= .564 ? "hidden" : "visible");
   // Second cloud curtain: reuses the same CLOUD_LAYERS and Cloud component,
   // just remapped to fire right after Khai fades out and before the video.
-  const curtain2Progress = useTransform(progress, [.690, .740], [0, 1]);
+  const curtain2Progress = useTransform(progress, [.645, .735], [0, 0.32]);
   const curtain2Ground = useTransform(curtain2Progress, [0, .077, .246], [1, 1, 0]);
-  const curtain2Visibility = useTransform(progress, value => value < .690 || value >= .740 ? "hidden" : "visible");
+  const curtain2Visibility = useTransform(progress, value => value < .645 || value >= .735 ? "hidden" : "visible");
   const theme = useTransform(progress, [.134, .309], [0, 1]);
   const themeVisibility = useTransform(progress, value => value >= .45 ? "hidden" : "visible");
   const maskOpacity = useTransform(progress, [.379, .433, .467, .541], [0, 1, 1, 0]);
@@ -162,11 +162,11 @@ export default function ScrollExperience() {
           )}
         </motion.svg>
       </motion.div>
-      <motion.div className="scroll-mask" style={{ opacity: maskOpacity, visibility: maskVisibility }} aria-hidden="true">
-        <motion.img src="/assets/mascot/mascot%20mask.svg" alt="" draggable="false" style={{ scale: reduced ? 1 : maskScale }} />
+      <motion.div className="scroll-mask" style={{ opacity: maskOpacity, visibility: maskVisibility, z: 0 }} aria-hidden="true">
+        <motion.img src="/assets/mascot/mascot%20mask.svg" alt="" draggable="false" style={{ scale: reduced ? 1 : maskScale, z: 0 }} />
       </motion.div>
-      <motion.div className="world-intro journey-scene" style={{ opacity: introOpacity, visibility: introVisibility }}>
-        <motion.div style={{ y: reduced ? 0 : introY }} className="world-intro__stack">
+      <motion.div className="world-intro journey-scene" style={{ opacity: introOpacity, visibility: introVisibility, z: 0 }}>
+        <motion.div style={{ y: reduced ? 0 : introY, z: 0 }} className="world-intro__stack">
           <p>COLLEGE OF ENGINEERING, TRIVANDRUM</p>
           <h1>WORLD OF</h1>
           <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.webp" alt="DHWANI" />
