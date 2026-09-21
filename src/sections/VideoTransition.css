@@ -9,6 +9,10 @@
   overflow: hidden;
   background: #000;
   pointer-events: none;
+  /* GPU-composite the entire layer so opacity/visibility toggles
+     don't trigger a repaint of the canvas contents. */
+  will-change: opacity, visibility;
+  contain: strict;
 }
 
 .video-transition__canvas {
@@ -17,4 +21,7 @@
   width: 100%;
   height: 100%;
   display: block;
+  /* Keep the canvas on its own GPU layer; the draw calls are the
+     only thing that should ever touch this element's pixels. */
+  will-change: contents;
 }
