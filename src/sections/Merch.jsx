@@ -7,9 +7,14 @@ export default function Merch({ progress }) {
   // each element scales up slightly with a tiny overshoot and lifts a few px,
   // all via the stage's CSS vars (--pop/--rise/--fade) composed through
   // independent props so the elements' own transforms stay untouched.
-  const enter = useTransform(progress, [.90, .942], [0, 1]);
+  const enter = useTransform(progress, [.678, .708], [0, 1]);
   const scale = useTransform(enter, [0, .5, 1], [.985, 1.004, 1]);
   const rise = useTransform(enter, [0, 1], ["6px", "0px"]);
+  // Curtain tear: after the tees poster settles, an indigo panel carrying the
+  // rest of the merch unrolls toward the left like a carpet (scaleX from the
+  // right edge), holds as the section's own blocking background.
+  const tearVisibility = useTransform(progress, value => value < .77 ? "hidden" : "visible");
+  const tearRoll = useTransform(progress, [.77, .86], [0, 1]);
   return (
     <section id="merch" className="merch" aria-label="Dhwani 26 merchandise">
       <motion.div
@@ -26,7 +31,7 @@ export default function Merch({ progress }) {
           draggable="false"
         />
         <img
-          src="/assets/dhwani og 26.png"
+          src="/assets/merch/merch.png"
           alt="Dhwani 26"
           className="merch__logo"
           draggable="false"
@@ -92,6 +97,30 @@ export default function Merch({ progress }) {
           draggable="false"
         />
         <img
+          src="/assets/merch/cloud/cloud4.png"
+          alt=""
+          className="merch__cloud--bottom-left"
+          draggable="false"
+        />
+        <img
+          src="/assets/merch/cloud/cloud.png"
+          alt=""
+          className="merch__cloud--bottom-mid"
+          draggable="false"
+        />
+        <img
+          src="/assets/merch/cloud/cloud6.png"
+          alt=""
+          className="merch__cloud--bottom-right"
+          draggable="false"
+        />
+        <img
+          src="/assets/merch/cloud/Cloud7.png"
+          alt=""
+          className="merch__cloud--bottom-right-low"
+          draggable="false"
+        />
+        <img
           src="/assets/blue note.png"
           alt=""
           className="merch__note--blue"
@@ -143,107 +172,34 @@ export default function Merch({ progress }) {
           Order Now
         </a>
       </motion.div>
+      <motion.div className="merch-tear" style={{ visibility: tearVisibility,
+          scaleX: reduced ? 1 : tearRoll }} aria-label="More Dhwani 26 merchandise">
+        <img className="merch-tear__bg-element" src="/assets/merch/bg/bg element.png"
+          alt="" aria-hidden="true" draggable="false" />
+        <div className="merch-tear__cta">
+          <a href="#merch" className="merch-tear__btn" role="button">Grab Your Merch Now</a>
+        </div>
+        <img className="merch-tear__badge merch-tear__badge--1"
+          src="/assets/merch/badges/badge%201.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__badge merch-tear__badge--2"
+          src="/assets/merch/badges/badge%202.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__badge merch-tear__badge--3"
+          src="/assets/merch/badges/badge%203.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__bandana merch-tear__bandana--1"
+          src="/assets/merch/bandana/bandana%201.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__bandana merch-tear__bandana--2"
+          src="/assets/merch/bandana/bandana%202.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__bandana merch-tear__bandana--3"
+          src="/assets/merch/bandana/bandana-a2.webp" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__fanny merch-tear__fanny--1"
+          src="/assets/merch/fanny/fanny-1.webp" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__fanny merch-tear__fanny--2"
+          src="/assets/merch/fanny/fanny-2.webp" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__fanny merch-tear__fanny--3"
+          src="/assets/merch/fanny/fanny-3.webp" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch-tear__kit" src="/assets/MERCH KIT IMAGE.png" alt="Merch collection"
+          draggable="false" />
+      </motion.div>
     </section>
   );
 }
-
-// const MERCH_ORDER_URL = "#"; // TODO: replace with the real order/contact link
-
-// const MERCH_ROWS = [
-//   {
-//     key: "badges",
-//     tag: "Badges",
-//     mod: "badges",
-//     items: [
-//       { src: "/assets/merch/badges/badge-1.webp", alt: "Dhwani 26 badge round 1" },
-//       { src: "/assets/merch/badges/badge-2.webp", alt: "Dhwani 26 badge round 2" },
-//       { src: "/assets/merch/badges/badge-3.webp", alt: "Dhwani 26 badge round 3" },
-//     ],
-//   },
-//   {
-//     key: "bandanas",
-//     tag: "Bandanas",
-//     mod: "bandanas",
-//     items: [
-//       { src: "/assets/merch/bandana/bandana-a.webp", alt: "Dhwani 26 bandana design a" },
-//       { src: "/assets/merch/bandana/bandana-a2.webp", alt: "Dhwani 26 bandana design a2" },
-//       { src: "/assets/merch/bandana/bandana-b.webp", alt: "Dhwani 26 bandana design b" },
-//       { src: "/assets/merch/bandana/bandana-b2.webp", alt: "Dhwani 26 bandana design b2" },
-//     ],
-//   },
-//   {
-//     key: "fanny",
-//     tag: "Fanny Packs",
-//     mod: "fanny",
-//     items: [
-//       { src: "/assets/merch/fanny/fanny-1.webp", alt: "Dhwani 26 fanny pack style 1" },
-//       { src: "/assets/merch/fanny/fanny-2.webp", alt: "Dhwani 26 fanny pack style 2" },
-//       { src: "/assets/merch/fanny/fanny-3.webp", alt: "Dhwani 26 fanny pack style 3" },
-//     ],
-//   },
-// ];
-
-// export function MerchKit() {
-//   return (
-//     <div className="merch-kit">
-//       <div className="merch-kit__hero">
-//         <img
-//           src="/assets/MERCH KIT IMAGE.png"
-//           alt="Dhwani 26 merch kit"
-//           className="merch-kit__image"
-//           draggable="false"
-//         />
-//         <img
-//           src="/assets/merch kit.png"
-//           alt="Merch kit"
-//           className="merch-kit__label"
-//           draggable="false"
-//         />
-//       </div>
-//       <img
-//         src="/assets/blue note.png"
-//         alt=""
-//         className="merch-kit__note merch-kit__note--blue"
-//         draggable="false"
-//       />
-//       <img
-//         src="/assets/note red.png"
-//         alt=""
-//         className="merch-kit__note merch-kit__note--red"
-//         draggable="false"
-//       />
-//       <div className="merch-collage">
-//         {MERCH_ROWS.map(row => (
-//           <div key={row.key} className={`merch-row merch-row--${row.mod}`}>
-//             <span className="merch-row__tag">{row.tag}</span>
-//             <div className="merch-row__items">
-//               {row.items.map(item => (
-//                 <img
-//                   key={item.src}
-//                   src={item.src}
-//                   alt={item.alt}
-//                   className="merch-item"
-//                   draggable="false"
-//                 />
-//               ))}
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//       <img
-//         src="/assets/Download badge, price sticker, label png transparent for free copy 2.png"
-//         alt=""
-//         className="merch-kit__sticker"
-//         draggable="false"
-//       />
-//       <a
-//         href={MERCH_ORDER_URL}
-//         target="_blank"
-//         rel="noopener noreferrer"
-//         className="merch-kit__cta"
-//       >
-//         Order Now
-//       </a>
-//     </div>
-//   );
-// }

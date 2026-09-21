@@ -57,34 +57,35 @@ export default function ScrollExperience() {
   const ref = useRef(null);
   const { scrollYProgress: progress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const reduced = useReducedMotion();
-  const introOpacity = useTransform(progress, [.08, .18], [1, 0]);
-  const introVisibility = useTransform(progress, value => value >= .18 ? "hidden" : "visible");
-  const introY = useTransform(progress, [0, .18], [0, -100]);
-  const clouds = useTransform(progress, [.12, .46], [0, 1]);
-  const ground = useTransform(clouds, [0, .10, .32], [1, 1, 0]);
-  const cloudVisibility = useTransform(progress, value => value >= .84 ? "hidden" : "visible");
-  const theme = useTransform(progress, [.20, .46], [0, 1]);
-  const themeVisibility = useTransform(progress, value => value >= .62 ? "hidden" : "visible");
-  const maskOpacity = useTransform(progress, [.52, .60, .65, .76], [0, 1, 1, 0]);
-  const maskBg = useTransform(progress, [.52, .58], [0, 1]);
-  const maskScale = useTransform(progress, [.52, .76], [.35, 3]);
-  const maskVisibility = useTransform(progress, value => value < .52 || value >= .76 ? "hidden" : "visible");
-  const dripScale = useTransform(progress, [.56, .66], [.14, 3.2]);
-  const dripOpacity = useTransform(progress, [.56, .60, .66, .70], [0, 1, 1, 0]);
-  const dripVisibility = useTransform(progress, value => value < .56 || value >= .70 ? "hidden" : "visible");
-  const heroVisibility = useTransform(progress, value => value < .60 ? "hidden" : "visible");
-  const hero = useTransform(progress, [.60, .96], [.50, 1.18]);
-  // Finale, in place: hold on fully-settled Khai, then the t-shirt gateway
-  // reveal hands off to the merch poster. The tshirt outline scales up from a
-  // small tee over Khai, a navy cover wipes him away behind the growing shirt
-  // silhouette, the poster pops in under it, and the giant shirt fades out to
-  // resolve into the poster's own outline tee. Scroll driven throughout.
-  const revealBg = useTransform(progress, [.84, .90], [0, 1]);
-  const revealScale = useTransform(progress, [.84, .92], [.4, 3.2]);
-  const revealOpacity = useTransform(progress, [.84, .92, .942], [0, 1, 0]);
-  const revealVisibility = useTransform(progress, value => value < .84 || value >= .942 ? "hidden" : "visible");
-  const khaiVisibility = useTransform(progress, value => value < .60 || value >= .94 ? "hidden" : "visible");
-  const merchVisibility = useTransform(progress, value => value < .90 ? "hidden" : "visible");
+  const introOpacity = useTransform(progress, [.053, .121], [1, 0]);
+  const introVisibility = useTransform(progress, value => value >= .121 ? "hidden" : "visible");
+  const introY = useTransform(progress, [0, .121], [0, -100]);
+  const clouds = useTransform(progress, [.080, .309], [0, 1]);
+  const ground = useTransform(clouds, [0, .077, .246], [1, 1, 0]);
+  const cloudVisibility = useTransform(progress, value => value >= .564 ? "hidden" : "visible");
+  const theme = useTransform(progress, [.134, .309], [0, 1]);
+  const themeVisibility = useTransform(progress, value => value >= .416 ? "hidden" : "visible");
+  const maskOpacity = useTransform(progress, [.349, .403, .437, .511], [0, 1, 1, 0]);
+  const maskBg = useTransform(progress, [.349, .389], [0, 1]);
+  const maskScale = useTransform(progress, [.349, .511], [.35, 3]);
+  const maskVisibility = useTransform(progress, value => value < .349 || value >= .511 ? "hidden" : "visible");
+  const dripScale = useTransform(progress, [.377, .444], [.14, 3.2]);
+  const dripOpacity = useTransform(progress, [.377, .403, .444, .470], [0, 1, 1, 0]);
+  const dripVisibility = useTransform(progress, value => value < .377 || value >= .470 ? "hidden" : "visible");
+  const heroVisibility = useTransform(progress, value => value < .403 ? "hidden" : "visible");
+  const hero = useTransform(progress, [.403, .645], [.50, 1.18]);
+  // Finale, in place: hold on fully-settled Khai (the hero has completed its
+  // entrance by .645; it is left displayed for a short beat), then the
+  // t-shirt gateway hands off to the merch poster. The tshirt outline scales
+  // up from a small tee over Khai, a navy cover wipes him away behind the
+  // growing shirt silhouette, the poster pops in under it, and the giant shirt
+  // fades out to resolve into the poster's own outline tee. Scroll driven.
+  const revealBg = useTransform(progress, [.66, .70], [0, 1]);
+  const revealScale = useTransform(progress, [.66, .70], [.4, 3.2]);
+  const revealOpacity = useTransform(progress, [.66, .70, .708], [0, 1, 0]);
+  const revealVisibility = useTransform(progress, value => value < .66 || value >= .708 ? "hidden" : "visible");
+  const khaiVisibility = useTransform(progress, value => value < .403 || value >= .70 ? "hidden" : "visible");
+  const merchVisibility = useTransform(progress, value => value < .678 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />

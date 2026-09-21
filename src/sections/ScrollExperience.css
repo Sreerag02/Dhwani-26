@@ -6,13 +6,13 @@
 .world-intro h1 {font:400 clamp(52px,10vw,168px)/.92 Galavant,sans-serif;margin:0 0 clamp(8px,2svh,18px);text-shadow:5px 8px #af005f}
 .world-intro__wordmark {display:block;width:min(520px,80vw);max-width:100%;height:auto}
 .world-year {display:block;margin-top:clamp(14px,3svh,25px);font:400 clamp(32px,5vw,72px)/1 Galavant,sans-serif;color:#02caef}
-.reveal-journey {position:relative;height:860svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
+.reveal-journey {position:relative;height:1280svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
 .journey-sticky {position:sticky;top:0;height:100svh;overflow:hidden;background:#1f1d66}
 .journey-scene {position:absolute;inset:0;height:100%;min-height:0;padding-top:0}
 .world-intro.journey-scene {z-index:40}
 .journey-anchor {position:absolute;left:0;width:1px;height:1px;scroll-margin-top:var(--festival-header-height)}
-.theme-anchor {top:calc(490svh * .30)}
-.khai-anchor {top:calc(490svh * .64)}
+.theme-anchor {top:calc(730svh * .30)}
+.khai-anchor {top:calc(730svh * .64)}
 .carnival-embedded {height:100%;padding:0;display:grid;place-items:center;margin:0}
 .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 16 / 9));height:auto;aspect-ratio:16/9}
 .scroll-mask {position:absolute;inset:0;z-index:50;display:grid;place-items:center;overflow:hidden;background:transparent;pointer-events:none}
@@ -33,6 +33,8 @@
 .merch-reveal-bg {position:absolute;inset:0;z-index:45;background:#1f1d66;pointer-events:none}
 .merch-reveal {position:absolute;inset:0;z-index:47;display:grid;place-items:center;overflow:hidden;pointer-events:none}
 .merch-reveal img {width:min(65vw,70svh);height:80%;object-fit:contain}
+/* After the poster finale the indigo "carpet" lives inside Merch.jsx/Merch.css
+   as .merch-tear; the merch kit/catalogue (from Merch.jsx) sits on it. */
 /* Full-viewport blue backdrop that follows the merch poster finale; the
    designed `bg blue.png` art is the base with the `bg element.png` overlay
    screened on top, and the merch kit/catalogue (from Merch.jsx) sits on it. */
