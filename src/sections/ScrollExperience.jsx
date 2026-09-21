@@ -81,13 +81,13 @@ export default function ScrollExperience() {
   // merch poster pops in over pink + texture and, with further scroll, the
   // backdrop melts pink→blue while the tees shift over and the merch objects
   // (badges, bandanas, fannies, kit) pop out around them. Scroll driven.
-  const revealOpacity = useTransform(progress, [.895, .925, .935], [0, 1, 0]);
-  const revealVisibility = useTransform(progress, value => value < .895 || value >= .935 ? "hidden" : "visible");
+  const revealOpacity = useTransform(progress, [.878, .910, .935], [0, 1, 0]);
+  const revealVisibility = useTransform(progress, value => value < .878 || value >= .935 ? "hidden" : "visible");
   // Parallax tunnel: four evenly-nested stroke rings share ONE zoom clock and
   // grow together like a single camera diving through the tee. A per-ring
   // parallax pan (deeper rings drift least, nearer rings whip past fastest,
   // each on its own travel direction) gives the depth that a plain zoom lacks.
-  const tunnelIn = useTransform(progress, [.895, .935], [0, 1], { clamp: true });
+  const tunnelIn = useTransform(progress, [.878, .935], [0, 1], { clamp: true });
   const tunnelGrow = useTransform(tunnelIn, t => 1 + 1.6 * t * t);
   const tunnelPan = useTransform(tunnelIn, t => t * t);
   const tunnelLayers = [
