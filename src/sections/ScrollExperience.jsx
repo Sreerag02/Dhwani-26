@@ -118,9 +118,11 @@ export default function ScrollExperience() {
   // fully, then the t-shirt tunnel follows it (not the other way around).
   const videoFade = useTransform(progress, [.735, .750, .778, .800], [0, 1, 1, 0]);
   const videoVisibility = useTransform(progress, value => value < .735 || value >= .800 ? "hidden" : "visible");
-  // Merch starts after tunnel ends at .845.
-  const remappedMerchProgress = useTransform(progress, [.855, 1], [.84, 1]);
-  const merchVisibility = useTransform(progress, value => value < .855 ? "hidden" : "visible");
+  // Merch bleeds in while the tunnel is still visible (.785-.845), so it
+  // peeks through the t-shirt outlines as they fade. Remap so Merch.jsx
+  // internals stay exactly as authored.
+  const remappedMerchProgress = useTransform(progress, [.825, 1], [.84, 1]);
+  const merchVisibility = useTransform(progress, value => value < .825 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
