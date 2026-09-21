@@ -49,6 +49,15 @@ export default function KhaiHero({ progress }) {
         style={{ opacity: titleOpacity, x: reduced ? 0 : (i%2 ? signShift : leftShift), "--float-time": 5+i*0.5+"s"}}>
         <img src={MASCOT+file} alt="" draggable="false" /></motion.div>)}
       <motion.div className="poster-foreground" style={{ opacity: entrance, y: reduced ? 0 : rise }}><img src={MASCOT+"cloud-main.webp"} alt="" draggable="false" /></motion.div>
+      <motion.a
+        className="poster-game-cta"
+        href="https://game.dhwanicet.com"
+        target="_blank"
+        rel="noreferrer"
+        style={{ opacity: entrance, y: reduced ? 0 : rise }}
+      >
+        Play the Game
+      </motion.a>
     </motion.section>
   );
 }

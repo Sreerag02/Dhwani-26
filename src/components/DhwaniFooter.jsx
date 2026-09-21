@@ -23,6 +23,12 @@ const FacebookIcon = React.memo(({ className = '', size = 20 }) => (
   </svg>
 ));
 
+const LinkedInIcon = React.memo(({ className = '', size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M6.5 8.5H3V21h3.5V8.5ZM4.75 3A2.05 2.05 0 1 0 4.75 7.1 2.05 2.05 0 0 0 4.75 3ZM21 13.85C21 10.08 18.99 8.3 16.3 8.3c-2.17 0-3.14 1.2-3.68 2.04V8.5H9.12V21h3.5v-6.19c0-1.63.31-3.2 2.32-3.2 1.98 0 2.01 1.86 2.01 3.31V21H21v-7.15Z" />
+  </svg>
+));
+
 const ArrowUpIcon = React.memo(({ className = '', size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <path d="M12 19V5"/>
@@ -257,11 +263,11 @@ export function DhwaniFooter() {
         {/* Curated Editorial Navigation */}
         <nav className="dhwani-curated-nav" aria-label="Festival Navigation">
           {[
-            { label: 'EXPLORE', href: '#hero' },
-            { label: 'PRONITES', href: '#pronites' },
-            { label: 'COMPETITIONS', href: '#competitions' },
-            { label: 'WORKSHOPS', href: '#workshops' },
-            { label: 'SCHEDULE', href: '#schedule' },
+            { label: 'EXPLORE', href: 'https://org.makemypass.com/web/dhwani-26' },
+            { label: 'PRONITES', href: 'https://org.makemypass.com/web/dhwani-26' },
+            { label: 'COMPETITIONS', href: 'https://org.makemypass.com/web/dhwani-26' },
+            { label: 'WORKSHOPS', href: 'https://org.makemypass.com/web/dhwani-26' },
+            { label: 'SCHEDULE', href: 'https://org.makemypass.com/web/dhwani-26' },
           ].map((item) => (
             <a key={item.label} href={item.href} className="curated-nav-item">
               <span className="nav-item-text">{item.label}</span>
@@ -280,7 +286,7 @@ export function DhwaniFooter() {
             />
             <div className="social-icons-inside-badge">
               <a 
-                href="https://instagram.com/dhwanicet" 
+                href="https://instagram.com/dhwani_cet" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="social-atelier-link social-ig" 
@@ -289,7 +295,7 @@ export function DhwaniFooter() {
                 <InstagramIcon size={18} />
               </a>
               <a 
-                href="https://youtube.com/dhwanicet" 
+                href="https://www.youtube.com/@DhwaniCET" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="social-atelier-link social-yt" 
@@ -298,13 +304,22 @@ export function DhwaniFooter() {
                 <YoutubeIcon size={18} />
               </a>
               <a 
-                href="https://facebook.com/dhwanicet" 
+                href="https://www.facebook.com/dhwanifest" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="social-atelier-link social-fb" 
                 aria-label="Follow Dhwani on Facebook"
               >
                 <FacebookIcon size={18} />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/dhwani-cet/"
+                target="_blank"
+                rel="noreferrer"
+                className="social-atelier-link social-li"
+                aria-label="Follow Dhwani on LinkedIn"
+              >
+                <LinkedInIcon size={18} />
               </a>
             </div>
           </div>

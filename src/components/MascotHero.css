@@ -46,6 +46,29 @@
 .poster-tap span { color:#02caef; padding-left:8px; }
 .poster-font-credit { color:#b6b0d5; font-size:9px; margin-top:12px; text-align:center; }
 .poster-character-button:focus-visible,.poster-tap:focus-visible { outline:3px solid #02caef; outline-offset:5px; }
+.poster-game-cta {
+  position:absolute;
+  left:50%;
+  bottom:9%;
+  z-index:8;
+  transform:translateX(-50%) rotate(-2deg);
+  padding:12px 22px;
+  border:3px solid #fef3c7;
+  background:#fbbf24;
+  color:#1f1d66;
+  font-size:clamp(11px,1.2vw,16px);
+  font-weight:900;
+  letter-spacing:.16em;
+  line-height:1;
+  text-transform:uppercase;
+  text-decoration:none;
+  white-space:nowrap;
+  box-shadow:5px 6px 0 #af005f;
+  transition:transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.poster-game-cta::after { content:" →"; color:#af005f; }
+.poster-game-cta:hover { transform:translateX(-50%) rotate(2deg) scale(1.05); background:#02caef; box-shadow:6px 7px 0 #1f1d66; }
+.poster-game-cta:focus-visible { outline:3px solid #02caef; outline-offset:5px; }
 .mascot-poster[data-paused="true"] .poster-khai img, .mascot-poster[data-paused="true"] .poster-character-button, .mascot-poster[data-paused="true"] .poster-cloud, .mascot-poster[data-paused="true"] .poster-cloud img, .mascot-poster[data-paused="true"] .poster-foreground, .mascot-poster[data-paused="true"] .poster-foreground img, .mascot-poster[data-paused="true"] { animation-play-state:paused!important; }
 @keyframes poster-arrive { from {opacity:0; transform:scale(.82)} to {opacity:1; transform:scale(1)} }
 @keyframes poster-rise { from {opacity:0; transform:translateY(65px)} to {opacity:1; transform:translateY(0)} }
@@ -66,7 +89,7 @@
   .mascot-poster {height:max(780px,100svh)}
   .poster-heading {top:3%;font-size:clamp(27px,7vw,40px)}
   .poster-background {object-position:center;opacity:.4}
-  .poster-khai {top:15%;left:4%;width:92%}
+  .poster-khai {top:15%;left:9%;width:82%}
   .poster-character {top:25%;width:90%;max-width:510px}
   .poster-sign {width:43%;z-index:6}
   .poster-sign-left {left:3%;top:69%}
@@ -79,6 +102,7 @@
   .poster-cloud-six {top:58%;left:4%;width:24%}
   .poster-foreground {width:220%;left:-60%;bottom:-1%}
   .poster-tap {bottom:max(12px,env(safe-area-inset-bottom));font-size:10px}
+  .poster-game-cta { bottom:calc(10% + env(safe-area-inset-bottom)); padding:11px 16px; font-size:11px; }
 }
 @media (max-height:550px) and (min-width:701px) {
   .mascot-poster {height:620px}

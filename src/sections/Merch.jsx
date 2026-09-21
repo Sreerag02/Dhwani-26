@@ -1,6 +1,6 @@
 import "./Merch.css";
 import { useLayoutEffect, useRef, useState } from "react";
-import { motion, useReducedMotion, useTransform } from "motion/react";
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useTransform } from "motion/react";
 
 /** Hoverable merch item — shows a yellow badge tooltip with the item name */
 function MerchItem({ className, style, src, label, alt }) {
@@ -106,6 +106,16 @@ function MerchPop({ phase2, className, style, src, alt, reduced }) {
 
 export default function Merch({ progress }) {
   const reduced = useReducedMotion();
+  const [cta, setCta] = useState(() => (
+    progress.get() >= 0.945
+      ? { label: "Shop Merch", href: "https://makemypass.com/event/dhwani-merch" }
+      : { label: "Buy Tees", href: "https://makemypass.com/event/dhwani-26-tee" }
+  ));
+  useMotionValueEvent(progress, "change", value => {
+    setCta(value >= 0.945
+      ? { label: "Shop Merch", href: "https://makemypass.com/event/dhwani-merch" }
+      : { label: "Buy Tees", href: "https://makemypass.com/event/dhwani-26-tee" });
+  });
   // Pop-in driven by the journey's reveal window: right after the concentric
   // t-shirt tunnel the poster does a gentle pop — the stage blooms from the
   // screen centre (--pop) while its elements lift a few px (--rise) and fade
@@ -134,6 +144,7 @@ export default function Merch({ progress }) {
   const teesOut = useTransform(progress, [.90, .945], [1, 0]);
   const boxIn = useTransform(progress, [.905, .96], [0, 1]);
   const boxScale = useTransform(boxIn, v => 0.72 + 0.28 * v);
+  const ctaY = useTransform(progress, [.90, .945, .965], ["-8svh", "-8svh", "7svh"]);
   return (
     <motion.section
       id="merch"
@@ -188,11 +199,9 @@ export default function Merch({ progress }) {
             className="merch__tee merch__tee--front-right"
             draggable="false"
           />
-          <a href="#" className="merch__order-btn merch__order-btn--tees" role="button">
-            Order Now
-          </a>
         </motion.div>
-        <img
+
+        {/* <img
           src="/assets/MERCH KIT IMAGE.webp"
           alt="Dhwani 26 merch collection"
           className="merch__box"
@@ -302,13 +311,13 @@ export default function Merch({ progress }) {
         />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
-          src="/assets/merch/badges/badge%201.png" alt="" />
+          src="/assets/merch/badges/badge%201.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
-          src="/assets/merch/badges/badge%202.png" alt="" />
+          src="/assets/merch/badges/badge%202.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__badge merch__badge--3" style={{ "--pop-delay": ".55s" }}
-          src="/assets/merch/badges/badge%203.png" alt="" />
+          src="/assets/merch/badges/badge%203.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__sticker merch__sticker--1" style={{ "--pop-delay": ".15s" }}
           src="/assets/merch/sticker/sticker1.png" alt="" />
@@ -326,22 +335,22 @@ export default function Merch({ progress }) {
           src="/assets/merch/sticker/sticker5.png" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__bandana merch__bandana--1" style={{ "--pop-delay": ".12s" }}
-          src="/assets/merch/bandana/bandana%201.png" alt="" />
+          src="/assets/merch/bandana/bandana%201.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
-          src="/assets/merch/bandana/bandana%202.png" alt="" />
-        {/* <MerchPop phase2={phase2} reduced={reduced}
+          src="/assets/merch/bandana/bandana%202.webp" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
-          src="/assets/merch/bandana/bandana-a2.webp" alt="" /> */}
+          src="/assets/merch/bandana/bandana-a2.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__bandana merch__bandana--wide" style={{ "--pop-delay": ".5s" }}
-          src="/assets/merch/bandana.png" alt="" />
+          src="/assets/merch/bandana.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__fanny merch__fanny--right" style={{ "--pop-delay": ".58s" }}
           src="/assets/merch/fanny-pack.png" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__badge merch__badge--wide" style={{ "--pop-delay": ".66s" }}
-          src="/assets/merch/badges.png" alt="" />
+          src="/assets/merch/badges.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
           src="/assets/merch/fanny/fanny-1.webp" alt="" />
@@ -367,9 +376,26 @@ export default function Merch({ progress }) {
           src="/assets/merch/fanny/fanny-1.webp" label="Fanny Pack" />
         <MerchItem className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}
           src="/assets/merch/fanny/fanny-2.webp" label="Fanny Pack" /> */}
-        <a href="#merch" className="merch__order-btn" role="button">
-          Order Now
-        </a>
+        <motion.a
+          href={cta.href}
+          className={`merch__order-btn${cta.label === "Buy Tees" ? " merch__order-btn--tees" : ""}`}
+          role="button"
+          style={reduced ? undefined : { "--cta-y": ctaY }}
+          layout="size"
+          transition={{ layout: { type: "spring", stiffness: 420, damping: 28 } }}
+        >
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.span
+              key={cta.label}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.16 }}
+            >
+              {cta.label}
+            </motion.span>
+          </AnimatePresence>
+        </motion.a>
       </div>
     </motion.section>
   );

@@ -14,6 +14,12 @@
   aspect-ratio:9 / 16;
   margin:0 auto;
   contain: layout paint;
+  perspective: 1400px;
+  transform: perspective(1400px) rotateX(var(--theme-tilt-y, 0deg)) rotateY(var(--theme-tilt-x, 0deg));
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition: transform 700ms cubic-bezier(.16, 1, .3, 1);
+  will-change: transform;
 }
 .carnival::before {
   content:""; position:absolute; inset:0; pointer-events:none;
@@ -134,12 +140,13 @@
   .lamp-h {top:8%;right:28%;width:6%}
 }
 @media (max-width:700px) {
+  .carnival-stage { contain: layout; }
   .carnival-stalls {width:max(190%,80svh);bottom:0}
   .carnival-base-clouds {width:max(200%,84svh);bottom:-3%}
   .carnival-wheel {top:12%;left:5%;width:90%}
   .carnival-title {top:32%;left:8%;width:84%}
   .carnival-gate {top:58%;left:3%;width:94%}
-  .hidden-khai {top:68%;width:34%}
+  .hidden-khai {top:80%;width:34%}
   .lamp-e {top:52%;left:9%;width:14%}
   .lamp-f {top:55%;right:8%;width:12%}
 }
