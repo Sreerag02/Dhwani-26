@@ -83,3 +83,42 @@
 @media(prefers-reduced-motion:reduce){
   .cloud-curtain .cloud-bloom-layer {will-change:auto}
 }
+
+/* Khai reveal art direction: the boards (poster-sign) and clouds (poster-cloud)
+   are repositioned so they frame the puppet instead of sitting on it. Scoped
+   to .khai-journey so the opening hero keeps its own layout.
+   * Tablet portrait is a tall-ish window (aspect <= 3:4): boards tuck low
+     beside the puppet's waist, clouds hug the mist ring outside its outline.
+   * Phone portrait: boards drop into the clear band below the puppet's hem
+     (puppet occupies ~22%->74% vertically here), clouds stay above the head
+     and on the flanks so the face/torso stays unobstructed. */
+@media (min-width:701px) and (max-aspect-ratio:3/4){
+  .khai-journey .poster-sign {width:18%}
+  .khai-journey .poster-sign-left {left:1.5%;top:46%}
+  .khai-journey .poster-sign-right {right:1.5%;top:42%}
+  .khai-journey .poster-cloud-one {top:8%;left:6%;width:16%}
+  .khai-journey .poster-cloud-two {top:11%;left:60%;width:6.5%}
+  .khai-journey .poster-cloud-three {top:2%;right:4%;width:15%}
+  .khai-journey .poster-cloud-four {top:64%;left:2.5%;width:6.5%}
+  .khai-journey .poster-cloud-five {top:62%;right:2.5%;width:14%}
+  .khai-journey .poster-cloud-six {top:72%;left:30%;width:9%}
+}
+@media (min-width:701px) and (min-aspect-ratio:3/4) and (max-aspect-ratio:16/10){
+  .khai-journey .poster-sign-left {top:43%}
+  .khai-journey .poster-sign-right {top:42%}
+}
+@media (min-width:701px) and (min-aspect-ratio:16/10){
+  .khai-journey .poster-sign-left {top:34%}
+  .khai-journey .poster-sign-right {top:31%}
+}
+@media (max-width:700px){
+  .khai-journey .poster-sign {width:40%;top:78%}
+  .khai-journey .poster-sign-left {left:4%;top:78%}
+  .khai-journey .poster-sign-right {right:4%;top:78%}
+  .khai-journey .poster-cloud-one {top:5%;left:7%;width:30%}
+  .khai-journey .poster-cloud-two {top:6%;left:66%;width:14%}
+  .khai-journey .poster-cloud-three {top:13%;right:7%;width:30%}
+  .khai-journey .poster-cloud-four {top:30%;left:6%;width:15%}
+  .khai-journey .poster-cloud-five {top:28%;right:7%;width:22%}
+  .khai-journey .poster-cloud-six {top:76%;left:40%;width:12%}
+}

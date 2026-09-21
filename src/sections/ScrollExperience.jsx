@@ -7,10 +7,11 @@ import "../components/Opening.css";
 import "./ScrollExperience.css";
 
 // Clouds sweep right-to-left across a dense 4x8 tile grid.  Every cloud crosses
-// the centre of its tile at ~.40-.42, so the viewport is fully covered in one
-// shared moment, then all clear by ~.50 (before the mask at .52). Parallax
-// comes from travel distance (front ring sweeps further/faster), while timing
-// stays in a common window so the sheet never tears.
+// the centre of its tile at ~.26, so the viewport is fully covered in one
+// shared moment right as the theme settles (.309), then all clear by ~.34,
+// just before the navy wipe opens at .379. Parallax comes from travel distance
+// (front ring sweeps further/faster), while timing stays in a common window
+// so the sheet never tears.
 const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
   const row = Math.floor(index / 4);
   const col = index % 4;
@@ -20,9 +21,9 @@ const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
   const micro = ((row * 3 + col * 5) % 7) - 3;
   const microY = ((col * 7 + row * 11) % 5) - 2;
   const travel = ring ? 125 + col * 15 : 195 + col * 20;
-  const start = 0 + (row % 2) * .02 + col * .006;
-  const mid = .34 + Math.floor(index / 8) * .006;
-  const end = .48 + (col % 2) * .012;
+  const mid = .26 + Math.floor(index / 8) * .006;
+  const start = mid - .26 + (row % 2) * .014 + col * .004;
+  const end = mid + .075 + (col % 2) * .008;
   return {
     id: index,
     file: 2 + (row + col * 2) % 7,
@@ -64,28 +65,28 @@ export default function ScrollExperience() {
   const ground = useTransform(clouds, [0, .077, .246], [1, 1, 0]);
   const cloudVisibility = useTransform(progress, value => value >= .564 ? "hidden" : "visible");
   const theme = useTransform(progress, [.134, .309], [0, 1]);
-  const themeVisibility = useTransform(progress, value => value >= .416 ? "hidden" : "visible");
-  const maskOpacity = useTransform(progress, [.349, .403, .437, .511], [0, 1, 1, 0]);
-  const maskBg = useTransform(progress, [.349, .389], [0, 1]);
-  const maskScale = useTransform(progress, [.349, .511], [.35, 3]);
-  const maskVisibility = useTransform(progress, value => value < .349 || value >= .511 ? "hidden" : "visible");
-  const dripScale = useTransform(progress, [.377, .444], [.14, 3.2]);
-  const dripOpacity = useTransform(progress, [.377, .403, .444, .470], [0, 1, 1, 0]);
-  const dripVisibility = useTransform(progress, value => value < .377 || value >= .470 ? "hidden" : "visible");
+  const themeVisibility = useTransform(progress, value => value >= .45 ? "hidden" : "visible");
+  const maskOpacity = useTransform(progress, [.379, .433, .467, .541], [0, 1, 1, 0]);
+  const maskBg = useTransform(progress, [.379, .419, .541], [0, 1, 0]);
+  const maskScale = useTransform(progress, [.379, .541], [.35, 3]);
+  const maskVisibility = useTransform(progress, value => value < .379 || value >= .541 ? "hidden" : "visible");
+  const dripScale = useTransform(progress, [.407, .474], [.14, 3.2]);
+  const dripOpacity = useTransform(progress, [.407, .433, .474, .500], [0, 1, 1, 0]);
+  const dripVisibility = useTransform(progress, value => value < .407 || value >= .500 ? "hidden" : "visible");
   const heroVisibility = useTransform(progress, value => value < .403 ? "hidden" : "visible");
   const hero = useTransform(progress, [.403, .645], [.50, 1.18]);
-  // Finale, in place: hold on fully-settled Khai (the hero has completed its
-  // entrance by .645; it is left displayed for a short beat), then the
+  // Finale, in place: let fully-settled Khai hold center stage (the hero has
+  // completed its entrance by .645 and the mask is long clear), then the
   // t-shirt gateway hands off to the merch poster. The tshirt outline scales
   // up from a small tee over Khai, a navy cover wipes him away behind the
   // growing shirt silhouette, the poster pops in under it, and the giant shirt
   // fades out to resolve into the poster's own outline tee. Scroll driven.
-  const revealBg = useTransform(progress, [.66, .70], [0, 1]);
-  const revealScale = useTransform(progress, [.66, .70], [.4, 3.2]);
-  const revealOpacity = useTransform(progress, [.66, .70, .708], [0, 1, 0]);
-  const revealVisibility = useTransform(progress, value => value < .66 || value >= .708 ? "hidden" : "visible");
-  const khaiVisibility = useTransform(progress, value => value < .403 || value >= .70 ? "hidden" : "visible");
-  const merchVisibility = useTransform(progress, value => value < .678 ? "hidden" : "visible");
+  const revealBg = useTransform(progress, [.80, .845], [0, 1]);
+  const revealScale = useTransform(progress, [.80, .845], [.4, 3.2]);
+  const revealOpacity = useTransform(progress, [.80, .845, .853], [0, 1, 0]);
+  const revealVisibility = useTransform(progress, value => value < .80 || value >= .853 ? "hidden" : "visible");
+  const khaiVisibility = useTransform(progress, value => value < .403 || value >= .80 ? "hidden" : "visible");
+  const merchVisibility = useTransform(progress, value => value < .79 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
