@@ -95,6 +95,7 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
       </RevealLayer>
       <RevealLayer className="carnival-blue" src={E+"CLOUDS.svg"} from={-70} depth={.45} />
       <RevealLayer className="carnival-gate" src={E+"torii new.svg"} depth={.85} />
+      <RevealLayer className="hidden-khai" src={E+"khai-hidden.webp"} depth={1.05} />
       <RevealLayer className="carnival-title" src={E+"title.svg"} alt="Carnivale Razzmatazz" depth={1} />
       {lanterns.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 110 : -110} depth={1.2} float />)}
       {notes.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 60 : -60} depth={1.25} float />)}
