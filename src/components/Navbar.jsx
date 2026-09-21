@@ -41,7 +41,7 @@ function Navbar() {
             aria-label="Dhwani 26 home"
           >
             <img
-              src="/assets/logo/dhwani-main.png"
+              src="/assets/logo/dhwani-main.webp"
               alt="Dhwani 26"
               className="h-11 w-auto object-contain md:h-13"
             />
@@ -145,7 +145,7 @@ function Navbar() {
                          border-b border-white/20 px-5"
             >
               <img
-                src="/assets/logo/dhwani-main.png"
+                src="/assets/logo/dhwani-main.webp"
                 alt="Dhwani 26"
                 className="h-11 w-auto"
               />

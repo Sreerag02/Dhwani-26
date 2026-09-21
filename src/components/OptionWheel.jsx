@@ -56,13 +56,16 @@ const OptionWheel = ({
   const [selectedIndex, setSelectedIndex] = useState(defaultSelected);
   const [isDragging, setIsDragging] = useState(false);
 
-  const remPx = typeof window !== 'undefined' ? parseFloat(getComputedStyle(document.documentElement).fontSize) || 16 : 16;
+  const remRef = useRef(16);
+  useEffect(() => {
+    remRef.current = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  }, []);
 
   onChangeRef.current = onChange;
   cfgRef.current = {
     count: items.length,
     items,
-    rowH: Math.max(fontSize * spacing * remPx, 1),
+    rowH: Math.max(fontSize * spacing * remRef.current, 1),
     curve,
     tilt,
     blur,

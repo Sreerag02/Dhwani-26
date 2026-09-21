@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import KhaiHero from "../components/HeroReveal";
 import ThemeReveal from "./ThemeReveal";
@@ -41,17 +41,17 @@ const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
   };
 });
 
-function Cloud({ layer, progress }) {
+const Cloud = React.memo(function Cloud({ layer, progress }) {
   const reduced = useReducedMotion();
   // x crosses 0vw (tile centre) at `mid`, y settles to its tile row by `mid`.
   const x = useTransform(progress, [layer.start, layer.mid, layer.end], [layer.from, "0vw", layer.to]);
   const y = useTransform(progress, [layer.start, layer.mid], [layer.y, "0svh"]);
   const rotate = useTransform(progress, [layer.start, layer.mid], [0, layer.turn]);
   return <motion.div className={`cloud-curtain-layer cloud-bloom-layer cloud-bloom-ring-${layer.ring}`}
-    style={{ left: `${layer.left}%`, top: `${layer.top}%`, ...(reduced ? {} : { x, y, rotate }) }}>
-    <img src={`/assets/curtain/${layer.file}.png`} alt="" decoding="async" draggable="false" />
+    style={{ left: `${layer.left}%`, top: `${layer.top}%`, ...(reduced ? {} : { x, y, rotate, z: 0 }) }}>
+    <img src={`/assets/curtain/${layer.file}.webp`} alt="" decoding="async" draggable="false" />
   </motion.div>;
-}
+});
 
 // One scroll value owns every phase, so the pin cannot release before the art
 // reaches its final state (including when scrolling quickly or backwards).
@@ -169,7 +169,7 @@ export default function ScrollExperience() {
         <motion.div style={{ y: reduced ? 0 : introY }} className="world-intro__stack">
           <p>COLLEGE OF ENGINEERING, TRIVANDRUM</p>
           <h1>WORLD OF</h1>
-          <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.png" alt="DHWANI" />
+          <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.webp" alt="DHWANI" />
         </motion.div>
       </motion.div>
       <motion.div className="video-transition-wrapper" style={{ opacity: videoFade, visibility: videoVisibility }}>
@@ -184,7 +184,7 @@ export default function ScrollExperience() {
       </motion.div>
       <motion.div className="merch-tunnel" style={{ opacity: revealOpacity, visibility: revealVisibility }} aria-hidden="true">
         {tunnelLayers.map((layer, i) => (
-          <motion.img key={i} className="merch-tunnel__tee" src="/assets/tshirt stroke.png" alt="" draggable="false"
+          <motion.img key={i} className="merch-tunnel__tee" src="/assets/tshirt stroke.webp" alt="" draggable="false"
             style={{ scale: reduced ? 1 : layer.scale, rotate: reduced ? 0 : layer.spin, opacity: reduced ? 1 : layer.opacity, x: reduced ? 0 : layer.x, y: reduced ? 0 : layer.y }} />
         ))}
       </motion.div>

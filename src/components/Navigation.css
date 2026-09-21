@@ -13,7 +13,7 @@
 .nav-toggle[aria-expanded="true"] span:first-child {translate:-50% -50%;rotate:45deg}
 .nav-toggle[aria-expanded="true"] span:last-child {translate:-50% -50%;rotate:-45deg}
 .nav-close {font:300 44px/1 Arial,sans-serif}
-.nav-sheet {position:fixed;inset:0;background:#090909;color:white;z-index:2;pointer-events:auto;overflow-y:hidden;display:flex;flex-direction:column;min-height:100dvh}
+.nav-sheet {position:fixed;inset:0;background:#090909;color:white;z-index:2;pointer-events:auto;overflow-y:hidden;display:flex;flex-direction:column;min-height:100dvh;contain:strict}
 .nav-sheet-top {flex:none}
 .nav-sheet-wheel {position:relative;flex:1;overflow:hidden}
 /* Deprecated link list replaced by OptionWheel; kept for any fallback nav items. */

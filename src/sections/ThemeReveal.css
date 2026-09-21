@@ -6,12 +6,14 @@
   overflow:hidden;
   margin-top:-1px;
   background:linear-gradient(180deg,#1f1d66 0%,#25155e 12%,#821967 29%,#ff6266 43%,#ffb650 53%,#501347 66%,#6e165f 87%,#1f1d66 100%);
+  contain: layout paint;
 }
 .carnival-stage {
   position:relative;
   width:min(100%,1120px);
   aspect-ratio:9 / 16;
   margin:0 auto;
+  contain: layout paint;
 }
 .carnival::before {
   content:""; position:absolute; inset:0; pointer-events:none;
@@ -59,7 +61,7 @@
 .note-f {z-index:8;top:80%;right:12%;width:3%}
 .mist-g {z-index:4;top:36%;left:-12%;width:35%}
 .mist-h {z-index:4;top:39%;right:-15%;width:38%}
-.carnival-float {animation:carnival-sway 7s ease-in-out infinite;transform-origin:50% 10%;animation-play-state:paused}
+.carnival-float {animation:carnival-sway 7s ease-in-out infinite;transform-origin:50% 10%;animation-play-state:paused;will-change:transform}
 .carnival[data-playing="true"] .carnival-float {animation-play-state:running}
 .lamp-b .carnival-float,.lamp-d .carnival-float,.mist-b .carnival-float {animation-delay:-3s;animation-duration:8s}
 @keyframes carnival-sway {50% {transform:translate3d(9px,-18px,0) rotate(3deg)}}

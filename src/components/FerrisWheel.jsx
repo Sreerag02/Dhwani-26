@@ -8,7 +8,7 @@ const CY = 1317.0419;
 const R_PX = 1303.559493;
 
 // Attachment angles extracted from your original SVG. 0 = top; + = clockwise.
-const CABINS = [{"file":"/assets/ferris/cabins/cabin-01.png","cropW":309,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":0.508070722},{"file":"/assets/ferris/cabins/cabin-02.png","cropW":309,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":1.031172081},{"file":"/assets/ferris/cabins/cabin-03.png","cropW":305,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":1.554127387},{"file":"/assets/ferris/cabins/cabin-04.png","cropW":309,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":2.075566868},{"file":"/assets/ferris/cabins/cabin-05.png","cropW":309,"cropH":411,"pivotX":154.5,"pivotY":15.253,"baseAngle":2.596868785},{"file":"/assets/ferris/cabins/cabin-06.png","cropW":309,"cropH":408,"pivotX":154.5,"pivotY":15.253,"baseAngle":3.125222929},{"file":"/assets/ferris/cabins/cabin-07.png","cropW":309,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":3.652508179},{"file":"/assets/ferris/cabins/cabin-08.png","cropW":310,"cropH":411,"pivotX":155.0,"pivotY":15.253,"baseAngle":4.17990136},{"file":"/assets/ferris/cabins/cabin-09.png","cropW":306,"cropH":412,"pivotX":151.0,"pivotY":15.253,"baseAngle":4.703028102},{"file":"/assets/ferris/cabins/cabin-10.png","cropW":310,"cropH":412,"pivotX":155.0,"pivotY":15.253,"baseAngle":5.223376992},{"file":"/assets/ferris/cabins/cabin-11.png","cropW":310,"cropH":412,"pivotX":155.0,"pivotY":15.253,"baseAngle":5.74484218},{"file":"/assets/ferris/cabins/cabin-12.png","cropW":310,"cropH":408,"pivotX":155.0,"pivotY":11.253,"baseAngle":6.272852988}];
+const CABINS = [{"file":"/assets/ferris/cabins/cabin-01.webp","cropW":309,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":0.508070722},{"file":"/assets/ferris/cabins/cabin-02.webp","cropW":309,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":1.031172081},{"file":"/assets/ferris/cabins/cabin-03.webp","cropW":305,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":1.554127387},{"file":"/assets/ferris/cabins/cabin-04.webp","cropW":309,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":2.075566868},{"file":"/assets/ferris/cabins/cabin-05.webp","cropW":309,"cropH":411,"pivotX":154.5,"pivotY":15.253,"baseAngle":2.596868785},{"file":"/assets/ferris/cabins/cabin-06.webp","cropW":309,"cropH":408,"pivotX":154.5,"pivotY":15.253,"baseAngle":3.125222929},{"file":"/assets/ferris/cabins/cabin-07.webp","cropW":309,"cropH":412,"pivotX":154.5,"pivotY":15.253,"baseAngle":3.652508179},{"file":"/assets/ferris/cabins/cabin-08.webp","cropW":310,"cropH":411,"pivotX":155.0,"pivotY":15.253,"baseAngle":4.17990136},{"file":"/assets/ferris/cabins/cabin-09.webp","cropW":306,"cropH":412,"pivotX":151.0,"pivotY":15.253,"baseAngle":4.703028102},{"file":"/assets/ferris/cabins/cabin-10.webp","cropW":310,"cropH":412,"pivotX":155.0,"pivotY":15.253,"baseAngle":5.223376992},{"file":"/assets/ferris/cabins/cabin-11.webp","cropW":310,"cropH":412,"pivotX":155.0,"pivotY":15.253,"baseAngle":5.74484218},{"file":"/assets/ferris/cabins/cabin-12.webp","cropW":310,"cropH":408,"pivotX":155.0,"pivotY":11.253,"baseAngle":6.272852988}];
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
@@ -35,6 +35,7 @@ export default function FerrisWheel({
   const rootRef = useRef(null);
   const rotorRef = useRef(null);
   const cabinRefs = useRef([]);
+  const isVisible = useRef(true);
 
   const reducedMotion = useReducedMotion();
   const simulationRef = useRef({
@@ -43,6 +44,16 @@ export default function FerrisWheel({
     omega: 0,
     cabins: CABINS.map(() => ({ phi: 0, phiDot: 0 })),
   });
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible.current = entry.isIntersecting;
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const rotor = rotorRef.current;
@@ -65,6 +76,12 @@ export default function FerrisWheel({
     const frame = (now) => {
       const dtFrame = clamp((now - last) / 1000, 0, 0.05);
       last = now;
+
+      if (!isVisible.current) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+
       const steps = Math.max(1, Math.ceil(dtFrame / (1 / 240)));
       const h = dtFrame / steps;
 
