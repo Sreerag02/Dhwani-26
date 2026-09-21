@@ -65,6 +65,13 @@ export default function ScrollExperience() {
   const clouds = useTransform(progress, [.080, .309], [0, 1]);
   const ground = useTransform(clouds, [0, .077, .246], [1, 1, 0]);
   const cloudVisibility = useTransform(progress, value => value >= .564 ? "hidden" : "visible");
+  // Second cloud curtain: reuses the same CLOUD_LAYERS and Cloud component,
+  // just remapped to fire right after Khai fades out and before the video.
+  // Mapping [.790, .836] → [0, 1] makes the Cloud's internal layer.start/mid/end
+  // fractions line up perfectly with the new window.
+  const curtain2Progress = useTransform(progress, [.790, .836], [0, 1]);
+  const curtain2Ground = useTransform(curtain2Progress, [0, .077, .246], [1, 1, 0]);
+  const curtain2Visibility = useTransform(progress, value => value < .790 || value >= .836 ? "hidden" : "visible");
   const theme = useTransform(progress, [.134, .309], [0, 1]);
   const themeVisibility = useTransform(progress, value => value >= .45 ? "hidden" : "visible");
   const maskOpacity = useTransform(progress, [.379, .433, .467, .541], [0, 1, 1, 0]);
@@ -134,6 +141,11 @@ export default function ScrollExperience() {
       <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility }} aria-hidden="true">
         <motion.div className="cloud-curtain-ground" style={{ opacity: ground }} />
         {CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={progress} />)}
+      </motion.div>
+      {/* Second curtain: same clouds reused, fires Khai→Video */}
+      <motion.div className="cloud-curtain cloud-curtain--2" style={{ visibility: curtain2Visibility }} aria-hidden="true">
+        <motion.div className="cloud-curtain-ground" style={{ opacity: curtain2Ground }} />
+        {CLOUD_LAYERS.map(layer => <Cloud key={`c2-${layer.id}`} layer={layer} progress={curtain2Progress} />)}
       </motion.div>
       <motion.div className="scroll-mask-bg" style={{ opacity: maskBg }} aria-hidden="true" />
       <motion.div className="concentric-rings" style={{ opacity: dripOpacity, visibility: dripVisibility }} aria-hidden="true">
