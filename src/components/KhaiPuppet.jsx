@@ -16,7 +16,7 @@ const KHAI = "/assets/khai/";
 export const KH = {
   headWidthPct: 35.7, // head canvas width, % of puppet width (1310px art)
   headLeftPct: 31.6,  // head canvas left edge, % of puppet width
-  headTopPct: 6,      // head canvas top edge, % of puppet height
+  headTopPct: -2,      // head canvas top edge, % of puppet height
   leftPivot: { x: 40.5, y: 31.5 },
   rightPivot: { x: 67.5, y: 25.3 },
   leftSwing: [0, -14],
@@ -40,13 +40,12 @@ export default React.memo(function KhaiPuppet({ progress, reduced }) {
     top: KH.headTopPct + "%",
     width: KH.headWidthPct + "%",
     height: "auto",
-    zIndex: 1,
   };
   return (
     <div className="khai-puppet">
       {/* <img className="khai-puppet-layer" src={KHAI + "outfits.webp"} alt="" draggable="false" style={POS} /> */}
       {KH.hair > 0 && (
-        <img className="khai-puppet-layer" src={KHAI + "hair-" + KH.hair + ".webp"} alt="" draggable="false" style={{...POS, top: "-6%", transform: `scale(0.9)`, zIndex: 1}} />
+        <img className="khai-puppet-layer" src={KHAI + "hair-" + KH.hair + ".webp"} alt="" draggable="false" style={{...POS, top: "-14%", transform: `scale(0.9)`}} />
       )}
       <img className="khai-puppet-layer" src={KHAI + "head.webp"} alt="" draggable="false" style={headStyle} />
       <div style={{ ...POS, left: "-32%", top: "-6%", transform: `scaleX(-1) scale(0.8)`, transformOrigin: `${100 - KH.leftPivot.x}% ${KH.leftPivot.y}%` }}>
