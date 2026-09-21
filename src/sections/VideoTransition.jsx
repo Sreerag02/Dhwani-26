@@ -33,13 +33,12 @@ export default function VideoTransition({ progress, src, start, end }) {
 
   // Smooth animation loop: lerp currentTime towards targetTime each frame
   useEffect(() => {
-    const LERP = 0.18; // smoothing factor (0 = frozen, 1 = instant/raw)
+    const LERP = 0.45; // smoothing factor — higher = more responsive
     const tick = () => {
       const video = videoRef.current;
       if (video && durationRef.current) {
         const target = targetTimeRef.current;
         const current = currentTimeRef.current;
-        // Lerp towards target; snap if very close to avoid infinite crawl
         const diff = target - current;
         const next = Math.abs(diff) < 0.01 ? target : current + diff * LERP;
         currentTimeRef.current = next;
@@ -51,7 +50,7 @@ export default function VideoTransition({ progress, src, start, end }) {
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
-  // Update target time on scroll — no direct seeking, just sets the goal
+  // Update target time on scroll
   useMotionValueEvent(progress, "change", (v) => {
     const duration = durationRef.current;
     if (!duration) return;
@@ -61,7 +60,6 @@ export default function VideoTransition({ progress, src, start, end }) {
 
   return (
     <div className="video-transition" aria-hidden="true">
-      <div className="video-transition__bars" />
       <video
         ref={videoRef}
         className="video-transition__video"
