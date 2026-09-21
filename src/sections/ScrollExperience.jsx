@@ -75,18 +75,42 @@ export default function ScrollExperience() {
   const dripVisibility = useTransform(progress, value => value < .407 || value >= .500 ? "hidden" : "visible");
   const heroVisibility = useTransform(progress, value => value < .403 ? "hidden" : "visible");
   const hero = useTransform(progress, [.403, .645], [.50, 1.18]);
-  // Finale, in place: let fully-settled Khai hold center stage (the hero has
-  // completed its entrance by .645 and the mask is long clear), then the
-  // t-shirt gateway hands off to the merch poster. The tshirt outline scales
-  // up from a small tee over Khai, a navy cover wipes him away behind the
-  // growing shirt silhouette, the poster pops in under it, and the giant shirt
-  // fades out to resolve into the poster's own outline tee. Scroll driven.
-  const revealBg = useTransform(progress, [.80, .845], [0, 1]);
-  const revealScale = useTransform(progress, [.80, .845], [.4, 3.2]);
+  // Finale: a tunnel of concentric t-shirt outlines zooms in for the gateway
+  // (each layer scales from a different depth and drifts to centre), then the
+  // merch poster pops in over pink + texture and, with further scroll, the
+  // backdrop melts pink→blue while the tees shift over and the merch objects
+  // (badges, bandanas, fannies, kit) pop out around them. Scroll driven.
   const revealOpacity = useTransform(progress, [.80, .845, .853], [0, 1, 0]);
   const revealVisibility = useTransform(progress, value => value < .80 || value >= .853 ? "hidden" : "visible");
-  const khaiVisibility = useTransform(progress, value => value < .403 || value >= .80 ? "hidden" : "visible");
-  const merchVisibility = useTransform(progress, value => value < .79 ? "hidden" : "visible");
+  // Parallax tunnel: four evenly-nested stroke rings share ONE zoom clock and
+  // grow together like a single camera diving through the tee. A per-ring
+  // parallax pan (deeper rings drift least, nearer rings whip past fastest,
+  // each on its own travel direction) gives the depth that a plain zoom lacks.
+  const tunnelIn = useTransform(progress, [.80, .852], [0, 1], { clamp: true });
+  const tunnelGrow = useTransform(tunnelIn, t => 1 + 1.6 * t * t);
+  const tunnelPan = useTransform(tunnelIn, t => t * t);
+  const tunnelLayers = [
+    { base: .30, spin: -7, depth: .58, dir: -30, pan: 0 },
+    { base: .47, spin: 5, depth: .74, dir: 15, pan: 20 },
+    { base: .70, spin: -3, depth: .88, dir: -60, pan: 42 },
+    { base: .98, spin: 2, depth: 1, dir: 120, pan: 66 },
+  ].map((layer) => {
+    const rad = (layer.dir * Math.PI) / 180;
+    return {
+      ...layer,
+      x: useTransform(tunnelPan, t => Math.cos(rad) * layer.pan * t),
+      y: useTransform(tunnelPan, t => Math.sin(rad) * layer.pan * t),
+      scale: useTransform(tunnelGrow, g => layer.base * g),
+      opacity: useTransform(tunnelIn, t => layer.depth * (0.55 + 0.45 * t)),
+    };
+  });
+  // Handoff khai -> merch: khai doesn't hard-cut at the reveal start; it fades
+  // out over the same window the navy cover + tunnel ramp in, so the tunnel
+  // appears to swallow the poster. The reverse-read (scrolling back up) is a
+  // symmetric fade-in, never a pop.
+  const khaiOpacity = useTransform(progress, [.765, .83], [1, 0]);
+  const khaiVisibility = useTransform(progress, value => value < .403 || value >= .83 ? "hidden" : "visible");
+  const merchVisibility = useTransform(progress, value => value < .84 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
@@ -95,7 +119,7 @@ export default function ScrollExperience() {
       <motion.div className="journey-scene" style={{ visibility: themeVisibility }}>
         <ThemeReveal progress={theme} embedded />
       </motion.div>
-      <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ visibility: khaiVisibility }}>
+      <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ opacity: khaiOpacity, visibility: khaiVisibility }}>
         <KhaiHero progress={hero} />
       </motion.div>
       <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility }} aria-hidden="true">
@@ -134,10 +158,11 @@ export default function ScrollExperience() {
       <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>
         <Merch progress={progress} />
       </motion.div>
-      <motion.div className="merch-reveal-bg" style={{ opacity: revealBg }} aria-hidden="true" />
-      <motion.div className="merch-reveal" style={{ opacity: revealOpacity, visibility: revealVisibility }} aria-hidden="true">
-        <motion.img src="/assets/tshirt outlne.png" alt="" draggable="false"
-          style={{ scale: reduced ? 1 : revealScale }} />
+      <motion.div className="merch-tunnel" style={{ opacity: revealOpacity, visibility: revealVisibility }} aria-hidden="true">
+        {tunnelLayers.map((layer, i) => (
+          <motion.img key={i} className="merch-tunnel__tee" src="/assets/tshirt stroke.png" alt="" draggable="false"
+            style={{ scale: reduced ? 1 : layer.scale, rotate: reduced ? 0 : layer.spin, opacity: reduced ? 1 : layer.opacity, x: reduced ? 0 : layer.x, y: reduced ? 0 : layer.y }} />
+        ))}
       </motion.div>
     </div>
   </section>;
