@@ -7,4 +7,3 @@ Scroll upward to reverse. No entry buttons.
 Read UPDATE-NOTES.md for changes.
 updated for vercel 
 1
-2
