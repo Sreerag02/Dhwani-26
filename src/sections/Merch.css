@@ -703,32 +703,34 @@
 
 /* ── Merch item hover tooltip ────────────────────────────────── */
 .merch__item-wrap {
-  /* Inherits position/size from the existing .merch__pop / merch__badge etc.
-     classes — we just add relative so the tooltip can anchor to it. */
   position: absolute;
   cursor: pointer;
   outline: none;
+  /* .merch__pop sets pointer-events:none — override it so hover works */
+  pointer-events: auto;
+  /* allow tooltip to overflow the wrapper */
+  overflow: visible;
 }
 
-/* The inner <img> should fill the wrapper exactly as before */
+/* The inner <img> fills the wrapper width; height is auto so it scales naturally */
 .merch__item-wrap > img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
 }
 
 /* Tooltip container */
 .merch__tooltip {
   position: absolute;
-  bottom: calc(100% + 6px);
+  bottom: calc(100% + 4px);
   left: 50%;
   transform: translateX(-50%) translateY(6px);
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.18s ease, transform 0.18s ease;
-  z-index: 100;
+  z-index: 200;
 }
 
 .merch__tooltip--visible {
