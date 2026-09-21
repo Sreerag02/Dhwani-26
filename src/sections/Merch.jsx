@@ -1,5 +1,108 @@
 import "./Merch.css";
+import { useLayoutEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useTransform } from "motion/react";
+
+/** Hoverable merch item — shows a yellow badge tooltip with the item name */
+function MerchItem({ className, style, src, label, alt }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      className={`merch__item-wrap ${className}`}
+      style={style}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      tabIndex={0}
+      role="img"
+      aria-label={label}
+    >
+      <img src={src} alt={alt || label} draggable="false" />
+      <div className={`merch__tooltip${hovered ? " merch__tooltip--visible" : ""}`}>
+        <img src="/assets/footer/yellowbadge.png" alt="" className="merch__tooltip-badge" draggable="false" />
+        <span className="merch__tooltip-text">{label}</span>
+      </div>
+    </div>
+  );
+}
+
+/** Scroll-driven merch pop-in item.
+ *
+ * Breaks the fragile CSS-calc choreography out of Merch.css and drives the
+ * per-item transforms straight from the shared `phase2` (enter) scroll
+ * MotionValue. Each wrapper still reads its own --fly-* / --base-rot /
+ * --pop-delay custom properties (set per item in the stylesheet, including
+ * portrait overrides) so positioning and travel stay defined in CSS; only the
+ * arithmetic moves to JS where it's bulletproof. */
+function MerchPop({ phase2, className, style, src, alt, reduced }) {
+  const wrapRef = useRef(null);
+  const [tween, setTween] = useState(null);
+
+  useLayoutEffect(() => {
+    const read = () => {
+      const el = wrapRef.current;
+      if (!el) return;
+      const cs = getComputedStyle(el);
+      const num = (name, fallback = 0) => {
+        const v = parseFloat(cs.getPropertyValue(name));
+        return Number.isFinite(v) ? v : fallback;
+      };
+      setTween({
+        flyX: num("--fly-x"),
+        flyY: num("--fly-y"),
+        flyRot: num("--fly-rot"),
+        baseRot: num("--base-rot"),
+        delay: num("--pop-delay", 0.3),
+      });
+    };
+    read();
+    window.addEventListener("resize", read);
+    window.addEventListener("orientationchange", read);
+    return () => {
+      window.removeEventListener("resize", read);
+      window.removeEventListener("orientationchange", read);
+    };
+  }, []);
+
+  // Staggered entrance: each item's --pop-delay shifts its slice of phase2.
+  // The items hold their settled composition through the rest of the pin —
+  // there is no scatter-out, so the stage never empties before Events arrives.
+  // `tween` (a plain object from state) is only ever captured in the
+  // transformer closures — the useTransform inputs stay MotionValues.
+  const enter = useTransform([phase2], ([p]) => {
+    const delay = (tween && tween.delay) ?? 0.3;
+    const s = Math.min(delay * 1.0, 0.7);
+    return Math.min(Math.max((p - s) / 0.3, 0), 1);
+  });
+  const x = useTransform([enter], ([e]) => {
+    const f = tween ?? {};
+    return `${((f.flyX ?? 0) * (1 - e)).toFixed(2)}cqw`;
+  });
+  const y = useTransform([enter], ([e]) => {
+    const f = tween ?? {};
+    return `${((f.flyY ?? 0) * (1 - e)).toFixed(2)}cqw`;
+  });
+  const rotate = useTransform([enter], ([e]) => {
+    const f = tween ?? {};
+    return `${((f.baseRot ?? 0) + (f.flyRot ?? 0) * (1 - e)).toFixed(2)}deg`;
+  });
+  const scale = useTransform([enter], ([e]) => {
+    return Math.max(0.001, e < 0.55 ? 0.35 + (1.06 - 0.35) * (e / 0.55) : 1.06 - (1.06 - 1) * ((e - 0.55) / 0.45));
+  });
+  const opacity = useTransform([enter], ([e]) => e);
+
+  return (
+    <div ref={wrapRef} className={className} style={style}>
+      {reduced ? (
+        <img src={src} alt={alt} aria-hidden="true" draggable="false" />
+      ) : (
+        <motion.div className="merch__pop-move" style={{ x, y, rotate, scale, opacity }}>
+          <img src={src} alt={alt} aria-hidden="true" draggable="false" />
+        </motion.div>
+      )}
+    </div>
+  );
+}
 
 export default function Merch({ progress }) {
   const reduced = useReducedMotion();
@@ -13,20 +116,20 @@ export default function Merch({ progress }) {
   const rise = useTransform(enter, [0, 1], ["6px", "0px"]);
   // Pink -> blue: the pink backdrop melts away to reveal the blue image, the
   // t-shirt cluster slides over (teeShift), and the merch objects — badges,
-  // bandanas, fannies, kit — pop out around the tees. Each .merch__pop item
-  // staggers its own entrance via --pop-delay; --fade2/--rise2 drive the group.
+  // bandanas, fannies, kit — pop out around the tees. Each MerchPop item
+  // staggers its own entrance via --pop-delay within the shared phase2 window.
   const bgShift = useTransform(progress, [.90, .96], [1, 0]);
   const teeShift = useTransform(progress, [.90, .97], [0, 1]);
   const shiftX = useTransform(teeShift, v => `${v * 12}px`);
   const shiftY = useTransform(teeShift, v => `${v * -16}px`);
   const phase2 = useTransform(progress, [.90, .965], [0, 1]);
-  const fade2 = useTransform(phase2, [0, 1], [0, 1]);
-  const pop2 = useTransform(phase2, [0, 1], [0, 1]);
   // Scene 2: the "t-shirt scene" gives way to the merch display — clouds,
   // lanterns and notes drift out (--decor), the tees fade away completely
   // (--tees), and the merch box pops into the centre (--box/--boxScale)
-  // while the merch items pop in via --pop2/--fade2. Everything settles by
-  // ~.965, leaving the rest of the scroll as a hold on the finished display.
+  // while the merch items pop in via the MerchPop layer each driving its own
+  // staggered window of phase2. They settle by ~.965 and hold that settled
+  // composition through the rest of the pin — no scatter-out, so the stage
+  // never empties before the journey hands off to the Events section.
   const decorOut = useTransform(progress, [.90, .945], [1, 0]);
   const teesOut = useTransform(progress, [.90, .945], [1, 0]);
   const boxIn = useTransform(progress, [.905, .96], [0, 1]);
@@ -36,7 +139,7 @@ export default function Merch({ progress }) {
       id="merch"
       className="merch"
       aria-label="Dhwani 26 merchandise"
-      style={reduced ? undefined : { "--pop": scale, "--rise": rise, "--fade": enter, "--fade2": fade2, "--pop2": pop2, "--bgshift": bgShift, "--decor": decorOut, "--tees": teesOut, "--box": boxIn, "--boxScale": boxScale }}
+      style={reduced ? undefined : { "--pop": scale, "--rise": rise, "--fade": enter, "--bgshift": bgShift, "--decor": decorOut, "--tees": teesOut, "--box": boxIn, "--boxScale": boxScale }}
     >
       <div className="merch__bg merch__bg--blue" aria-hidden="true" />
       <div className="merch__bg merch__bg--pink" aria-hidden="true" />
@@ -85,6 +188,9 @@ export default function Merch({ progress }) {
             className="merch__tee merch__tee--front-right"
             draggable="false"
           />
+          <a href="#" className="merch__order-btn merch__order-btn--tees" role="button">
+            Order Now
+          </a>
         </motion.div>
         {/* <img
           src="/assets/MERCH KIT IMAGE.png"
@@ -194,28 +300,73 @@ export default function Merch({ progress }) {
           className="merch__lantern merch__lantern--one"
           draggable="false"
         />
-        <img className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
-          src="/assets/merch/badges/badge%201.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
-          src="/assets/merch/badges/badge%202.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__badge merch__badge--3" style={{ "--pop-delay": ".55s" }}
-          src="/assets/merch/badges/badge%203.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__bandana merch__bandana--1" style={{ "--pop-delay": ".12s" }}
-          src="/assets/merch/bandana/bandana%201.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
-          src="/assets/merch/bandana/bandana%202.png" alt="" aria-hidden="true" draggable="false" />
-        {/* <img className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
-          src="/assets/merch/bandana/bandana-a2.webp" alt="" aria-hidden="true" draggable="false" /> */}
-        <img className="merch__pop merch__bandana merch__bandana--wide" style={{ "--pop-delay": ".5s" }}
-          src="/assets/merch/bandana.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__fanny merch__fanny--right" style={{ "--pop-delay": ".58s" }}
-          src="/assets/merch/fanny-pack.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__badge merch__badge--wide" style={{ "--pop-delay": ".66s" }}
-          src="/assets/merch/badges.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
-          src="/assets/merch/fanny/fanny-1.webp" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}
-          src="/assets/merch/fanny/fanny-2.webp" alt="" aria-hidden="true" draggable="false" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
+          src="/assets/merch/badges/badge%201.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
+          src="/assets/merch/badges/badge%202.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__badge merch__badge--3" style={{ "--pop-delay": ".55s" }}
+          src="/assets/merch/badges/badge%203.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__sticker merch__sticker--1" style={{ "--pop-delay": ".15s" }}
+          src="/assets/merch/sticker/sticker1.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__sticker merch__sticker--2" style={{ "--pop-delay": ".3s" }}
+          src="/assets/merch/sticker/sticker2.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__sticker merch__sticker--3" style={{ "--pop-delay": ".45s" }}
+          src="/assets/merch/sticker/sticker3.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__sticker merch__sticker--4" style={{ "--pop-delay": ".6s" }}
+          src="/assets/merch/sticker/sticker4.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__sticker merch__sticker--5" style={{ "--pop-delay": ".75s" }}
+          src="/assets/merch/sticker/sticker5.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__bandana merch__bandana--1" style={{ "--pop-delay": ".12s" }}
+          src="/assets/merch/bandana/bandana%201.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
+          src="/assets/merch/bandana/bandana%202.png" alt="" />
+        {/* <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
+          src="/assets/merch/bandana/bandana-a2.webp" alt="" /> */}
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__bandana merch__bandana--wide" style={{ "--pop-delay": ".5s" }}
+          src="/assets/merch/bandana.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__fanny merch__fanny--right" style={{ "--pop-delay": ".58s" }}
+          src="/assets/merch/fanny-pack.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__badge merch__badge--wide" style={{ "--pop-delay": ".66s" }}
+          src="/assets/merch/badges.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
+          src="/assets/merch/fanny/fanny-1.webp" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}
+          src="/assets/merch/fanny/fanny-2.webp" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__kit" style={{ "--pop-delay": ".55s" }}
+          src="/assets/merch/merch-kit.png" alt="" />
+        {/* <MerchItem className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
+          src="/assets/merch/badges/badge%201.png" label="Badge" />
+        <MerchItem className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
+          src="/assets/merch/badges/badge%202.png" label="Badge" />
+        <MerchItem className="merch__pop merch__badge merch__badge--3" style={{ "--pop-delay": ".55s" }}
+          src="/assets/merch/badges/badge%203.png" label="Badge" />
+        <MerchItem className="merch__pop merch__bandana merch__bandana--1" style={{ "--pop-delay": ".12s" }}
+          src="/assets/merch/bandana/bandana%201.png" label="Bandana" />
+        <MerchItem className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
+          src="/assets/merch/bandana/bandana%202.png" label="Bandana" />
+        <MerchItem className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
+          src="/assets/merch/bandana/bandana-a2.webp" label="Bandana" />
+        <MerchItem className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
+          src="/assets/merch/fanny/fanny-1.webp" label="Fanny Pack" />
+        <MerchItem className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}
+          src="/assets/merch/fanny/fanny-2.webp" label="Fanny Pack" /> */}
         <a href="#merch" className="merch__order-btn" role="button">
           Order Now
         </a>
