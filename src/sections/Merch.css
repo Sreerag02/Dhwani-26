@@ -700,3 +700,63 @@
     scale: 1;
   }
 }
+
+/* ── Merch item hover tooltip ────────────────────────────────── */
+.merch__item-wrap {
+  /* Inherits position/size from the existing .merch__pop / merch__badge etc.
+     classes — we just add relative so the tooltip can anchor to it. */
+  position: absolute;
+  cursor: pointer;
+  outline: none;
+}
+
+/* The inner <img> should fill the wrapper exactly as before */
+.merch__item-wrap > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Tooltip container */
+.merch__tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 100;
+}
+
+.merch__tooltip--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Yellow badge background image */
+.merch__tooltip-badge {
+  display: block;
+  width: auto;
+  height: clamp(28px, 4cqi, 48px);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+}
+
+/* Label text centered over the badge */
+.merch__tooltip-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Galavant, sans-serif;
+  font-size: clamp(8px, 1.4cqi, 14px);
+  font-weight: 700;
+  color: #1f1d66;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  padding: 0 12px;
+}

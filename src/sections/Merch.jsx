@@ -1,5 +1,30 @@
 import "./Merch.css";
+import { useState } from "react";
 import { motion, useReducedMotion, useTransform } from "motion/react";
+
+/** Hoverable merch item — shows a yellow badge tooltip with the item name */
+function MerchItem({ className, style, src, label, alt }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      className={`merch__item-wrap ${className}`}
+      style={style}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      tabIndex={0}
+      role="img"
+      aria-label={label}
+    >
+      <img src={src} alt={alt || label} draggable="false" />
+      <div className={`merch__tooltip${hovered ? " merch__tooltip--visible" : ""}`}>
+        <img src="/assets/footer/yellowbadge.png" alt="" className="merch__tooltip-badge" draggable="false" />
+        <span className="merch__tooltip-text">{label}</span>
+      </div>
+    </div>
+  );
+}
 
 export default function Merch({ progress }) {
   const reduced = useReducedMotion();
@@ -194,22 +219,22 @@ export default function Merch({ progress }) {
           className="merch__lantern merch__lantern--one"
           draggable="false"
         />
-        <img className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
-          src="/assets/merch/badges/badge%201.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
-          src="/assets/merch/badges/badge%202.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__badge merch__badge--3" style={{ "--pop-delay": ".55s" }}
-          src="/assets/merch/badges/badge%203.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__bandana merch__bandana--1" style={{ "--pop-delay": ".12s" }}
-          src="/assets/merch/bandana/bandana%201.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
-          src="/assets/merch/bandana/bandana%202.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
-          src="/assets/merch/bandana/bandana-a2.webp" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
-          src="/assets/merch/fanny/fanny-1.webp" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}
-          src="/assets/merch/fanny/fanny-2.webp" alt="" aria-hidden="true" draggable="false" />
+        <MerchItem className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
+          src="/assets/merch/badges/badge%201.png" label="Badge" />
+        <MerchItem className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
+          src="/assets/merch/badges/badge%202.png" label="Badge" />
+        <MerchItem className="merch__pop merch__badge merch__badge--3" style={{ "--pop-delay": ".55s" }}
+          src="/assets/merch/badges/badge%203.png" label="Badge" />
+        <MerchItem className="merch__pop merch__bandana merch__bandana--1" style={{ "--pop-delay": ".12s" }}
+          src="/assets/merch/bandana/bandana%201.png" label="Bandana" />
+        <MerchItem className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
+          src="/assets/merch/bandana/bandana%202.png" label="Bandana" />
+        <MerchItem className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
+          src="/assets/merch/bandana/bandana-a2.webp" label="Bandana" />
+        <MerchItem className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
+          src="/assets/merch/fanny/fanny-1.webp" label="Fanny Pack" />
+        <MerchItem className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}
+          src="/assets/merch/fanny/fanny-2.webp" label="Fanny Pack" />
         <a href="#merch" className="merch__order-btn" role="button">
           Order Now
         </a>
