@@ -9,42 +9,58 @@ import "./VideoTransition.css";
  * `src`       Path to the video file (e.g. "/assets/skate.mp4").
  * `start`     Progress value at which the video starts scrubbing (0-1).
  * `end`       Progress value at which the video reaches its end frame (0-1).
- * `fadeIn`    Progress range [from, to] for the fade-in opacity.
- * `fadeOut`   Progress range [from, to] for the fade-out opacity.
  *
  * The video element is muted + playsInline so autoplay policies never block
- * it. currentTime is set synchronously on every scroll tick, giving a
- * frame-perfect scrub in both directions.
+ * it. Smooth scrubbing is achieved by lerping currentTime towards the
+ * target on every animation frame, avoiding the jitter of raw scroll-driven
+ * seeks.
  */
-export default function VideoTransition({ progress, src, start, end, fadeIn, fadeOut }) {
+export default function VideoTransition({ progress, src, start, end }) {
   const videoRef = useRef(null);
-
-  // Once the video metadata is ready we can compute the duration-scaled time.
-  // We store duration in a ref to avoid re-subscribing to the MotionValue.
   const durationRef = useRef(0);
+  const targetTimeRef = useRef(0);
+  const currentTimeRef = useRef(0);
+  const rafRef = useRef(null);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     const onMeta = () => { durationRef.current = video.duration; };
     video.addEventListener("loadedmetadata", onMeta);
-    // If metadata already loaded (cached), grab duration immediately.
     if (video.readyState >= 1) durationRef.current = video.duration;
     return () => video.removeEventListener("loadedmetadata", onMeta);
   }, []);
 
-  // Scrub currentTime in sync with scroll.
+  // Smooth animation loop: lerp currentTime towards targetTime each frame
+  useEffect(() => {
+    const LERP = 0.18; // smoothing factor (0 = frozen, 1 = instant/raw)
+    const tick = () => {
+      const video = videoRef.current;
+      if (video && durationRef.current) {
+        const target = targetTimeRef.current;
+        const current = currentTimeRef.current;
+        // Lerp towards target; snap if very close to avoid infinite crawl
+        const diff = target - current;
+        const next = Math.abs(diff) < 0.01 ? target : current + diff * LERP;
+        currentTimeRef.current = next;
+        video.currentTime = next;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, []);
+
+  // Update target time on scroll — no direct seeking, just sets the goal
   useMotionValueEvent(progress, "change", (v) => {
-    const video = videoRef.current;
     const duration = durationRef.current;
-    if (!video || !duration) return;
+    if (!duration) return;
     const t = Math.max(0, Math.min(1, (v - start) / (end - start)));
-    video.currentTime = t * duration;
+    targetTimeRef.current = t * duration;
   });
 
   return (
     <div className="video-transition" aria-hidden="true">
-      {/* Cinematic letterbox bars */}
       <div className="video-transition__bars" />
       <video
         ref={videoRef}
