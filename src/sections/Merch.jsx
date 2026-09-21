@@ -86,12 +86,12 @@ export default function Merch({ progress }) {
             draggable="false"
           />
         </motion.div>
-        <img
+        {/* <img
           src="/assets/MERCH KIT IMAGE.png"
           alt="Dhwani 26 merch collection"
           className="merch__box"
           draggable="false"
-        />
+        /> */}
         <img
           src="/assets/merch/cloud/cloud3.png"
           alt=""
@@ -204,8 +204,14 @@ export default function Merch({ progress }) {
           src="/assets/merch/bandana/bandana%201.png" alt="" aria-hidden="true" draggable="false" />
         <img className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
           src="/assets/merch/bandana/bandana%202.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
-          src="/assets/merch/bandana/bandana-a2.webp" alt="" aria-hidden="true" draggable="false" />
+        {/* <img className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
+          src="/assets/merch/bandana/bandana-a2.webp" alt="" aria-hidden="true" draggable="false" /> */}
+        <img className="merch__pop merch__bandana merch__bandana--wide" style={{ "--pop-delay": ".5s" }}
+          src="/assets/merch/bandana.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch__pop merch__fanny merch__fanny--right" style={{ "--pop-delay": ".58s" }}
+          src="/assets/merch/fanny-pack.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="merch__pop merch__badge merch__badge--wide" style={{ "--pop-delay": ".66s" }}
+          src="/assets/merch/badges.png" alt="" aria-hidden="true" draggable="false" />
         <img className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
           src="/assets/merch/fanny/fanny-1.webp" alt="" aria-hidden="true" draggable="false" />
         <img className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}

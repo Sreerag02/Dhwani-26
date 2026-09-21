@@ -461,19 +461,62 @@
   transform-origin: center center;
   transition: opacity 0.5s var(--pop-delay, 0s), scale 0.55s cubic-bezier(.34, 1.56, .64, 1) var(--pop-delay, 0s);
   will-change: opacity, scale;
+  /* Once popped in, the merch objects drift gently on their float cycle, each
+     staggered off its pop-in delay so the scene never bobs in perfect sync. */
+  animation: merch-pop-float 5.5s ease-in-out infinite;
+  animation-delay: calc(var(--pop-delay, 0s) + 0.5s);
+}
+
+@keyframes merch-pop-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -11px;
+  }
 }
 .merch__pop img { object-fit: contain; }
 .merch__badge { width: clamp(56px, 9cqw, 130px); filter: drop-shadow(0 12px 18px rgb(31 29 102 / 0.4)); }
 .merch__bandana { width: clamp(110px, 22cqw, 300px); filter: drop-shadow(0 18px 26px rgb(31 29 102 / 0.45)); }
+
+/* Wide bandana (bandana.png, ~3:1) sits to the left of the merch box,
+   lower than bandana--2 so the two don't collide. */
+.merch__bandana--wide {
+  width: clamp(170px, 26cqw, 260px);
+  left: 8%;
+  top: 26%;
+  /* rotate: 8deg; */
+  filter: drop-shadow(0 18px 26px rgb(31 29 102 / 0.45));
+}
+
+/* Wide fanny pack (fanny-pack.png, ~3:1) mirrors bandana.png just to its right. */
+.merch__fanny--right {
+  width: clamp(170px, 26cqw, 360px);
+  left: 40%;
+  top: 26%;
+  /* rotate: -8deg; */
+  filter: drop-shadow(0 16px 24px rgb(31 29 102 / 0.45));
+}
+
+/* Wide badges (badges.png, ~3:1) continues the row, just right of the fanny pack. */
+.merch__badge--wide {
+  width: clamp(170px, 26cqw, 260px);
+  right: 11%;
+  top: 26%;
+  /* rotate: 8deg; */
+  filter: drop-shadow(0 12px 18px rgb(31 29 102 / 0.4));
+}
 .merch__fanny { width: clamp(130px, 24cqw, 320px); filter: drop-shadow(0 16px 24px rgb(31 29 102 / 0.45)); }
-.merch__badge--1 { left: 10%; top: 10%; rotate: -10deg; }
-.merch__badge--2 { left: 34%; top: 15%; rotate: 6deg; }
-.merch__badge--3 { right: 9%; top: 12%; rotate: 5deg; }
-.merch__bandana--1 { right: 13%; top: 30%; rotate: -8deg; }
-.merch__bandana--2 { left: 4%; top: 40%; rotate: 12deg; }
-.merch__bandana--3 { right: 5%; bottom: 26%; rotate: -16deg; }
-.merch__fanny--1 { left: 9%; bottom: 26%; rotate: -10deg; }
-.merch__fanny--2 { right: 20%; bottom: 8%; rotate: 7deg; }
+.merch__badge--1 { right: 6%; top: 33%; rotate: -10deg; }
+.merch__badge--2 { right: 13%; top: 33%; rotate: 6deg; }
+.merch__badge--3 { right: 20%; top: 33%; rotate: 5deg; }
+/* bandana.png is the bandana section's title; the three bandana variants sit
+   in a row beneath it. */
+.merch__bandana--1 { left: 1%; top: 32%; rotate: 0deg; }
+.merch__bandana--2 { left: 11%; top: 32%; rotate: 5deg; }
+.merch__fanny--1 { left: 30%; top: 26%; rotate: -10deg; }
+.merch__fanny--2 { right: 30%; top: 26%; rotate: 7deg; }
 
 /* ---------- Order button ---------- */
 .merch__order-btn {
@@ -621,7 +664,7 @@
   .merch__lantern--one { right: 3%; bottom: 30%; width: 11%; }
   .merch__sticker-price { left: 6%; top: 34%; width: 20%; }
   .merch__note--red { left: auto; right: 10%; top: 15%; width: 9%; }
-  .merch__cloud--top-left { left: 46%; top: 65%; width: 18%; }
+  .merch__cloud--top-left { left: 6%; top: 58%; width: 18%; }
   .merch__cloud--bottom-left { left: 8%; bottom: 28%; width: 20%; animation-delay: -7s; }
   .merch__cloud--bottom-mid { left: 38%; bottom: 6%; width: 30%; animation-delay: -3s; }
   .merch__cloud--bottom-right { left: 62%; bottom: 26%; width: 22%; animation-delay: -5s; }
@@ -629,20 +672,25 @@
   .merch__note--blue,
   .merch__cloud--top-right,
   .merch__cloud--low-right { display: none; }
-  .merch__order-btn { left: 50%; top: 72%; bottom: auto; font-size: clamp(14px, 1.8cqw, 21px); }
+  .merch__order-btn { left: 50%; top: auto; bottom: calc(4% + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) rotate(-2deg); font-size: clamp(14px, 1.8cqw, 21px); }
+  /* Portrait re-layout: the three merch groups stack vertically, each with its
+     wide title image centred and the items tucked beneath it — bandana row,
+     then fanny-pack row, then badges row. Matches the desktop group order. */
   .merch__pop { z-index: 26; }
   .merch__badge { width: clamp(38px, 9cqw, 80px); }
   .merch__bandana { width: clamp(76px, 20cqw, 150px); }
   .merch__fanny { width: clamp(92px, 21cqw, 200px); }
   .merch__box { width: min(52%, 44svh); transform: translate(-50%, -50%); }
-  .merch__badge--1 { left: 5%; top: 4%; }
-  .merch__badge--2 { left: 28%; top: 10%; }
-  .merch__badge--3 { right: 6%; top: 6%; }
-  .merch__bandana--1 { right: 6%; top: 34%; }
-  .merch__bandana--2 { left: 3%; top: 44%; }
-  .merch__bandana--3 { right: 3%; bottom: 20%; }
-  .merch__fanny--1 { left: 8%; bottom: 26%; }
-  .merch__fanny--2 { right: 12%; bottom: 18%; }
+  .merch__bandana--wide { left: 50%; top: 21%; transform: translateX(-50%); width: clamp(150px, 44cqw, 320px); }
+  .merch__bandana--1 { left: 30%; top: 30%; rotate: -6deg; }
+  .merch__bandana--2 { left: 55%; top: 30%; rotate: 6deg; }
+  .merch__fanny--right { left: 50%; top: 42%; transform: translateX(-50%); width: clamp(150px, 44cqw, 320px); }
+  .merch__fanny--1 { left: 30%; top: 51%; rotate: -8deg; }
+  .merch__fanny--2 { left: 55%; top: 51%; rotate: 8deg; }
+  .merch__badge--wide { left: 50%; top: 63%; transform: translateX(-50%); width: clamp(130px, 40cqw, 280px); }
+  .merch__badge--1 { left: 34%; top: 70%; rotate: -10deg; }
+  .merch__badge--2 { left: 47%; top: 70%; rotate: 5deg; }
+  .merch__badge--3 { left: 60%; top: 70%; rotate: 8deg; }
 }
 
 /* Extra-small phones: pull sizes back a notch and drop one mid lantern. */
@@ -655,8 +703,7 @@
   .merch__tee--front-right { width: 45%; }
   .merch__lantern--plain,
   .merch__note--blue { display: none; }
-  .merch__order-btn { font-size: clamp(7px, 1.7cqw, 18px);
-                      top:70% }
+  .merch__order-btn { font-size: clamp(9px, 1.7cqw, 18px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -675,7 +722,7 @@
   .merch__cloud--bottom-right-low {
     animation: none;
   }
-  .merch__pop { transition: none; }
+  .merch__pop { transition: none; animation: none; }
   .merch__stage .merch__logo,
   .merch__stage .merch__tee,
   .merch__stage .merch__tees-now,
