@@ -742,8 +742,8 @@
 .merch__tooltip-badge {
   display: block;
   width: auto;
-  height: clamp(52px, 7vw, 80px);
-  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));
+  height: clamp(75px, 10vw, 120px);
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.7));
 }
 
 /* Label text centered over the badge */
