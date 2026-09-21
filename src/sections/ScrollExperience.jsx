@@ -81,13 +81,13 @@ export default function ScrollExperience() {
   // merch poster pops in over pink + texture and, with further scroll, the
   // backdrop melts pink→blue while the tees shift over and the merch objects
   // (badges, bandanas, fannies, kit) pop out around them. Scroll driven.
-  const revealOpacity = useTransform(progress, [.80, .845, .853], [0, 1, 0]);
-  const revealVisibility = useTransform(progress, value => value < .80 || value >= .853 ? "hidden" : "visible");
+  const revealOpacity = useTransform(progress, [.895, .925, .935], [0, 1, 0]);
+  const revealVisibility = useTransform(progress, value => value < .895 || value >= .935 ? "hidden" : "visible");
   // Parallax tunnel: four evenly-nested stroke rings share ONE zoom clock and
   // grow together like a single camera diving through the tee. A per-ring
   // parallax pan (deeper rings drift least, nearer rings whip past fastest,
   // each on its own travel direction) gives the depth that a plain zoom lacks.
-  const tunnelIn = useTransform(progress, [.80, .852], [0, 1], { clamp: true });
+  const tunnelIn = useTransform(progress, [.895, .935], [0, 1], { clamp: true });
   const tunnelGrow = useTransform(tunnelIn, t => 1 + 1.6 * t * t);
   const tunnelPan = useTransform(tunnelIn, t => t * t);
   const tunnelLayers = [
@@ -111,15 +111,15 @@ export default function ScrollExperience() {
   // symmetric fade-in, never a pop.
   const khaiOpacity = useTransform(progress, [.765, .83], [1, 0]);
   const khaiVisibility = useTransform(progress, value => value < .403 || value >= .83 ? "hidden" : "visible");
-  // Skateboard video transition: cuts in right as Khai fades out, holds
-  // through the skate clip, then fades out just before merch pops in.
-  const videoFade = useTransform(progress, [.835, .850, .880, .900], [0, 1, 1, 0]);
-  const videoVisibility = useTransform(progress, value => value < .835 || value >= .900 ? "hidden" : "visible");
-  // Merch is pushed back to .90 so the video has clear room. We remap
-  // the progress that Merch receives so its internal [.84,1] timings still
-  // work exactly as authored — no changes needed inside Merch.jsx.
-  const remappedMerchProgress = useTransform(progress, [.90, 1], [.84, 1]);
-  const merchVisibility = useTransform(progress, value => value < .90 ? "hidden" : "visible");
+  // Skateboard video transition: cuts in right as Khai fades out, plays
+  // fully, then the t-shirt tunnel follows it (not the other way around).
+  const videoFade = useTransform(progress, [.835, .850, .878, .895], [0, 1, 1, 0]);
+  const videoVisibility = useTransform(progress, value => value < .835 || value >= .895 ? "hidden" : "visible");
+  // Merch is pushed back to .945 (after tunnel ends at .935) so the video
+  // and tunnel each have clear scroll room. Remap so Merch.jsx internals
+  // stay exactly as authored — no changes needed inside Merch.jsx.
+  const remappedMerchProgress = useTransform(progress, [.945, 1], [.84, 1]);
+  const merchVisibility = useTransform(progress, value => value < .945 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
@@ -169,7 +169,7 @@ export default function ScrollExperience() {
           progress={progress}
           src="/assets/skate.mp4"
           start={.835}
-          end={.900}
+          end={.895}
         />
       </motion.div>
       <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>

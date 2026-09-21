@@ -56,10 +56,6 @@ export default function VideoTransition({ progress, src, start, end, fadeIn, fad
         disablePictureInPicture
         tabIndex={-1}
       />
-      {/* Overlay text – purely decorative */}
-      <div className="video-transition__label">
-        <span>THE VIBE</span>
-      </div>
     </div>
   );
 }
