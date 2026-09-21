@@ -23,6 +23,7 @@
   width: 100vw;
   height: 100vh;
   overflow: visible;
+  translate: var(--tee-group-x, 0) 0;
   isolation: isolate;
   z-index: 3;
   user-select: none;
@@ -166,19 +167,19 @@
 }
 
 .merch__tee--front-left {
-  left: 50%;
-  transform: translate(-94%, -80%);
+  left: 34%;
+  top: 62%;
+  transform: translate(-50%, -50%) rotate(-12deg) scaleX(-1);
   width: 25%;
   z-index: 1;
 }
 
 .merch__tee--front-right {
-  left: 46%;
-  top: 68%;
-  transform: translate(-80%, -38%);
+  left: 66%;
+  top: 62%;
+  transform: translate(-50%, -50%) rotate(12deg);
   width: 25%;
   z-index: 1;
-  rotate: 60deg;
 }
 
 /* The 16:9 canvas letterboxes on squarish/16:10 laptops and landscape tablets;
@@ -187,20 +188,29 @@
    to keep each shirt inside the canvas (three bands: small squares, big
    squares, and 4:3 up to 16:10). */
 @media (orientation: landscape) and (max-width: 1024px) and (max-aspect-ratio: 16/9) {
+  .merch__tees { --tee-group-x: 4cqw; }
   .merch__tee--front-right {
-    transform: translate(-80%, -58%);
+    left: 66%;
+    top: 56%;
+    transform: translate(-50%, -50%) rotate(12deg);
   }
 }
 
 @media (min-width: 1025px) and (max-aspect-ratio: 4/3) {
+  .merch__tees { --tee-group-x: 4cqw; }
   .merch__tee--front-right {
-    transform: translate(-80%, -58%);
+    left: 66%;
+    top: 58%;
+    transform: translate(-50%, -50%) rotate(12deg);
   }
 }
 
 @media (min-width: 1025px) and (min-aspect-ratio: 4/3) and (max-aspect-ratio: 16/9) {
+  .merch__tees { --tee-group-x: 4cqw; }
   .merch__tee--front-right {
-    transform: translate(-80%, -50%);
+    left: 66%;
+    top: 58%;
+    transform: translate(-50%, -50%) rotate(12deg);
   }
 }
 
@@ -701,8 +711,8 @@
   .merch__tees-now { width: 20%; left: 60%; top: 50%; }
   .merch__tee { width: 46%; top: 60%; }
   .merch__tee--outline { width: 50%; top: 58%; }
-  .merch__tee--front-left { width: 45%; transform: translate(-106%, -80%); }
-  .merch__tee--front-right { width: 45%; top: 64%; transform: translate(-75%, -40%); }
+  .merch__tee--front-left { left: 32%; width: 38%; transform: translate(-50%, -50%) rotate(-12deg) scaleX(-1); }
+  .merch__tee--front-right { left: 68%; width: 38%; top: 62%; transform: translate(-50%, -50%) rotate(12deg); }
   .merch__cloud--left-btm { left: -8%; width: 34%; bottom: calc(4% + env(safe-area-inset-bottom, 0px)); z-index: 1; }
   .merch__cloud--left-mid { left: -3%; width: 18%; bottom: 50%; }
   .merch__cloud--right-mid { right: -4%; width: 18%; bottom: 32%; }
