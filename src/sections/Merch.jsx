@@ -129,9 +129,6 @@ export default function Merch({ progress }) {
   // bandanas, fannies, kit — pop out around the tees. Each MerchPop item
   // staggers its own entrance via --pop-delay within the shared phase2 window.
   const bgShift = useTransform(progress, [.90, .96], [1, 0]);
-  const teeShift = useTransform(progress, [.90, .97], [0, 1]);
-  const shiftX = useTransform(teeShift, v => `${v * 12}px`);
-  const shiftY = useTransform(teeShift, v => `${v * -16}px`);
   const phase2 = useTransform(progress, [.90, .965], [0, 1]);
   // Scene 2: the "t-shirt scene" gives way to the merch display — clouds,
   // lanterns and notes drift out (--decor), the tees fade away completely
@@ -168,7 +165,7 @@ export default function Merch({ progress }) {
           className="merch__logo"
           draggable="false"
         />
-        <motion.div className="merch__tees" style={{ x: reduced ? 0 : shiftX, y: reduced ? 0 : shiftY }}>
+        <motion.div className="merch__tees">
           <img
             src="/assets/tshirt outlne.webp"
             alt=""
