@@ -19,6 +19,8 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  /* Boost perceived quality: brighter, more saturated, sharper contrast */
+  filter: brightness(1.22) contrast(1.08) saturate(1.18);
 }
 
 /* ── Letterbox bars ─────────────────────────────────────────── */
