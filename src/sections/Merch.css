@@ -742,8 +742,8 @@
 .merch__tooltip-badge {
   display: block;
   width: auto;
-  height: clamp(28px, 4cqi, 48px);
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+  height: clamp(52px, 7vw, 80px);
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));
 }
 
 /* Label text centered over the badge */
@@ -754,11 +754,13 @@
   align-items: center;
   justify-content: center;
   font-family: Galavant, sans-serif;
-  font-size: clamp(8px, 1.4cqi, 14px);
+  font-size: clamp(11px, 1.6vw, 18px);
   font-weight: 700;
   color: #1f1d66;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   line-height: 1;
   text-transform: uppercase;
-  padding: 0 12px;
+  padding: 0 16px;
+  /* nudge text down slightly to sit in the badge centre visually */
+  padding-top: 4px;
 }
