@@ -67,7 +67,6 @@ export default function ScrollExperience() {
   // Second cloud curtain: reuses the same CLOUD_LAYERS and Cloud component,
   // just remapped to fire right after Khai fades out and before the video.
   const curtain2Progress = useTransform(progress, [.645, .735], [0, 0.32]);
-  const curtain2Ground = useTransform(curtain2Progress, [0, .077, .246], [1, 1, 0]);
   const curtain2Visibility = useTransform(progress, value => value < .645 || value >= .735 ? "hidden" : "visible");
   const theme = useTransform(progress, [.134, .309], [0, 1]);
   const themeVisibility = useTransform(progress, value => value >= .45 ? "hidden" : "visible");
@@ -138,9 +137,8 @@ export default function ScrollExperience() {
         <motion.div className="cloud-curtain-ground" style={{ opacity: ground }} />
         {CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={progress} />)}
       </motion.div>
-      {/* Second curtain: same clouds reused, fires Khai→Video */}
+      {/* Second curtain: same clouds reused, fires Khai→Merch */}
       <motion.div className="cloud-curtain cloud-curtain--2" style={{ visibility: curtain2Visibility }} aria-hidden="true">
-        <motion.div className="cloud-curtain-ground" style={{ opacity: curtain2Ground }} />
         {CLOUD_LAYERS.map(layer => <Cloud key={`c2-${layer.id}`} layer={layer} progress={curtain2Progress} />)}
       </motion.div>
       <motion.div className="scroll-mask-bg" style={{ opacity: maskBg }} aria-hidden="true" />
