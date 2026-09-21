@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from "motion/react"
 import KhaiHero from "../components/HeroReveal";
 import ThemeReveal from "./ThemeReveal";
 import Merch from "./Merch";
+import VideoTransition from "./VideoTransition";
 import "../components/Opening.css";
 import "./ScrollExperience.css";
 
@@ -110,7 +111,15 @@ export default function ScrollExperience() {
   // symmetric fade-in, never a pop.
   const khaiOpacity = useTransform(progress, [.765, .83], [1, 0]);
   const khaiVisibility = useTransform(progress, value => value < .403 || value >= .83 ? "hidden" : "visible");
-  const merchVisibility = useTransform(progress, value => value < .84 ? "hidden" : "visible");
+  // Skateboard video transition: fades in after the tunnel resolves, holds
+  // through the skate clip, then fades out just before merch pops in.
+  const videoFade = useTransform(progress, [.855, .875, .905, .922], [0, 1, 1, 0]);
+  const videoVisibility = useTransform(progress, value => value < .855 || value >= .922 ? "hidden" : "visible");
+  // Merch is now pushed back to .92 so the video has clear room. We remap
+  // the progress that Merch receives so its internal [.84,1] timings still
+  // work exactly as authored — no changes needed inside Merch.jsx.
+  const remappedMerchProgress = useTransform(progress, [.92, 1], [.84, 1]);
+  const merchVisibility = useTransform(progress, value => value < .92 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
@@ -155,8 +164,17 @@ export default function ScrollExperience() {
           <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.png" alt="DHWANI" />
         </motion.div>
       </motion.div>
+      {/* Skateboard video scrubs between the Khai tunnel and the Merch reveal */}
+      <motion.div className="video-transition-wrapper" style={{ opacity: videoFade, visibility: videoVisibility }}>
+        <VideoTransition
+          progress={progress}
+          src="/assets/skate.mp4"
+          start={.855}
+          end={.922}
+        />
+      </motion.div>
       <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>
-        <Merch progress={progress} />
+        <Merch progress={remappedMerchProgress} />
       </motion.div>
       <motion.div className="merch-tunnel" style={{ opacity: revealOpacity, visibility: revealVisibility }} aria-hidden="true">
         {tunnelLayers.map((layer, i) => (
