@@ -10,12 +10,12 @@ export default function ComingSoon() {
   return (
     <section id="coming-soon" className="coming-soon" aria-label="Coming soon">
       <div className="coming-soon__stage">
-        {/* <img src={E + "theme-cloud.png"} alt="" className="coming-soon__cloud coming-soon__cloud--a cs-float" draggable="false" />
-        <img src={E + "theme-cloud.png"} alt="" className="coming-soon__cloud coming-soon__cloud--b cs-float" draggable="false" /> */}
+        {/* <img src={E + "theme-cloud.webp"} alt="" className="coming-soon__cloud coming-soon__cloud--a cs-float" draggable="false" />
+        <img src={E + "theme-cloud.webp"} alt="" className="coming-soon__cloud coming-soon__cloud--b cs-float" draggable="false" /> */}
         {lanterns.map(([file, pos]) => (
           <img key={pos} src={E + file} alt="" className={"coming-soon__lamp " + pos + " cs-float"} draggable="false" />
         ))}
-        <img src="/assets/logo/dhwani26-text.png" alt="Dhwani '26" className="coming-soon__logo" />
+        <img src="/assets/logo/dhwani26-text.webp" alt="Dhwani '26" className="coming-soon__logo" />
         {/* <h2 className="coming-soon__title">Coming Soon</h2> */}
         <p className="coming-soon__text">More of the Carnivale Razzmatazz is on its way.</p>
       </div>

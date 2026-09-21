@@ -19,7 +19,7 @@ function MerchItem({ className, style, src, label, alt }) {
     >
       <img src={src} alt={alt || label} draggable="false" />
       <div className={`merch__tooltip${hovered ? " merch__tooltip--visible" : ""}`}>
-        <img src="/assets/footer/yellowbadge.png" alt="" className="merch__tooltip-badge" draggable="false" />
+        <img src="/assets/footer/yellowbadge.webp" alt="" className="merch__tooltip-badge" draggable="false" />
         <span className="merch__tooltip-text">{label}</span>
       </div>
     </div>
@@ -144,7 +144,7 @@ export default function Merch({ progress }) {
       <div className="merch__bg merch__bg--blue" aria-hidden="true" />
       <div className="merch__bg merch__bg--pink" aria-hidden="true" />
       <img
-        src="/assets/merch/bg/bg element.png"
+        src="/assets/merch/bg/bg element.webp"
         alt=""
         aria-hidden="true"
         className="merch__bg-element"
@@ -152,38 +152,38 @@ export default function Merch({ progress }) {
       />
       <div className="merch__stage">
         <img
-          src="/assets/merch/merch.png"
+          src="/assets/merch/merch.webp"
           alt="Dhwani 26"
           className="merch__logo"
           draggable="false"
         />
         <motion.div className="merch__tees" style={{ x: reduced ? 0 : shiftX, y: reduced ? 0 : shiftY }}>
           <img
-            src="/assets/tshirt outlne.png"
+            src="/assets/tshirt outlne.webp"
             alt=""
             className="merch__tee merch__tee--outline"
             draggable="false"
           />
           <img
-            src="/assets/t shirt back.png"
+            src="/assets/t shirt back.webp"
             alt="Dhwani 26 t-shirt back"
             className="merch__tee merch__tee--back"
             draggable="false"
           />
           <img
-            src="/assets/GET YOUR TEES NOWWW!1.png"
+            src="/assets/GET YOUR TEES NOWWW!1.webp"
             alt="Get your tees now"
             className="merch__tees-now"
             draggable="false"
           />
           <img
-            src="/assets/t shirt front copy.png"
+            src="/assets/t shirt front copy.webp"
             alt="Dhwani 26 t-shirt front"
             className="merch__tee merch__tee--front-left"
             draggable="false"
           />
           <img
-            src="/assets/t shirt front copy.png"
+            src="/assets/t shirt front copy.webp"
             alt="Dhwani 26 t-shirt front"
             className="merch__tee merch__tee--front-right"
             draggable="false"
@@ -192,110 +192,110 @@ export default function Merch({ progress }) {
             Order Now
           </a>
         </motion.div>
-        {/* <img
-          src="/assets/MERCH KIT IMAGE.png"
+        <img
+          src="/assets/MERCH KIT IMAGE.webp"
           alt="Dhwani 26 merch collection"
           className="merch__box"
           draggable="false"
         /> */}
         <img
-          src="/assets/merch/cloud/cloud3.png"
+          src="/assets/merch/cloud/cloud3.webp"
           alt=""
           className="merch__cloud--left-btm"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/cloud3.png"
+          src="/assets/merch/cloud/cloud3.webp"
           alt=""
           className="merch__cloud--left-mid"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/Cloud7.png"
+          src="/assets/merch/cloud/Cloud7.webp"
           alt=""
           className="merch__cloud--right-mid"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/cloud2.png"
+          src="/assets/merch/cloud/cloud2.webp"
           alt=""
           className="merch__cloud--top-left"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/cloud5.png"
+          src="/assets/merch/cloud/cloud5.webp"
           alt=""
           className="merch__cloud--top-right"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/cloud1.png"
+          src="/assets/merch/cloud/cloud1.webp"
           alt=""
           className="merch__cloud--low-right"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/cloud4.png"
+          src="/assets/merch/cloud/cloud4.webp"
           alt=""
           className="merch__cloud--bottom-left"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/cloud.png"
+          src="/assets/merch/cloud/cloud.webp"
           alt=""
           className="merch__cloud--bottom-mid"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/cloud6.png"
+          src="/assets/merch/cloud/cloud6.webp"
           alt=""
           className="merch__cloud--bottom-right"
           draggable="false"
         />
         <img
-          src="/assets/merch/cloud/Cloud7.png"
+          src="/assets/merch/cloud/Cloud7.webp"
           alt=""
           className="merch__cloud--bottom-right-low"
           draggable="false"
         />
         <img
-          src="/assets/blue note.png"
+          src="/assets/blue note.webp"
           alt=""
           className="merch__note--blue"
           draggable="false"
         />
         <img
-          src="/assets/note red.png"
+          src="/assets/note red.webp"
           alt=""
           className="merch__note--red"
           draggable="false"
         />
         <img
-          src="/assets/merch/lantern/L2 copy.png"
+          src="/assets/merch/lantern/L2 copy.webp"
           alt=""
           className="merch__lantern merch__lantern--l2"
           draggable="false"
         />
         <img
-          src="/assets/merch/lantern/lantern.png"
+          src="/assets/merch/lantern/lantern.webp"
           alt=""
           className="merch__lantern merch__lantern--plain"
           draggable="false"
         />
         <img
-          src="/assets/merch/lantern/lantern3.png"
+          src="/assets/merch/lantern/lantern3.webp"
           alt=""
           className="merch__lantern merch__lantern--three"
           draggable="false"
         />
         <img
-          src="/assets/merch/lantern/lantern 2.png"
+          src="/assets/merch/lantern/lantern 2.webp"
           alt=""
           className="merch__lantern"
           draggable="false"
         />
         <img
-          src="/assets/merch/lantern/lantern1.png"
+          src="/assets/merch/lantern/lantern1.webp"
           alt=""
           className="merch__lantern merch__lantern--one"
           draggable="false"
@@ -354,13 +354,13 @@ export default function Merch({ progress }) {
         {/* <MerchItem className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
           src="/assets/merch/badges/badge%201.png" label="Badge" />
         <MerchItem className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
-          src="/assets/merch/badges/badge%202.png" label="Badge" />
+          src="/assets/merch/badges/badge%202.webp" label="Badge" />
         <MerchItem className="merch__pop merch__badge merch__badge--3" style={{ "--pop-delay": ".55s" }}
-          src="/assets/merch/badges/badge%203.png" label="Badge" />
+          src="/assets/merch/badges/badge%203.webp" label="Badge" />
         <MerchItem className="merch__pop merch__bandana merch__bandana--1" style={{ "--pop-delay": ".12s" }}
-          src="/assets/merch/bandana/bandana%201.png" label="Bandana" />
+          src="/assets/merch/bandana/bandana%201.webp" label="Bandana" />
         <MerchItem className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
-          src="/assets/merch/bandana/bandana%202.png" label="Bandana" />
+          src="/assets/merch/bandana/bandana%202.webp" label="Bandana" />
         <MerchItem className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
           src="/assets/merch/bandana/bandana-a2.webp" label="Bandana" />
         <MerchItem className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}

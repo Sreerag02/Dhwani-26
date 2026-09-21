@@ -85,17 +85,17 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
   }, [onReady]);
   return <TimelineContext.Provider value={progress}><section ref={ref} id={embedded ? undefined : "theme-reveal"} className={`carnival${embedded ? " carnival-embedded" : ""}`} aria-label="Carnivale Razzmatazz"
     data-playing={playing && !reduced}>
-    <RevealLayer className="carnival-stalls" src={E+"stalls.png"} depth={.3} zoom={false} />
+    <RevealLayer className="carnival-stalls" src={E+"stalls.webp"} depth={.3} zoom={false} />
     <div className="carnival-stage">
       <RevealLayer className="carnival-kicker" from={0} fade={KICKER_FADE} depth={1}>
-        <img src="/assets/logo/dhwani26-text.png" alt="Dhwani '26" draggable="false" />
+        <img src="/assets/logo/dhwani26-text.webp" alt="Dhwani '26" draggable="false" />
       </RevealLayer>
       <RevealLayer className="carnival-wheel" depth={.55}>
         <FerrisWheel duration={48} running={playing && !reduced} />
       </RevealLayer>
       <RevealLayer className="carnival-blue" src={E+"CLOUDS.svg"} from={-70} depth={.45} />
       <RevealLayer className="carnival-gate" src={E+"torii new.svg"} depth={.85} />
-      <RevealLayer className="hidden-khai" src={E+"khai-hidden.png"} depth={1.05} />
+      <RevealLayer className="hidden-khai" src={E+"khai-hidden.webp"} depth={1.05} />
       <RevealLayer className="carnival-title" src={E+"title.svg"} alt="Carnivale Razzmatazz" depth={1} />
       {lanterns.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 110 : -110} depth={1.2} float />)}
       {notes.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 60 : -60} depth={1.25} float />)}

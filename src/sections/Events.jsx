@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react";
 import "./Events.css";
 
@@ -11,7 +11,7 @@ const INITIAL_EVENTS = [
     date: "Oct 2 • 6:30 PM",
     venue: "Main Stage",
     prize: "₹75,000",
-    image: "/assets/elements/stalls.png",
+    image: "/assets/elements/stalls.webp",
     description: "Feel the floor vibrate as the premier dance crews from across the nation battle it out with high-octane choreography, synchronization, and electrifying stage presence.",
     rules: ["Team size: 8-24 members", "Time limit: 8-12 minutes", "Props permitted with prior approval"],
     contact: "Ananya - 9876543210",
@@ -28,7 +28,7 @@ const INITIAL_EVENTS = [
     date: "Oct 3 • 5:00 PM",
     venue: "Open Air Theatre",
     prize: "₹50,000",
-    image: "/assets/mascot/sign-right.png",
+    image: "/assets/mascot/sign-right.webp",
     description: "Distorted guitars, roaring drums, and soul-stirring vocals. Witness the fiercest musical showdown where raw talent meets festival energy.",
     rules: ["Team size: 3-8 members", "Time limit: 20 minutes (setup included)", "Original compositions bonus points"],
     contact: "Rahul - 9876543211",
@@ -45,7 +45,7 @@ const INITIAL_EVENTS = [
     date: "Oct 4 • 7:00 PM",
     venue: "Main Arena",
     prize: "Entry Pass Required",
-    image: "/assets/footer/khai2.png",
+    image: "/assets/footer/khai2.webp",
     description: "The crown jewel of Dhwani '26! An unforgettable night featuring top headline artists, luminous lights, laser shows, and non-stop music.",
     rules: ["ID card required at entrance", "Gates open at 5:30 PM", "No re-entry permitted"],
     contact: "Festival Desk - 9876543212",
@@ -62,7 +62,7 @@ const INITIAL_EVENTS = [
     date: "Oct 2 • 2:00 PM",
     venue: "Central Courtyard",
     prize: "₹30,000",
-    image: "/assets/mascot/sign-left.png",
+    image: "/assets/mascot/sign-left.webp",
     description: "Powerful voices, beat of the dholak, and compelling storytelling addressing social themes under the open sky.",
     rules: ["Team size: 10-20 members", "Time limit: 15 minutes", "Microphones not allowed"],
     contact: "Siddharth - 9876543213",
@@ -79,7 +79,7 @@ const INITIAL_EVENTS = [
     date: "Oct 3 • 11:00 AM",
     venue: "Auditorium",
     prize: "₹25,000",
-    image: "/assets/mascot/khai.png",
+    image: "/assets/mascot/khai.webp",
     description: "Showcase your vocal prowess across classical, semi-classical, and light music categories in front of eminent judges.",
     rules: ["Solo performance", "Time limit: 5 minutes", "One backing track allowed"],
     contact: "Meera - 9876543214",
@@ -96,7 +96,7 @@ const INITIAL_EVENTS = [
     date: "Oct 4 • 3:30 PM",
     venue: "Festival Plaza",
     prize: "₹35,000",
-    image: "/assets/khai/outfits.png",
+    image: "/assets/khai/outfits.webp",
     description: "Step into the shoes of your favorite fantasy, anime, or pop-culture character. Runway walk, skit presentation, and costume design awards.",
     rules: ["Individual or Duo entry", "Prop safety check required", "2-minute stage walk/act"],
     contact: "Vikram - 9876543215",
@@ -107,20 +107,18 @@ const INITIAL_EVENTS = [
   }
 ];
 
+const PARTICLES = [...Array(8)].map((_, i) => ({
+  id: i,
+  left: `${10 + i * 12}%`,
+  top: `${10 + (i % 3) * 25}%`,
+  scale: 0.5 + Math.random() * 0.5,
+  duration: 4 + i * 0.5,
+  delay: i * 0.2
+}));
+
 function RedPushpin({ className = "" }) {
   return (
     <svg viewBox="0 0 40 50" className={`event-card__pin-svg ${className}`} aria-hidden="true">
-      <defs>
-        <radialGradient id="pin-head-grad" cx="35%" cy="30%" r="65%">
-          <stop offset="0%" stopColor="#ff7b7b" />
-          <stop offset="40%" stopColor="#e60026" />
-          <stop offset="85%" stopColor="#800010" />
-          <stop offset="100%" stopColor="#400008" />
-        </radialGradient>
-        <filter id="pin-shadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="3" dy="6" stdDeviation="3" floodColor="#000" floodOpacity="0.5" />
-        </filter>
-      </defs>
       <path d="M 20 28 L 20 48 L 17 28 Z" fill="#b0b0b0" filter="url(#pin-shadow)" />
       <path d="M 20 28 L 20 48 L 21 28 Z" fill="#ffffff" opacity="0.6" />
       <ellipse cx="20" cy="28" rx="8" ry="3.5" fill="#a00018" />
@@ -134,7 +132,6 @@ export default function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [resetKey, setResetKey] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const sectionRef = useRef(null);
   const boardRef = useRef(null);
   const isDraggingCardRef = useRef(false);
@@ -145,28 +142,43 @@ export default function Events() {
   const smoothMouseX = useSpring(mouseX, { stiffness: 100, damping: 30 });
   const smoothMouseY = useSpring(mouseY, { stiffness: 100, damping: 30 });
 
-  // Mobile detection
+  const sectionRectRef = useRef(null);
+
+  // Mobile detection & layout rect caching
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 640);
+    let timeoutId;
+    const updateLayout = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsMobile(window.innerWidth <= 640);
+        if (sectionRef.current) {
+          sectionRectRef.current = sectionRef.current.getBoundingClientRect();
+        }
+      }, 150);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    
+    updateLayout();
+    window.addEventListener('resize', updateLayout);
+    window.addEventListener('scroll', updateLayout, { passive: true });
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', updateLayout);
+      window.removeEventListener('scroll', updateLayout);
+    };
   }, []);
 
   // Mouse movement handler
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (isMobile) return;
-    const rect = sectionRef.current?.getBoundingClientRect();
+    const rect = sectionRectRef.current;
     if (rect) {
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setMousePosition({ x, y });
       mouseX.set(x);
       mouseY.set(y);
     }
-  };
+  }, [isMobile, mouseX, mouseY]);
 
   // Scroll Parallax Transforms
   const { scrollYProgress } = useScroll({
@@ -193,7 +205,6 @@ export default function Events() {
       aria-label="Events Notice Board"
       onMouseMove={handleMouseMove}
       onMouseLeave={() => {
-        setMousePosition({ x: 0, y: 0 });
         mouseX.set(0);
         mouseY.set(0);
       }}
@@ -210,14 +221,14 @@ export default function Events() {
 
       {/* Floating particles for ambient effect */}
       <div className="events-particles" aria-hidden="true">
-        {[...Array(8)].map((_, i) => (
+        {PARTICLES.map((particle) => (
           <motion.div
-            key={i}
+            key={particle.id}
             className="particle"
             style={{
-              left: `${10 + i * 12}%`,
-              top: `${10 + (i % 3) * 25}%`,
-              scale: 0.5 + Math.random() * 0.5
+              left: particle.left,
+              top: particle.top,
+              scale: particle.scale
             }}
             animate={{
               y: [0, -30, 0],
@@ -225,16 +236,31 @@ export default function Events() {
               scale: [1, 1.2, 1]
             }}
             transition={{
-              duration: 4 + i * 0.5,
+              duration: particle.duration,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.2
+              delay: particle.delay
             }}
           />
         ))}
       </div>
 
       <div className="events-container">
+        {/* SVG Defs for RedPushpin */}
+        <svg style={{ width: 0, height: 0, position: "absolute" }} aria-hidden="true">
+          <defs>
+            <radialGradient id="pin-head-grad" cx="35%" cy="30%" r="65%">
+              <stop offset="0%" stopColor="#ff7b7b" />
+              <stop offset="40%" stopColor="#e60026" />
+              <stop offset="85%" stopColor="#800010" />
+              <stop offset="100%" stopColor="#400008" />
+            </radialGradient>
+            <filter id="pin-shadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="3" dy="6" stdDeviation="3" floodColor="#000" floodOpacity="0.5" />
+            </filter>
+          </defs>
+        </svg>
+
         {/* Notice Board Header with Bidirectional Scroll Entrance & Exit */}
         <motion.header
           className="notice-board-header"
