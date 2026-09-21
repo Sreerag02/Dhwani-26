@@ -1,0 +1,702 @@
+.merch {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+/* The poster lives on a 16:9 canvas. Every element is positioned in % of
+   this canvas, so the composition scales cleanly at any screen size. The
+   canvas is sized to FIT the viewport (never clipped): on 16:9 screens it
+   fills edge to edge, and on any other ratio it letterboxes with the
+   full-bleed artwork behind it, so everything stays in frame on server
+   laptops, ultrawides, tablets and landscape phones alike. The backgrounds
+   are siblings of the canvas and always cover the whole screen. Content
+   (lantern glow, drifting clouds) may spill over the canvas edge onto the
+   letterbox band, so the canvas itself does not clip. */
+.merch__stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+  isolation: isolate;
+  z-index: 3;
+  user-select: none;
+}
+
+/* ---------- Backgrounds ---------- */
+.merch__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.merch__bg--blue {
+  background-color: #02c8ed;
+  background-image: url("/assets/merch/bg/bg blue.png");
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  opacity: var(--fade, 1);
+}
+
+/* pink sits over the blue, covering the bottom half; it fades in with the
+   poster (--fade) and, once settled, scroll melts it away (--bgshift 1 -> 0)
+   to reveal the blue image underneath */
+.merch__bg--pink {
+  inset: auto 0 0 0;
+  height: 100%;
+  background-image: url("/assets/merch/bg/bgpink.png");
+  background-size: cover;
+  background-position: center;
+  background-color: #af005f;
+  opacity: calc(var(--fade, 1) * var(--bgshift, 1));
+  z-index: 1;
+}
+
+/* ---------- BG element ---------- */
+.merch__bg-element {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  z-index: 2;
+}
+
+/* The t-shirt cluster fills the full viewport height and is centered on it
+   (a 16:9 stage letterboxes on, say, 16:10 laptops, but the shirts should
+   still span screen height). Each tee keeps its own placement/stacking via
+   explicit z-index. */
+.merch__tees {
+  position: absolute;
+  top: calc(50% - 50svh);
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 20;
+  overflow: visible;
+  /* Scene 2 fades the t-shirt cluster away completely (--tees) so only the
+     merch box + items remain at the centre. */
+  opacity: var(--tees, 1);
+}
+.merch__tees .merch__tee--front-left,
+.merch__tees .merch__tee--front-right { z-index: 1; }
+.merch__tees .merch__tee--outline { z-index: 10; }
+.merch__tees .merch__tee--back { z-index: 20; }
+.merch__tees .merch__tees-now { z-index: 21; }
+
+/* ---------- Merch box (scene 2, centre) ----------
+   When the t-shirts tuck back behind it, the merch collection pops into the
+   middle of the stage; the badges/bandanas/fannies pop out over it. */
+.merch__box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(32%, 50svh);
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 21;
+  pointer-events: none;
+  opacity: var(--box, 1);
+  scale: var(--boxScale, 1);
+  filter: drop-shadow(0 26px 36px rgb(31 29 102 / 0.42));
+}
+
+/* ---------- Logo ---------- */
+.merch__logo {
+  position: absolute;
+  width: 30%;
+  height: auto;
+  left: 50%;
+  top: 13%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---------- Tees ---------- */
+.merch__tee {
+  position: absolute;
+  width: 20%;
+  height: auto;
+  left: 50%;
+  top: 63%;
+  transform: translate(-50%, -90%);
+  z-index: 20;
+  pointer-events: auto;
+  animation: merch-tee-breathe 6s ease-in-out infinite;
+  transform-origin: center center;
+  transition: scale 0.25s ease, translate 0.25s ease, filter 0.25s ease;
+}
+
+.merch__tee--back {
+  transform: translate(-50%, -96%) ;
+}
+
+.merch__tees-now {
+  position: absolute;
+  width: 8%;
+  height: auto;
+  left: 40%;
+  top: 45%;
+  transform: translate(-220%, -96%);
+  z-index: 21;
+  pointer-events: auto;
+  transition: scale 0.25s ease, translate 0.25s ease, filter 0.25s ease;
+}
+
+.merch__tee--outline {
+  width: 23%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.merch__tee--front-left {
+  left: 50%;
+  transform: translate(-94%, -80%);
+  width: 25%;
+  z-index: 1;
+}
+
+.merch__tee--front-right {
+  left: 46%;
+  top: 68%;
+  transform: translate(-80%, -38%);
+  width: 25%;
+  z-index: 1;
+  rotate: 60deg;
+}
+
+/* The 16:9 canvas letterboxes on squarish/16:10 laptops and landscape tablets;
+   the viewport-tall tees box re-anchors the cluster a touch lower there, so
+   tuck the leaning front-right tee up a bit more on every aspect below 16:9
+   to keep each shirt inside the canvas (three bands: small squares, big
+   squares, and 4:3 up to 16:10). */
+@media (orientation: landscape) and (max-width: 1024px) and (max-aspect-ratio: 16/9) {
+  .merch__tee--front-right {
+    transform: translate(-80%, -58%);
+  }
+}
+
+@media (min-width: 1025px) and (max-aspect-ratio: 4/3) {
+  .merch__tee--front-right {
+    transform: translate(-80%, -58%);
+  }
+}
+
+@media (min-width: 1025px) and (min-aspect-ratio: 4/3) and (max-aspect-ratio: 16/9) {
+  .merch__tee--front-right {
+    transform: translate(-80%, -50%);
+  }
+}
+
+/* Too subtle to notice alone: the shirts pulse ~1% about their centre, faded
+   out of phase so the cluster feels gently alive. Runs via the individual
+   `scale` property, leaving each tee's translate anchor and tilt untouched. */
+.merch__tee--back { animation-delay: -1s; }
+.merch__tee--outline { animation-delay: -2s; }
+.merch__tee--front-left { animation-delay: -1.6s; }
+.merch__tee--front-right { animation-delay: -3.5s; }
+
+@keyframes merch-tee-breathe {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.01;
+  }
+}
+
+/* Mouse pointer animation, merch t-shirts only: each shirt glistens and lifts
+   as the pointer passes over it, breathing pauses while touched. Runs via the
+   individual `scale`/`translate` properties so the translate anchor and each
+   tee's static tilt (incl. the front-right 60deg rotate) stay intact. */
+@media (hover: hover) {
+  .merch__tee:hover,
+  .merch__tees-now:hover {
+    translate: 0 -6px;
+    animation-play-state: paused;
+  }
+
+  .merch__tee:hover {
+    scale: 1.06;
+    z-index: 30;
+    filter: drop-shadow(0 10px 16px rgb(31 29 102 / 0.35));
+  }
+
+  .merch__tees-now:hover {
+    scale: 1.05;
+    filter: drop-shadow(0 6px 10px rgb(31 29 102 / 0.3));
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: reduce) {
+  .merch__tee:hover,
+  .merch__tees-now:hover {
+    translate: 0 0;
+    filter: none;
+  }
+
+  .merch__tee:hover {
+    scale: 1.03;
+  }
+
+  .merch__tees-now:hover {
+    scale: 1.03;
+  }
+}
+
+/* ---------- Cloud (left of the left tee) ---------- */
+.merch__cloud--left-btm {
+  position: absolute;
+  left: -7px;
+  bottom: 70px;
+  width: 20%;
+  height: auto;
+  z-index: 22;
+  pointer-events: none;
+}
+
+.merch__cloud--left-mid {
+  position: absolute;
+  left: -7px;
+  bottom: 60%;
+  width: 10%;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.merch__cloud--right-mid {
+  position: absolute;
+  right: 0;
+  bottom: 40%;
+  width: 20%;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ---------- Cloud animation (matches coming-soon/carnival sway) ---------- */
+.merch__cloud--left-btm,
+.merch__cloud--left-mid,
+.merch__cloud--right-mid {
+  animation: merch-cloud-drift 8.5s ease-in-out infinite;
+  transform-origin: 50% 10%;
+}
+
+.merch__cloud--left-mid,
+.merch__cloud--right-mid {
+  animation-delay: -4s;
+  animation-duration: 9.5s;
+}
+
+@keyframes merch-cloud-drift {
+  50% {
+    transform: translate3d(7px, -14px, 0) rotate(2deg);
+  }
+}
+
+/* ---------- Festival decor ---------- */
+.merch__cloud--top-left,
+.merch__cloud--top-right,
+.merch__cloud--low-right,
+.merch__cloud--bottom-left,
+.merch__cloud--bottom-mid,
+.merch__cloud--bottom-right,
+.merch__cloud--bottom-right-low {
+  position: absolute;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+  animation: merch-cloud-drift 9s ease-in-out infinite;
+  transform-origin: 50% 10%;
+}
+
+/* Mobile-only bottom clouds: hidden on the desktop 16:9 poster,
+   shown to fill the empty bottom band on small screens. */
+.merch__cloud--bottom-left,
+.merch__cloud--bottom-mid,
+.merch__cloud--bottom-right,
+.merch__cloud--bottom-right-low {
+  display: none;
+}
+
+.merch__cloud--top-left {
+  left: 14%;
+  top: 10%;
+  width: 15%;
+  animation-delay: -5s;
+}
+
+.merch__cloud--top-right {
+  right: 20%;
+  top: 10%;
+  width: 14%;
+  animation-delay: -2s;
+}
+
+.merch__cloud--low-right {
+  right: 0;
+  bottom: 20%;
+  width: 10%;
+  animation-delay: -6s;
+}
+
+.merch__note--blue {
+  position: absolute;
+  right: 3%;
+  top: 20%;
+  width: 9%;
+  height: auto;
+  transform: rotate(4deg);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.merch__note--red {
+  position: absolute;
+  left: 30%;
+  top: 72%;
+  width: 6%;
+  height: auto;
+  transform: rotate(-8deg);
+  z-index: 22;
+  pointer-events: none;
+}
+
+.merch__lantern--one {
+  right: 16%;
+  bottom: 14%;
+  width: 8%;
+  z-index: 6;
+  animation-delay: -2.3s, -1.8s;
+}
+
+/* ---------- Lanterns ---------- */
+.merch__lantern {
+  position: absolute;
+  bottom: 10px;
+  right: 10%;
+  width: 14%;
+  height: auto;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.merch__lantern--l2 {
+  right: auto;
+  bottom: 53%;
+  left: 80%;
+  width: 7%;
+}
+
+.merch__lantern--plain {
+  right: auto;
+  bottom: 30%;
+  left: 20%;
+  width: 6%;
+}
+
+.merch__lantern--three {
+  right: auto;
+  bottom: 50%;
+  left: 9%;
+  width: 12%;
+}
+
+/* ---------- Lantern glow + gentle sway ---------- */
+.merch__lantern {
+  filter: drop-shadow(0 0 1.2cqw rgb(255 196 30 / 0.55));
+  animation: merch-glow 2.4s ease-in-out infinite, merch-lantern-sway 5.2s ease-in-out infinite;
+  transform-origin: 50% 15%;
+}
+
+.merch__lantern--l2 { animation-delay: -1.4s, -1.1s; }
+.merch__lantern--plain { animation-delay: -.7s, -2.4s; }
+.merch__lantern--three { animation-delay: -1.9s, -.4s; }
+
+@keyframes merch-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0.6cqw rgb(255 196 30 / 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 1.8cqw rgb(255 196 30 / 0.75));
+  }
+}
+
+@keyframes merch-lantern-sway {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0) rotate(2.5deg);
+  }
+}
+
+/* ---------- Merch objects (phase 2) ----------
+   After the poster pops, the t-shirt scene drifts out and these merch items
+   (badges, bandanas, fannies) pop in around the merch box, each springing up
+   from its own centre and bouncing into place via --pop2, staggered per item
+   with --pop-delay. Driven by the stage's --pop2/--fade2 vars. */
+.merch__pop {
+  position: absolute;
+  pointer-events: none;
+  z-index: 25;
+  opacity: var(--fade2, 1);
+  scale: var(--pop2, 1);
+  transform-origin: center center;
+  transition: opacity 0.5s var(--pop-delay, 0s), scale 0.55s cubic-bezier(.34, 1.56, .64, 1) var(--pop-delay, 0s);
+  will-change: opacity, scale;
+}
+.merch__pop img { object-fit: contain; }
+.merch__badge { width: clamp(56px, 9cqw, 130px); filter: drop-shadow(0 12px 18px rgb(31 29 102 / 0.4)); }
+.merch__bandana { width: clamp(110px, 22cqw, 300px); filter: drop-shadow(0 18px 26px rgb(31 29 102 / 0.45)); }
+.merch__fanny { width: clamp(130px, 24cqw, 320px); filter: drop-shadow(0 16px 24px rgb(31 29 102 / 0.45)); }
+.merch__badge--1 { left: 10%; top: 10%; rotate: -10deg; }
+.merch__badge--2 { left: 34%; top: 15%; rotate: 6deg; }
+.merch__badge--3 { right: 9%; top: 12%; rotate: 5deg; }
+.merch__bandana--1 { right: 13%; top: 30%; rotate: -8deg; }
+.merch__bandana--2 { left: 4%; top: 40%; rotate: 12deg; }
+.merch__bandana--3 { right: 5%; bottom: 26%; rotate: -16deg; }
+.merch__fanny--1 { left: 9%; bottom: 26%; rotate: -10deg; }
+.merch__fanny--2 { right: 20%; bottom: 8%; rotate: 7deg; }
+
+/* ---------- Order button ---------- */
+.merch__order-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%) rotate(-2deg);
+  z-index: 30;
+  padding: 0.95em 2.6em;
+  border: 3px solid rgb(255 248 232 / 0.9);
+  border-radius: 999px;
+  color: var(--midnight);
+  background: linear-gradient(180deg, #ffd24a 0%, var(--yellow) 100%);
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(12px, 1.3cqw, 20px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0.35em 0.4em 0 rgb(31 29 102 / 0.45);
+  animation: merch-order-wobble 2.6s ease-in-out infinite;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Playful sticker arrow, echoing the "GET YOUR TEES NOWWW" sticker vibe */
+.merch__order-btn::after {
+  content: "→";
+  margin-left: 0.6em;
+  font-size: 1.1em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Little sunshine sparkle on the left */
+.merch__order-btn::before {
+  content: "✦";
+  margin-right: 0.6em;
+  font-size: 0.8em;
+  line-height: 1;
+  color: var(--rose);
+}
+
+.merch__order-btn:hover {
+  background: linear-gradient(180deg, #ffea99 0%, #ffd24a 100%);
+  box-shadow: 0.5em 0.55em 0 rgb(31 29 102 / 0.5);
+  transform: translateX(-50%) rotate(-2deg) scale(1.04);
+}
+
+.merch__order-btn:active {
+  box-shadow: 0.15em 0.2em 0 rgb(31 29 102 / 0.45);
+  transform: translateX(-50%) rotate(-2deg) scale(0.97);
+}
+
+.merch__order-btn:focus-visible {
+  outline: 3px solid #02caef;
+  outline-offset: 4px;
+}
+
+@keyframes merch-order-wobble {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(2deg);
+  }
+}
+
+
+/* ---------- Reveal pop ----------
+   As the pinned journey ends the poster's elements pop in: each scales up in
+   place (--pop) with a soft overshoot, lifts a few px (--rise) and fades in
+   (--fade), all driven from the stage's scroll-linked CSS vars via independent
+   props, so every element's own transform/placement is left untouched. */
+.merch__stage .merch__logo,
+.merch__stage .merch__tee,
+.merch__stage .merch__tees-now,
+.merch__stage .merch__cloud--left-btm,
+.merch__stage .merch__cloud--left-mid,
+.merch__stage .merch__cloud--right-mid,
+.merch__stage .merch__cloud--top-left,
+  .merch__stage .merch__cloud--top-right,
+  .merch__stage .merch__cloud--low-right,
+  .merch__stage .merch__cloud--bottom-left,
+  .merch__stage .merch__cloud--bottom-mid,
+  .merch__stage .merch__cloud--bottom-right,
+  .merch__stage .merch__cloud--bottom-right-low,
+  .merch__stage .merch__note--blue,
+.merch__stage .merch__note--red,
+.merch__stage .merch__sticker-price,
+.merch__stage .merch__lantern,
+.merch__stage .merch__order-btn {
+  opacity: var(--fade, 1);
+  translate: 0 var(--rise, 0px);
+}
+
+/* Scene 2: once the merch display takes over, the t-shirt-scene decor (clouds,
+   lanterns, notes) fades out on top of the poster fade-in. */
+.merch__stage .merch__cloud--left-btm,
+.merch__stage .merch__cloud--left-mid,
+.merch__stage .merch__cloud--right-mid,
+.merch__stage .merch__cloud--top-left,
+.merch__stage .merch__cloud--top-right,
+.merch__stage .merch__cloud--low-right,
+.merch__stage .merch__cloud--bottom-left,
+.merch__stage .merch__cloud--bottom-mid,
+.merch__stage .merch__cloud--bottom-right,
+.merch__stage .merch__cloud--bottom-right-low,
+.merch__stage .merch__note--blue,
+.merch__stage .merch__note--red,
+.merch__stage .merch__lantern {
+  opacity: calc(var(--fade, 1) * var(--decor, 1));
+}
+
+/* The poster as a whole blooms from the screen centre: the scale lives on the
+   16:9 canvas (origin centre), while individual elements keep their own gentle
+   fade/rise — so nothing looks like it grows from an off-centre edge. */
+.merch__stage {
+  scale: var(--pop, 1);
+  transform-origin: center center;
+}
+
+/* Portrait phone + tablet: drop the 16:9 canvas and use the whole viewport,
+   re-distributing the poster across the tall screen with device-safe spacing
+   while keeping the t-shirts as a balanced cluster. */
+@media (orientation: portrait) and (max-width: 1024px) {
+  .merch__stage { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+  .merch__bg,
+  .merch__bg--pink { height: 100%; }
+  .merch__logo { width: 50%; top: calc(15% + env(safe-area-inset-top, 0px)); }
+  .merch__tees-now { width: 20%; left: 60%; top: 30%; }
+  .merch__tee { width: 46%; top: 55%; }
+  .merch__tee--outline { width: 50%;top:54%; }
+  .merch__tee--front-left { width: 45%; transform: translate(-106%, -80%); }
+  .merch__tee--front-right { width: 45%; transform: translate(-75%, -40%); }
+  .merch__cloud--left-btm { width: 40%; bottom: calc(3% + env(safe-area-inset-bottom, 0px)); }
+  .merch__cloud--left-mid { width: 24%; bottom: 40%; }
+  .merch__cloud--right-mid { width: 32%; bottom: 18%; }
+  .merch__lantern { width: 15%; bottom: 0px; right: 2%; }
+  .merch__lantern--l2 { right: auto; bottom: 5%; left: 45%; width: 9%; }
+  .merch__lantern--plain { right: auto; bottom: 32%; left: 12%; width: 8%; }
+  .merch__lantern--three { right: auto; bottom: 64%; left: 1%; width: 15%; }
+  .merch__lantern--one { right: 3%; bottom: 30%; width: 11%; }
+  .merch__sticker-price { left: 6%; top: 34%; width: 20%; }
+  .merch__note--red { left: auto; right: 10%; top: 15%; width: 9%; }
+  .merch__cloud--top-left { left: 46%; top: 65%; width: 18%; }
+  .merch__cloud--bottom-left { left: 8%; bottom: 28%; width: 20%; animation-delay: -7s; }
+  .merch__cloud--bottom-mid { left: 38%; bottom: 6%; width: 30%; animation-delay: -3s; }
+  .merch__cloud--bottom-right { left: 62%; bottom: 26%; width: 22%; animation-delay: -5s; }
+  .merch__cloud--bottom-right-low { right: 0; bottom: 4%; width: 26%; animation-delay: -1s; }
+  .merch__note--blue,
+  .merch__cloud--top-right,
+  .merch__cloud--low-right { display: none; }
+  .merch__order-btn { left: 50%; top: 72%; bottom: auto; font-size: clamp(14px, 1.8cqw, 21px); }
+  .merch__pop { z-index: 26; }
+  .merch__badge { width: clamp(38px, 9cqw, 80px); }
+  .merch__bandana { width: clamp(76px, 20cqw, 150px); }
+  .merch__fanny { width: clamp(92px, 21cqw, 200px); }
+  .merch__box { width: min(52%, 44svh); transform: translate(-50%, -50%); }
+  .merch__badge--1 { left: 5%; top: 4%; }
+  .merch__badge--2 { left: 28%; top: 10%; }
+  .merch__badge--3 { right: 6%; top: 6%; }
+  .merch__bandana--1 { right: 6%; top: 34%; }
+  .merch__bandana--2 { left: 3%; top: 44%; }
+  .merch__bandana--3 { right: 3%; bottom: 20%; }
+  .merch__fanny--1 { left: 8%; bottom: 26%; }
+  .merch__fanny--2 { right: 12%; bottom: 18%; }
+}
+
+/* Extra-small phones: pull sizes back a notch and drop one mid lantern. */
+@media (max-width: 380px) {
+  .merch__logo { width: 45%; }
+  .merch__tees-now { width: 22%;left:60%;top: 32%; }
+  .merch__tee { width: 50%; }
+  .merch__tee--outline { width: 55%; }
+  .merch__tee--front-left,
+  .merch__tee--front-right { width: 45%; }
+  .merch__lantern--plain,
+  .merch__note--blue { display: none; }
+  .merch__order-btn { font-size: clamp(7px, 1.7cqw, 18px);
+                      top:70% }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .merch__order-btn,
+  .merch__tee,
+  .merch__lantern,
+  .merch__cloud--left-btm,
+  .merch__cloud--left-mid,
+  .merch__cloud--right-mid,
+  .merch__cloud--top-left,
+  .merch__cloud--top-right,
+  .merch__cloud--low-right,
+  .merch__cloud--bottom-left,
+  .merch__cloud--bottom-mid,
+  .merch__cloud--bottom-right,
+  .merch__cloud--bottom-right-low {
+    animation: none;
+  }
+  .merch__pop { transition: none; }
+  .merch__stage .merch__logo,
+  .merch__stage .merch__tee,
+  .merch__stage .merch__tees-now,
+  .merch__stage .merch__cloud--left-btm,
+  .merch__stage .merch__cloud--left-mid,
+  .merch__stage .merch__cloud--right-mid,
+  .merch__stage .merch__cloud--top-left,
+  .merch__stage .merch__cloud--top-right,
+  .merch__stage .merch__cloud--low-right,
+  .merch__stage .merch__cloud--bottom-left,
+  .merch__stage .merch__cloud--bottom-mid,
+  .merch__stage .merch__cloud--bottom-right,
+  .merch__stage .merch__cloud--bottom-right-low,
+  .merch__stage .merch__note--blue,
+  .merch__stage .merch__note--red,
+  .merch__stage .merch__sticker-price,
+  .merch__stage .merch__lantern,
+  .merch__stage .merch__order-btn,
+  .merch__stage {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}

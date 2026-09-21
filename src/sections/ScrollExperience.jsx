@@ -2,14 +2,17 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import KhaiHero from "../components/HeroReveal";
 import ThemeReveal from "./ThemeReveal";
+import Merch from "./Merch";
+import VideoTransition from "./VideoTransition";
 import "../components/Opening.css";
 import "./ScrollExperience.css";
 
 // Clouds sweep right-to-left across a dense 4x8 tile grid.  Every cloud crosses
-// the centre of its tile at ~.40-.42, so the viewport is fully covered in one
-// shared moment, then all clear by ~.50 (before the mask at .52). Parallax
-// comes from travel distance (front ring sweeps further/faster), while timing
-// stays in a common window so the sheet never tears.
+// the centre of its tile at ~.22, so the viewport is fully covered in one
+// shared moment a little before the theme settles (.309), then all clear by
+// ~.30, ahead of the navy wipe opening at .379. Parallax comes from travel
+// distance (front ring sweeps further/faster), while timing stays in a common
+// window so the sheet never tears.
 const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
   const row = Math.floor(index / 4);
   const col = index % 4;
@@ -19,9 +22,9 @@ const CLOUD_LAYERS = Array.from({ length: 32 }, (_, index) => {
   const micro = ((row * 3 + col * 5) % 7) - 3;
   const microY = ((col * 7 + row * 11) % 5) - 2;
   const travel = ring ? 125 + col * 15 : 195 + col * 20;
-  const start = 0 + (row % 2) * .02 + col * .006;
-  const mid = .34 + Math.floor(index / 8) * .006;
-  const end = .48 + (col % 2) * .012;
+  const mid = .22 + Math.floor(index / 8) * .006;
+  const start = mid - .22 + (row % 2) * .014 + col * .004;
+  const end = mid + .075 + (col % 2) * .008;
   return {
     id: index,
     file: 2 + (row + col * 2) % 7,
@@ -56,23 +59,70 @@ export default function ScrollExperience() {
   const ref = useRef(null);
   const { scrollYProgress: progress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const reduced = useReducedMotion();
-  const introOpacity = useTransform(progress, [.08, .18], [1, 0]);
-  const introVisibility = useTransform(progress, value => value >= .18 ? "hidden" : "visible");
-  const introY = useTransform(progress, [0, .18], [0, -100]);
-  const clouds = useTransform(progress, [.12, .46], [0, 1]);
-  const ground = useTransform(clouds, [0, .10, .32], [1, 1, 0]);
-  const cloudVisibility = useTransform(progress, value => value >= .84 ? "hidden" : "visible");
-  const theme = useTransform(progress, [.20, .46], [0, 1]);
-  const themeVisibility = useTransform(progress, value => value >= .62 ? "hidden" : "visible");
-  const maskOpacity = useTransform(progress, [.52, .60, .65, .76], [0, 1, 1, 0]);
-  const maskBg = useTransform(progress, [.52, .58], [0, 1]);
-  const maskScale = useTransform(progress, [.52, .76], [.35, 3]);
-  const maskVisibility = useTransform(progress, value => value < .52 || value >= .76 ? "hidden" : "visible");
-  const dripScale = useTransform(progress, [.56, .66], [.14, 3.2]);
-  const dripOpacity = useTransform(progress, [.56, .60, .66, .70], [0, 1, 1, 0]);
-  const dripVisibility = useTransform(progress, value => value < .56 || value >= .70 ? "hidden" : "visible");
-  const heroVisibility = useTransform(progress, value => value < .60 ? "hidden" : "visible");
-  const hero = useTransform(progress, [.64, .94], [.50, 1]);
+  const introOpacity = useTransform(progress, [.053, .121], [1, 0]);
+  const introVisibility = useTransform(progress, value => value >= .121 ? "hidden" : "visible");
+  const introY = useTransform(progress, [0, .121], [0, -100]);
+  const clouds = useTransform(progress, [.080, .309], [0, 1]);
+  const ground = useTransform(clouds, [0, .077, .246], [1, 1, 0]);
+  const cloudVisibility = useTransform(progress, value => value >= .564 ? "hidden" : "visible");
+  // Second cloud curtain: reuses the same CLOUD_LAYERS and Cloud component,
+  // just remapped to fire right after Khai fades out and before the video.
+  const curtain2Progress = useTransform(progress, [.690, .740], [0, 1]);
+  const curtain2Ground = useTransform(curtain2Progress, [0, .077, .246], [1, 1, 0]);
+  const curtain2Visibility = useTransform(progress, value => value < .690 || value >= .740 ? "hidden" : "visible");
+  const theme = useTransform(progress, [.134, .309], [0, 1]);
+  const themeVisibility = useTransform(progress, value => value >= .45 ? "hidden" : "visible");
+  const maskOpacity = useTransform(progress, [.379, .433, .467, .541], [0, 1, 1, 0]);
+  const maskBg = useTransform(progress, [.379, .419, .541], [0, 1, 0]);
+  const maskScale = useTransform(progress, [.379, .541], [.35, 3]);
+  const maskVisibility = useTransform(progress, value => value < .379 || value >= .541 ? "hidden" : "visible");
+  const dripScale = useTransform(progress, [.407, .474], [.14, 3.2]);
+  const dripOpacity = useTransform(progress, [.407, .433, .474, .500], [0, 1, 1, 0]);
+  const dripVisibility = useTransform(progress, value => value < .407 || value >= .500 ? "hidden" : "visible");
+  const heroVisibility = useTransform(progress, value => value < .403 ? "hidden" : "visible");
+  const hero = useTransform(progress, [.403, .645], [.50, 1.18]);
+  // Finale: a tunnel of concentric t-shirt outlines zooms in for the gateway
+  // (each layer scales from a different depth and drifts to centre), then the
+  // merch poster pops in over pink + texture and, with further scroll, the
+  // backdrop melts pink→blue while the tees shift over and the merch objects
+  // (badges, bandanas, fannies, kit) pop out around them. Scroll driven.
+  const revealOpacity = useTransform(progress, [.785, .815, .845], [0, 1, 0]);
+  const revealVisibility = useTransform(progress, value => value < .785 || value >= .845 ? "hidden" : "visible");
+  // Parallax tunnel: four evenly-nested stroke rings share ONE zoom clock and
+  // grow together like a single camera diving through the tee. A per-ring
+  // parallax pan (deeper rings drift least, nearer rings whip past fastest,
+  // each on its own travel direction) gives the depth that a plain zoom lacks.
+  const tunnelIn = useTransform(progress, [.785, .845], [0, 1], { clamp: true });
+  const tunnelGrow = useTransform(tunnelIn, t => 1 + 1.6 * t * t);
+  const tunnelPan = useTransform(tunnelIn, t => t * t);
+  const tunnelLayers = [
+    { base: .30, spin: -7, depth: .58, dir: -30, pan: 0 },
+    { base: .47, spin: 5, depth: .74, dir: 15, pan: 20 },
+    { base: .70, spin: -3, depth: .88, dir: -60, pan: 42 },
+    { base: .98, spin: 2, depth: 1, dir: 120, pan: 66 },
+  ].map((layer) => {
+    const rad = (layer.dir * Math.PI) / 180;
+    return {
+      ...layer,
+      x: useTransform(tunnelPan, t => Math.cos(rad) * layer.pan * t),
+      y: useTransform(tunnelPan, t => Math.sin(rad) * layer.pan * t),
+      scale: useTransform(tunnelGrow, g => layer.base * g),
+      opacity: useTransform(tunnelIn, t => layer.depth * (0.55 + 0.45 * t)),
+    };
+  });
+  // Handoff khai -> video: Khai fades out early, right after its hero animation
+  // finishes at .645, leaving minimal dead hold time.
+  const khaiOpacity = useTransform(progress, [.650, .700], [1, 0]);
+  const khaiVisibility = useTransform(progress, value => value < .403 || value >= .700 ? "hidden" : "visible");
+  // Skateboard video transition: cuts in right as Khai fades out, plays
+  // fully, then the t-shirt tunnel follows it (not the other way around).
+  const videoFade = useTransform(progress, [.735, .750, .778, .800], [0, 1, 1, 0]);
+  const videoVisibility = useTransform(progress, value => value < .735 || value >= .800 ? "hidden" : "visible");
+  // Merch bleeds in while the tunnel is still visible (.785-.845), so it
+  // peeks through the t-shirt outlines as they fade. Remap so Merch.jsx
+  // internals stay exactly as authored.
+  const remappedMerchProgress = useTransform(progress, [.825, 1], [.84, 1]);
+  const merchVisibility = useTransform(progress, value => value < .825 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
@@ -81,12 +131,17 @@ export default function ScrollExperience() {
       <motion.div className="journey-scene" style={{ visibility: themeVisibility }}>
         <ThemeReveal progress={theme} embedded />
       </motion.div>
-      <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ visibility: heroVisibility }}>
+      <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ opacity: khaiOpacity, visibility: khaiVisibility }}>
         <KhaiHero progress={hero} />
       </motion.div>
       <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility }} aria-hidden="true">
         <motion.div className="cloud-curtain-ground" style={{ opacity: ground }} />
         {CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={progress} />)}
+      </motion.div>
+      {/* Second curtain: same clouds reused, fires Khai→Video */}
+      <motion.div className="cloud-curtain cloud-curtain--2" style={{ visibility: curtain2Visibility }} aria-hidden="true">
+        <motion.div className="cloud-curtain-ground" style={{ opacity: curtain2Ground }} />
+        {CLOUD_LAYERS.map(layer => <Cloud key={`c2-${layer.id}`} layer={layer} progress={curtain2Progress} />)}
       </motion.div>
       <motion.div className="scroll-mask-bg" style={{ opacity: maskBg }} aria-hidden="true" />
       <motion.div className="concentric-rings" style={{ opacity: dripOpacity, visibility: dripVisibility }} aria-hidden="true">
@@ -117,13 +172,22 @@ export default function ScrollExperience() {
           <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.png" alt="DHWANI" />
         </motion.div>
       </motion.div>
-      
-      {/* Seamless transition overlay to Events section */}
-      <div className="journey-transition-overlay" aria-hidden="true" />
-      <div className="transition-clouds" aria-hidden="true">
-        <img src="/assets/mascot/cloud-main.png" alt="" className="transition-cloud-1" />
-        <img src="/assets/mascot/cloud-main.png" alt="" className="transition-cloud-2" />
-      </div>
+      <motion.div className="video-transition-wrapper" style={{ opacity: videoFade, visibility: videoVisibility }}>
+        <VideoTransition
+          progress={progress}
+          start={.735}
+          end={.800}
+        />
+      </motion.div>
+      <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>
+        <Merch progress={remappedMerchProgress} />
+      </motion.div>
+      <motion.div className="merch-tunnel" style={{ opacity: revealOpacity, visibility: revealVisibility }} aria-hidden="true">
+        {tunnelLayers.map((layer, i) => (
+          <motion.img key={i} className="merch-tunnel__tee" src="/assets/tshirt stroke.png" alt="" draggable="false"
+            style={{ scale: reduced ? 1 : layer.scale, rotate: reduced ? 0 : layer.spin, opacity: reduced ? 1 : layer.opacity, x: reduced ? 0 : layer.x, y: reduced ? 0 : layer.y }} />
+        ))}
+      </motion.div>
     </div>
   </section>;
 }

@@ -6,13 +6,13 @@
 .world-intro h1 {font:400 clamp(52px,10vw,168px)/.92 Galavant,sans-serif;margin:0 0 clamp(8px,2svh,18px);text-shadow:5px 8px #af005f}
 .world-intro__wordmark {display:block;width:min(520px,80vw);max-width:100%;height:auto}
 .world-year {display:block;margin-top:clamp(14px,3svh,25px);font:400 clamp(32px,5vw,72px)/1 Galavant,sans-serif;color:#02caef}
-.reveal-journey {position:relative;height:590svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
+.reveal-journey {position:relative;height:1630svh;background:#1f1d66;scroll-margin-top:var(--festival-header-height)}
 .journey-sticky {position:sticky;top:0;height:100svh;overflow:hidden;background:#1f1d66}
 .journey-scene {position:absolute;inset:0;height:100%;min-height:0;padding-top:0}
 .world-intro.journey-scene {z-index:40}
 .journey-anchor {position:absolute;left:0;width:1px;height:1px;scroll-margin-top:var(--festival-header-height)}
-.theme-anchor {top:calc(490svh * .30)}
-.khai-anchor {top:calc(490svh * .64)}
+.theme-anchor {top:calc(730svh * .30)}
+.khai-anchor {top:calc(730svh * .64)}
 .carnival-embedded {height:100%;padding:0;display:grid;place-items:center;margin:0}
 .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 16 / 9));height:auto;aspect-ratio:16/9}
 .scroll-mask {position:absolute;inset:0;z-index:50;display:grid;place-items:center;overflow:hidden;background:transparent;pointer-events:none}
@@ -23,13 +23,53 @@
 .khai-journey .mascot-poster {height:100%;min-height:0}
 .khai-journey .poster-character-button,.khai-journey .poster-khai img,.khai-journey .poster-cloud,.khai-journey .poster-foreground {animation:none}
 .khai-journey .poster-cloud img,.khai-journey .poster-foreground img {animation-play-state:var(--poster-drift-state,paused)}
+/* Finale revealed in place: Khai fades out, then the merch poster fades in
+   over the empty navy scene as the pinned journey ends. No further scrolling
+   into a separate section. */
+.merch-journey {position:absolute;inset:0;z-index:46;overflow:hidden;background:#1f1d66}
+/* T-shirt gateway: a navy cover wipes Khai away while the tshirt outline
+   scales up to fill the frame, then the poster arrives under it and the giant
+   shirt resolves into the poster's own outline tee. */
+.merch-tunnel {position:absolute;inset:0;z-index:47;display:grid;place-items:center;overflow:hidden;pointer-events:none}
+.merch-tunnel__tee {position:absolute;width:min(65vw,70svh);height:80%;object-fit:contain;transform-origin:center;filter:drop-shadow(0 0 16px rgb(255 196 30 / .4))}
+/* Skateboard video transition wrapper — sits between tunnel (47) and merch (46)
+   but renders above both while visible, hence z-index:48 on the inner element. */
+.video-transition-wrapper {position:absolute;inset:0;z-index:48;pointer-events:none}
+/* Second cloud curtain (Khai → video) must sit above Khai (z≈43) but below
+   the video wrapper (z=48), so z-index:46 slots it in correctly. */
+.cloud-curtain--2 {z-index:46}
+/* After the poster finale the indigo "carpet" lives inside Merch.jsx/Merch.css
+   as .merch-tear; the merch kit/catalogue (from Merch.jsx) sits on it. */
+/* Full-viewport blue backdrop that follows the merch poster finale; the
+   designed `bg blue.png` art is the base with the `bg element.png` overlay
+   screened on top, and the merch kit/catalogue (from Merch.jsx) sits on it. */
+.after-merch {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background-color: #02c8ed;
+  background-image: url("/assets/merch/bg/bg blue.png");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.after-merch__bg-element {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  z-index: 0;
+}
 @media(max-width:700px){
- .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 9 / 16));aspect-ratio:9/16}
- .scroll-mask img {width:88vw}
- .transition-cloud-1, .transition-cloud-2 {width:200px}
- .transition-cloud-1 {left:5%;bottom:10px}
- .transition-cloud-2 {right:10%;bottom:30px;width:180px}
- .journey-transition-overlay {height:150px}
+  .after-merch {height:auto;min-height:100svh}
+  .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 9 / 16));aspect-ratio:9/16}
+  .scroll-mask img {width:88vw}
+  .merch-tunnel__tee {width:88vw;height:auto}
 }
 
 /* Center each cloud on an elliptical ring; scroll moves it radially outward. */
@@ -49,66 +89,41 @@
   .cloud-curtain .cloud-bloom-layer {will-change:auto}
 }
 
-/* Seamless transition to Events section */
-.journey-transition-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: linear-gradient(to top, #1f1d66 0%, transparent 100%);
-  z-index: 45;
-  pointer-events: none;
+/* Khai reveal art direction: the boards (poster-sign) and clouds (poster-cloud)
+   are repositioned so they frame the puppet instead of sitting on it. Scoped
+   to .khai-journey so the opening hero keeps its own layout.
+   * Tablet portrait is a tall-ish window (aspect <= 3:4): boards tuck low
+     beside the puppet's waist, clouds hug the mist ring outside its outline.
+   * Phone portrait: boards drop into the clear band below the puppet's hem
+     (puppet occupies ~22%->74% vertically here), clouds stay above the head
+     and on the flanks so the face/torso stays unobstructed. */
+@media (min-width:701px) and (max-aspect-ratio:3/4){
+  .khai-journey .poster-sign {width:18%}
+  .khai-journey .poster-sign-left {left:1.5%;top:46%}
+  .khai-journey .poster-sign-right {right:1.5%;top:42%}
+  .khai-journey .poster-cloud-one {top:8%;left:6%;width:16%}
+  .khai-journey .poster-cloud-two {top:11%;left:60%;width:6.5%}
+  .khai-journey .poster-cloud-three {top:2%;right:4%;width:15%}
+  .khai-journey .poster-cloud-four {top:64%;left:2.5%;width:6.5%}
+  .khai-journey .poster-cloud-five {top:62%;right:2.5%;width:14%}
+  .khai-journey .poster-cloud-six {top:72%;left:30%;width:9%}
 }
-
-.transition-clouds {
-  position: absolute;
-  bottom: -50px;
-  left: 0;
-  right: 0;
-  height: 150px;
-  z-index: 44;
-  pointer-events: none;
+@media (min-width:701px) and (min-aspect-ratio:3/4) and (max-aspect-ratio:16/10){
+  .khai-journey .poster-sign-left {top:43%}
+  .khai-journey .poster-sign-right {top:42%}
 }
-
-.transition-cloud-1,
-.transition-cloud-2 {
-  position: absolute;
-  width: 300px;
-  height: auto;
-  opacity: 0.3;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+@media (min-width:701px) and (min-aspect-ratio:16/10){
+  .khai-journey .poster-sign-left {top:34%}
+  .khai-journey .poster-sign-right {top:31%}
 }
-
-.transition-cloud-1 {
-  bottom: 20px;
-  left: 10%;
-  animation: transition-cloud-float-1 25s ease-in-out infinite;
-}
-
-.transition-cloud-2 {
-  width: 250px;
-  bottom: 40px;
-  right: 15%;
-  opacity: 0.25;
-  animation: transition-cloud-float-2 30s ease-in-out infinite;
-  animation-delay: -10s;
-}
-
-@keyframes transition-cloud-float-1 {
-  0%, 100% {
-    transform: translateX(0) translateY(0);
-  }
-  50% {
-    transform: translateX(30px) translateY(-15px);
-  }
-}
-
-@keyframes transition-cloud-float-2 {
-  0%, 100% {
-    transform: translateX(0) translateY(0);
-  }
-  50% {
-    transform: translateX(-40px) translateY(20px);
-  }
+@media (max-width:700px){
+  .khai-journey .poster-sign {width:40%;top:78%}
+  .khai-journey .poster-sign-left {left:4%;top:78%}
+  .khai-journey .poster-sign-right {right:4%;top:78%}
+  .khai-journey .poster-cloud-one {top:5%;left:7%;width:30%}
+  .khai-journey .poster-cloud-two {top:6%;left:66%;width:14%}
+  .khai-journey .poster-cloud-three {top:13%;right:7%;width:30%}
+  .khai-journey .poster-cloud-four {top:30%;left:6%;width:15%}
+  .khai-journey .poster-cloud-five {top:28%;right:7%;width:22%}
+  .khai-journey .poster-cloud-six {top:76%;left:40%;width:12%}
 }

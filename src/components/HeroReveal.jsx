@@ -32,7 +32,7 @@ export default function KhaiHero({ progress }) {
       <div className="poster-khai"><motion.img style={{ opacity: titleOpacity, scale: reduced ? 1 : titleScale }} src={MASCOT + "khai.png"} alt="Khai" draggable="false" /></div>
       <div className="poster-character">
 <motion.button className="poster-character-button" type="button" aria-label="Make Khai dance"
-            style={{ opacity: entrance, y: reduced ? 0 : rise }}
+            style={{ opacity: entrance, y: reduced ? 0 : rise, scale: 1 }}
             onClick={() => setTap(n => n + 1)}
             whileTap={reduced ? undefined : { scale: 0.97 }}>
             <motion.div key={tap} className="poster-character-wrap"
