@@ -3,7 +3,6 @@ import { motion, useScroll, useTransform, useReducedMotion } from "motion/react"
 import KhaiHero from "../components/HeroReveal";
 import ThemeReveal from "./ThemeReveal";
 import Merch from "./Merch";
-import VideoTransition from "./VideoTransition";
 import "../components/Opening.css";
 import "./ScrollExperience.css";
 
@@ -86,13 +85,13 @@ export default function ScrollExperience() {
   // merch poster pops in over pink + texture and, with further scroll, the
   // backdrop melts pink→blue while the tees shift over and the merch objects
   // (badges, bandanas, fannies, kit) pop out around them. Scroll driven.
-  const revealOpacity = useTransform(progress, [.785, .815, .845], [0, 1, 0]);
-  const revealVisibility = useTransform(progress, value => value < .785 || value >= .845 ? "hidden" : "visible");
+  const revealOpacity = useTransform(progress, [.720, .770, .820], [0, 1, 0]);
+  const revealVisibility = useTransform(progress, value => value < .720 || value >= .820 ? "hidden" : "visible");
   // Parallax tunnel: four evenly-nested stroke rings share ONE zoom clock and
   // grow together like a single camera diving through the tee. A per-ring
   // parallax pan (deeper rings drift least, nearer rings whip past fastest,
   // each on its own travel direction) gives the depth that a plain zoom lacks.
-  const tunnelIn = useTransform(progress, [.785, .845], [0, 1], { clamp: true });
+  const tunnelIn = useTransform(progress, [.720, .820], [0, 1], { clamp: true });
   const tunnelGrow = useTransform(tunnelIn, t => 1 + 1.6 * t * t);
   const tunnelPan = useTransform(tunnelIn, t => t * t);
   const tunnelLayers = [
@@ -114,15 +113,11 @@ export default function ScrollExperience() {
   // finishes at .645, leaving minimal dead hold time.
   const khaiOpacity = useTransform(progress, [.650, .700], [1, 0]);
   const khaiVisibility = useTransform(progress, value => value < .403 || value >= .700 ? "hidden" : "visible");
-  // Skateboard video transition: cuts in right as Khai fades out, plays
-  // fully, then the t-shirt tunnel follows it (not the other way around).
-  const videoFade = useTransform(progress, [.735, .750, .778, .800], [0, 1, 1, 0]);
-  const videoVisibility = useTransform(progress, value => value < .735 || value >= .800 ? "hidden" : "visible");
-  // Merch bleeds in while the tunnel is still visible (.785-.845), so it
+  // Merch bleeds in while the tunnel is still visible, so it
   // peeks through the t-shirt outlines as they fade. Remap so Merch.jsx
   // internals stay exactly as authored.
-  const remappedMerchProgress = useTransform(progress, [.825, 1], [.84, 1]);
-  const merchVisibility = useTransform(progress, value => value < .825 ? "hidden" : "visible");
+  const remappedMerchProgress = useTransform(progress, [.780, 1], [.84, 1]);
+  const merchVisibility = useTransform(progress, value => value < .780 ? "hidden" : "visible");
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
@@ -171,13 +166,6 @@ export default function ScrollExperience() {
           <h1>WORLD OF</h1>
           <img className="world-intro__wordmark" src="/assets/logo/dhwani-text.webp" alt="DHWANI" />
         </motion.div>
-      </motion.div>
-      <motion.div className="video-transition-wrapper" style={{ opacity: videoFade, visibility: videoVisibility }}>
-        <VideoTransition
-          progress={progress}
-          start={.735}
-          end={.800}
-        />
       </motion.div>
       <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>
         <Merch progress={remappedMerchProgress} />
