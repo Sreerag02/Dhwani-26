@@ -1,0 +1,305 @@
+/* Campus Ambassador subpage — shares the festival palette and type of the main site. */
+.campus-ambassador {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  padding-top: var(--festival-header-height, 72px);
+  overflow: hidden;
+  color: #fff8e8;
+  background:
+    radial-gradient(110% 70% at 50% -12%, #3731ab 0%, transparent 58%),
+    radial-gradient(120% 85% at 50% 112%, #511275 0%, transparent 58%),
+    linear-gradient(180deg, #1f1d66 0%, #25155e 46%, #1f1d66 100%);
+}
+
+.ca-hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - var(--festival-header-height, 72px));
+  padding: clamp(28px, 5vw, 64px) clamp(18px, 5vw, 40px) clamp(44px, 8vw, 96px);
+  text-align: center;
+}
+
+.ca-palette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  height: 6px;
+}
+
+.ca-emblem {
+  width: clamp(64px, 9vw, 110px);
+  height: auto;
+  margin-bottom: clamp(14px, 3vh, 28px);
+  filter: drop-shadow(0 6px 0 rgba(175, 0, 95, 0.45));
+}
+
+.ca-title {
+  margin: 0;
+  font: 400 clamp(46px, 9.5vw, 124px)/0.95 Galavant, Poppins, sans-serif;
+  letter-spacing: 0.01em;
+  color: #fabf01;
+  text-shadow: 5px 8px #af005f, 0 0 44px rgba(175, 0, 95, 0.35);
+}
+
+.ca-title-em {
+  display: block;
+  margin-top: 0.3em;
+  font-size: 0.42em;
+  letter-spacing: 0.18em;
+  color: #fff8e8;
+  text-shadow: 0 0 34px rgba(2, 202, 239, 0.4);
+}
+
+.ca-subtitle {
+  max-width: 620px;
+  margin: clamp(22px, 4vh, 40px) auto 0;
+  font-size: clamp(13px, 1.4vw, 16px);
+  line-height: 1.7;
+  color: #c9d2ff;
+}
+
+.ca-board {
+  position: relative;
+  z-index: 1;
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 48px) clamp(14px, 3vw, 40px) clamp(56px, 8vw, 96px);
+}
+
+.ca-board-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(16px, 3vw, 28px);
+}
+
+.ca-board-title {
+  margin: 0;
+  font: 400 clamp(30px, 4.4vw, 48px)/0.95 Galavant, Poppins, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #02caef;
+  text-shadow: 3px 4px rgba(175, 0, 95, 0.55);
+}
+
+.ca-board-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ca-stat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(0, 94, 210, 0.16);
+  border: 1px solid rgba(2, 202, 239, 0.35);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.ca-stat-num {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fabf01;
+}
+
+.ca-stat-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #9aa3ff;
+}
+
+.ca-table-wrap {
+  overflow: hidden;
+  background: rgba(9, 7, 40, 0.55);
+  border: 1px solid rgba(250, 191, 1, 0.28);
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+}
+
+.ca-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ca-table th {
+  padding: 18px clamp(12px, 2vw, 24px);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: left;
+  color: #02caef;
+  border-bottom: 1px solid rgba(250, 191, 1, 0.35);
+}
+
+.ca-table td {
+  padding: 16px clamp(12px, 2vw, 24px);
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 248, 232, 0.08);
+}
+
+.ca-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.ca-row--top {
+  background: rgba(250, 191, 1, 0.06);
+}
+
+.ca-rank {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  color: #fff8e8;
+}
+
+.ca-rank em {
+  width: 26px;
+  font-style: normal;
+  text-align: center;
+}
+
+.ca-rank[data-medal="gold"] em { color: #fabf01; }
+.ca-rank[data-medal="silver"] em { color: #cbd5e1; }
+.ca-rank[data-medal="bronze"] em { color: #f59e0b; }
+
+.ca-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #fff8e8;
+}
+
+.ca-avatar {
+  display: grid;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+  color: #1f1d66;
+  background: linear-gradient(135deg, #02caef, #005ed2);
+  box-shadow: inset 0 0 0 2px rgba(31, 29, 102, 0.25);
+}
+
+.ca-referrals {
+  font-weight: 800;
+  color: #fabf01;
+}
+
+.ca-points {
+  font-weight: 700;
+  color: #02caef;
+}
+
+.ca-status {
+  padding: clamp(44px, 8vw, 84px) 0;
+  text-align: center;
+}
+
+.ca-spinner {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 18px;
+  border: 3px solid rgba(2, 202, 239, 0.22);
+  border-top-color: #02caef;
+  border-radius: 50%;
+  animation: ca-spin 0.8s linear infinite;
+}
+
+@keyframes ca-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ca-status-text {
+  margin: 0;
+  font-size: 14px;
+  color: #c9d2ff;
+}
+
+.ca-error {
+  margin: 0 0 6px;
+  color: #fecaca;
+  font-size: 14px;
+}
+
+.ca-error-hint {
+  margin: 0 0 20px;
+  font-size: 12px;
+  color: #9aa3ff;
+}
+
+.ca-retry {
+  padding: 12px 22px;
+  border: 0;
+  cursor: pointer;
+  font: 700 12px/1 Poppins, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1f1d66;
+  background: #fabf01;
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+
+.ca-board-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0 0;
+  font-size: 11px;
+  color: #9aa3ff;
+}
+
+.ca-board-foot a {
+  color: #02caef;
+  text-decoration: none;
+}
+
+.ca-board-foot a:hover {
+  color: #fabf01;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .ca-board-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ca-table {
+    min-width: 520px;
+  }
+
+  .ca-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ca-spinner {
+    animation: none;
+  }
+}

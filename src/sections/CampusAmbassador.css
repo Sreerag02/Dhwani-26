@@ -1,4 +1,5 @@
 .campus-amb {
+  position: relative;
   min-height: 100svh;
   display: grid;
   place-items: center;
@@ -10,6 +11,8 @@
 }
 
 .campus-amb__stage {
+  position: relative;
+  z-index: 1;
   max-width: 720px;
   text-align: center;
 }
@@ -40,4 +43,30 @@
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.85);
   margin: 0;
+}
+
+.campus-amb__cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.85rem 2.2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #1f1d66;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  clip-path: polygon(0.9em 0, 100% 0, 100% calc(100% - 0.9em), calc(100% - 0.9em) 100%, 0 100%, 0 0.9em);
+  transition: filter 200ms ease, transform 200ms ease;
+}
+
+.campus-amb__cta:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.campus-amb__cta:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 3px;
 }

@@ -1,13 +1,15 @@
+import { useEffect, useRef, useState } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
 import { useAnimationFrame } from "motion/react";
 import "lenis/dist/lenis.css";
 import SideNavbar from "./components/SideNavbar";
 import CampusAmbassador from "./components/CampusAmbassador";
+import CampusAmbassadorBand from "./sections/CampusAmbassador";
 import ScrollExperience from "./sections/ScrollExperience";
 import Events from "./sections/Events";
-import CampusAmbassador from "./sections/CampusAmbassador";
 import ComingSoon from "./sections/ComingSoon";
 import DhwaniFooter from "./components/DhwaniFooter";
+import { isCampusAmbassadorPage } from "./lib/routes";
 
 function LenisFramerSync() {
   const lenis = useLenis();
@@ -17,10 +19,19 @@ function LenisFramerSync() {
   return null;
 }
 
-const isCampusAmbassadorPage =
-  window.location.pathname.replace(/\/+$/, "") === "/campus-ambassador";
-
 export default function App() {
+  const nextPage = useRef(null);
+  const [showHeader, setShowHeader] = useState(false);
+  useEffect(() => {
+    const el = nextPage.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowHeader(entry.isIntersecting || entry.boundingClientRect.top <= 1),
+      { threshold: 0, rootMargin: '0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   return (
     <ReactLenis root options={{ lerp: 0.1, duration: 1.2, smoothWheel: true }} autoRaf={false}>
       <LenisFramerSync />
@@ -43,7 +54,7 @@ export default function App() {
                   <Events />
                 </div>
               </div>
-              {/* <ComingSoon /> */}
+              <CampusAmbassadorBand />
               <DhwaniFooter />
             </div>
           </main>
