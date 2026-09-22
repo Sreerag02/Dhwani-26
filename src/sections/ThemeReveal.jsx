@@ -48,7 +48,8 @@ function LayerMotion({ className, src, alt, from, float, fade, depth = 1, zoom =
   const opacity = useTransform(progress, fade ?? DEFAULT_FADE, [0, 1]);
   const rest = className === "carnival-title" ? .78 : 1;
   const scale = useTransform(progress, [0, 1], [zoom ? rest * (.9 + .1 * depth) : rest, 1]);
-  return <motion.div style={reduced ? undefined : { opacity, x, y, scale }}>
+  const z = depth * 42;
+  return <motion.div style={reduced ? undefined : { opacity, x, y, z, scale }}>
       {children || <img className={float ? "carnival-float" : ""} src={src}
         alt={alt} draggable="false" loading="lazy" decoding="async" />}
     </motion.div>;
@@ -56,8 +57,28 @@ function LayerMotion({ className, src, alt, from, float, fade, depth = 1, zoom =
 
 export default function ThemeReveal({ progress = null, embedded = false, onReady = null }) {
   const ref = useRef(null);
+  const stageRef = useRef(null);
+  const pointerFrame = useRef(null);
   const [playing,setPlaying] = useState(false);
   const reduced = useReducedMotion();
+  const handlePointerMove = event => {
+    if (reduced || event.pointerType !== "mouse" || !stageRef.current) return;
+    const bounds = ref.current.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
+    if (pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
+    pointerFrame.current = requestAnimationFrame(() => {
+      stageRef.current.style.setProperty("--theme-tilt-x", `${x * 2.2}deg`);
+      stageRef.current.style.setProperty("--theme-tilt-y", `${y * -1.6}deg`);
+      pointerFrame.current = null;
+    });
+  };
+  const handlePointerLeave = () => {
+    if (!stageRef.current) return;
+    if (pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
+    stageRef.current.style.setProperty("--theme-tilt-x", "0deg");
+    stageRef.current.style.setProperty("--theme-tilt-y", "0deg");
+  };
   useEffect(() => {
     let visible = false;
     const update = () => setPlaying(visible && !document.hidden);
@@ -83,19 +104,19 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
     Promise.all(pending).then(() => { if (!cancelled) onReady(); });
     return () => { cancelled = true; };
   }, [onReady]);
-  return <TimelineContext.Provider value={progress}><section ref={ref} id={embedded ? undefined : "theme-reveal"} className={`carnival${embedded ? " carnival-embedded" : ""}`} aria-label="Carnivale Razzmatazz"
+  return <TimelineContext.Provider value={progress}><section ref={ref} onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave} id={embedded ? undefined : "theme-reveal"} className={`carnival${embedded ? " carnival-embedded" : ""}`} aria-label="Carnivale Razzmatazz"
     data-playing={playing && !reduced}>
-    <RevealLayer className="carnival-stalls" src={E+"stalls.png"} depth={.3} zoom={false} />
-    <div className="carnival-stage">
+    <RevealLayer className="carnival-stalls" src={E+"stalls.webp"} depth={.3} zoom={false} />
+    <div ref={stageRef} className="carnival-stage">
       <RevealLayer className="carnival-kicker" from={0} fade={KICKER_FADE} depth={1}>
-        <img src="/assets/logo/dhwani26-text.png" alt="Dhwani '26" draggable="false" />
+        <img src="/assets/logo/dhwani26-text.webp" alt="Dhwani '26" draggable="false" />
       </RevealLayer>
       <RevealLayer className="carnival-wheel" depth={.55}>
         <FerrisWheel duration={48} running={playing && !reduced} />
       </RevealLayer>
       <RevealLayer className="carnival-blue" src={E+"CLOUDS.svg"} from={-70} depth={.45} />
       <RevealLayer className="carnival-gate" src={E+"torii new.svg"} depth={.85} />
-      <RevealLayer className="hidden-khai" src={E+"khai-hidden.png"} depth={1.05} />
+      <RevealLayer className="hidden-khai" src={E+"khai-hidden.webp"} depth={1.05} />
       <RevealLayer className="carnival-title" src={E+"title.svg"} alt="Carnivale Razzmatazz" depth={1} />
       {lanterns.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 110 : -110} depth={1.2} float />)}
       {notes.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 60 : -60} depth={1.25} float />)}

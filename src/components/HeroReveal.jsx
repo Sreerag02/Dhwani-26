@@ -27,9 +27,9 @@ export default function KhaiHero({ progress }) {
   return (
     <motion.section ref={scene} id="home" className="mascot-poster" data-paused={!active || !!reduced}
       style={{ "--poster-drift-state": driftState }}>
-      <img className="poster-background" src={MASCOT + "Gradient Fill 1.png"} alt="" draggable="false" />
+      <img className="poster-background" src={MASCOT + "Gradient Fill 1.webp"} alt="" draggable="false" />
       <div className="poster-tint" />
-      <div className="poster-khai"><motion.img style={{ opacity: titleOpacity, scale: reduced ? 1 : titleScale }} src={MASCOT + "khai.png"} alt="Khai" draggable="false" /></div>
+      <div className="poster-khai"><motion.img style={{ opacity: titleOpacity, scale: reduced ? 1 : titleScale }} src={MASCOT + "khai.webp"} alt="Khai" draggable="false" /></div>
       <div className="poster-character">
 <motion.button className="poster-character-button" type="button" aria-label="Make Khai dance"
             style={{ opacity: entrance, y: reduced ? 0 : rise, scale: 1 }}
@@ -43,12 +43,21 @@ export default function KhaiHero({ progress }) {
             </motion.div>
           </motion.button>
       </div>
-      <motion.div className="poster-sign poster-sign-left" style={{ opacity: titleOpacity, x: reduced ? 0 : leftShift }}><img src={MASCOT + "sign-left.png"} alt="You don’t find the carnival. The carnival finds you. And when the time comes, someone will show you the way in." draggable="false" /></motion.div>
-      <motion.div className="poster-sign poster-sign-right" style={{ opacity: titleOpacity, x: reduced ? 0 : signShift }}><img src={MASCOT + "sign-right.png"} alt="Keep watching. You’re closer than you think." draggable="false" /></motion.div>
+      <motion.div className="poster-sign poster-sign-left" style={{ opacity: titleOpacity, x: reduced ? 0 : leftShift }}><img src={MASCOT + "sign-left.webp"} alt="You don’t find the carnival. The carnival finds you. And when the time comes, someone will show you the way in." draggable="false" /></motion.div>
+      <motion.div className="poster-sign poster-sign-right" style={{ opacity: titleOpacity, x: reduced ? 0 : signShift }}><img src={MASCOT + "sign-right.webp"} alt="Keep watching. You’re closer than you think." draggable="false" /></motion.div>
       {CLOUDS.map(([file,position],i) => <motion.div className={"poster-cloud poster-cloud-"+position} key={position}
         style={{ opacity: titleOpacity, x: reduced ? 0 : (i%2 ? signShift : leftShift), "--float-time": 5+i*0.5+"s"}}>
         <img src={MASCOT+file} alt="" draggable="false" /></motion.div>)}
       <motion.div className="poster-foreground" style={{ opacity: entrance, y: reduced ? 0 : rise }}><img src={MASCOT+"cloud-main.webp"} alt="" draggable="false" /></motion.div>
+      <motion.a
+        className="poster-game-cta"
+        href="https://game.dhwanicet.com"
+        target="_blank"
+        rel="noreferrer"
+        style={{ opacity: entrance, y: reduced ? 0 : rise }}
+      >
+        Play the Game
+      </motion.a>
     </motion.section>
   );
 }

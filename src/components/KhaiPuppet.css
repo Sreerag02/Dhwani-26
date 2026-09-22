@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1122 / 1402;
-  overflow: hidden;
+  overflow: visible;
 }
 .khai-puppet-layer {
   display: block;

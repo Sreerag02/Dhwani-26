@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useLenis } from "lenis/react";
 import OptionWheel from "./OptionWheel";
 import "./Navigation.css";
 
+const NAV_ITEMS = ['Theme', 'Khai', 'Events', 'Coming Soon'];
+const NAV_HREFS = { 'Theme': '#theme-reveal', 'Khai': '#khai', 'Events': '#events', 'Coming Soon': '#coming-soon' };
+
 function Brand() {
   return <div className="nav-brand">
-    <img src="/assets/logo/dhwani-text.png" alt="Dhwani '26" />
+    <img src="/assets/logo/dhwani-text.webp" alt="Dhwani '26" />
     <div><strong>Oct 2, 3, 4 · 2026</strong><span>College of Engineering, Trivandrum</span></div>
   </div>;
 }
@@ -14,6 +18,8 @@ export default function SideNavbar() {
   const [open, setOpen] = useState(false);
   const panel = useRef(null), trigger = useRef(null);
   const reduced = useReducedMotion();
+  const lenis = useLenis();
+
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
@@ -34,9 +40,16 @@ export default function SideNavbar() {
       document.removeEventListener("keydown", keyboard); trigger.current?.focus();
     };
   }, [open]);
+
   const goTo = (event, href) => {
     event.preventDefault(); setOpen(false);
-    requestAnimationFrame(() => requestAnimationFrame(() => document.querySelector(href)?.scrollIntoView({ behavior: reduced ? "instant" : "smooth" })));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (lenis) {
+        lenis.scrollTo(href, { duration: reduced ? 0 : 1.2 });
+      } else {
+        document.querySelector(href)?.scrollIntoView({ behavior: reduced ? "instant" : "smooth" });
+      }
+    }));
   };
   return <>
     <header className="nav-topbar">
@@ -72,9 +85,9 @@ export default function SideNavbar() {
               ×
             </button>
           </div>
-          <div className="nav-sheet-wheel">
+          <div className="nav-sheet-wheel" data-lenis-prevent>
             <OptionWheel
-              items={['Theme', 'Khai', 'Events', 'Coming Soon']}
+              items={NAV_ITEMS}
               defaultSelected={2}
               textColor="#a6a6a6"
               activeColor="#ffffff"
@@ -93,7 +106,7 @@ export default function SideNavbar() {
               soundUrl="/sounds/click-soft.mp3"
               soundVolume={0.5}
               onChange={(index, item) => {
-                const href = { 'Theme': '#theme-reveal', 'Khai': '#khai', 'Events': '#events', 'Coming Soon': '#coming-soon' }[item];
+                const href = NAV_HREFS[item];
                 if (href) goTo({ preventDefault() {} }, href);
               }}
             />
