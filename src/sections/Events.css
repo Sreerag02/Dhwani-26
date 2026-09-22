@@ -9,6 +9,33 @@
   overflow: hidden;
   box-sizing: border-box;
   cursor: default;
+  scroll-margin-top: var(--festival-header-height, 0px);
+}
+
+/* Sticky hold: the section stays pinned for a short scroll distance before the
+   page continues, matching the pinned-scene feel of the reveal journey. The
+   spacer is only for the extra scroll room; the section keeps its full height. */
+.events-pin {
+  position: relative;
+  width: 100%;
+}
+.events-pin__inner {
+  position: sticky;
+  top: 0;
+}
+.events-pin::after {
+  content: "";
+  display: block;
+  height: 60svh;
+}
+@media (max-width: 700px) {
+  .events-pin,
+  .events-pin__inner {
+    position: static;
+  }
+  .events-pin::after {
+    content: none;
+  }
 }
 
 /* Parallax background layer */
@@ -455,6 +482,40 @@
   background: linear-gradient(135deg, #db2777, #be185d);
   color: #fce7f3;
   border: 2px solid #f472b6;
+}
+
+/* Style 7 - Gold & Ink Literature */
+.event-card--carnival-gold {
+  background: linear-gradient(135deg, #fefce8 0%, #fff 50%, #fffbeb 100%);
+  border: 3px solid #b45309;
+  border-radius: 10px;
+}
+
+.event-card--carnival-gold::before {
+  content: "📖";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.event-card--carnival-gold .event-card__tape {
+  background: linear-gradient(45deg, #d97706, #b45309);
+  width: 64px;
+  transform: rotate(-7deg);
+}
+
+.event-card--carnival-gold .event-card__photo-frame {
+  border: 3px solid #d97706;
+  border-radius: 8px;
+}
+
+.event-card--carnival-gold .event-card__badge {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: #fffbeb;
+  border: 2px solid #fbbf24;
 }
 
 .event-card.draggable-card:active {

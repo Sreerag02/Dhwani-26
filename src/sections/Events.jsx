@@ -124,6 +124,25 @@ const INITIAL_EVENTS = [
     mobilePos: { x: 880, y: 540 },
     tilt: 1.5,
     cardStyle: "carnival-pink"
+  },
+  {
+    id: 7,
+    title: "Carpe Dictum",
+    category: "Literature Fest",
+    ticketUrl: null,
+    subEvents: [],
+    subtitle: "Literature fest",
+    date: "Dates to be announced",
+    venue: "Festival venue",
+    prize: "Programme details to be announced",
+    image: "/assets/events-section/CARPE DICTUM GRID.webp",
+    description: "Carpe Dictum is Dhwani's literature fest. Seize the word.",
+    rules: ["Dates to be announced", "Literature fest"],
+    contact: "Festival Desk",
+    initialPos: { x: 640, y: 540 },
+    mobilePos: { x: 440, y: 440 },
+    tilt: 1.2,
+    cardStyle: "carnival-gold"
   }
 ];
 
