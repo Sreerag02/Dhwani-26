@@ -1,0 +1,43 @@
+.campus-amb {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at center, rgba(251, 191, 36, 0.12) 0%, transparent 70%),
+    linear-gradient(to bottom, #1f1d66 0%, rgba(31, 29, 102, 0.92) 100%);
+  color: #ffffff;
+  padding: 12svh 1.5rem;
+}
+
+.campus-amb__stage {
+  max-width: 720px;
+  text-align: center;
+}
+
+.campus-amb__kicker {
+  font-family: system-ui, -apple-system, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+  color: #fbbf24;
+  margin: 0 0 1rem;
+}
+
+.campus-amb__title {
+  font-family: 'Galavant', 'Cinzel', Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  margin: 0 0 1.25rem;
+  background: linear-gradient(135deg, #ffffff 0%, #fef08a 50%, #f59e0b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.campus-amb__text {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}

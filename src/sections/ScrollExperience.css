@@ -13,6 +13,7 @@
 .journey-anchor {position:absolute;left:0;width:1px;height:1px;scroll-margin-top:var(--festival-header-height)}
 .theme-anchor {top:calc(730svh * .30)}
 .khai-anchor {top:calc(730svh * .64)}
+.merch-anchor {top:calc(730svh * 1.72)}
 .carnival-embedded {height:100%;padding:0;display:grid;place-items:center;margin:0}
 .carnival-embedded .carnival-stage {width:min(100%,calc(100svh * 16 / 9));height:auto;aspect-ratio:16/9}
 .scroll-mask {position:absolute;inset:0;z-index:50;display:grid;place-items:center;overflow:hidden;background:transparent;pointer-events:none}

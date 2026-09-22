@@ -19,6 +19,7 @@ const DEFAULT_ITEMS = [
 const OptionWheel = ({
   items = DEFAULT_ITEMS,
   defaultSelected = 3,
+  selected,
   onChange,
   textColor = '#a6a6a6',
   activeColor = '#ffffff',
@@ -258,6 +259,12 @@ const OptionWheel = ({
   useEffect(() => {
     applyTarget(targetRef.current, false);
   }, [items, fontSize, spacing, curve, tilt, blur, fade, minOpacity, side, loop, smoothing, applyTarget]);
+
+  // Controlled selection: parent (e.g. a scroll-spy) drives the active option.
+  useEffect(() => {
+    if (selected == null) return;
+    applyTarget(selected, true);
+  }, [selected, applyTarget]);
 
   useEffect(
     () => () => {
