@@ -4,8 +4,9 @@ import { useLenis } from "lenis/react";
 import OptionWheel from "./OptionWheel";
 import "./Navigation.css";
 
-const NAV_ITEMS = ['Theme', 'Khai', 'Events', 'Coming Soon'];
-const NAV_HREFS = { 'Theme': '#theme-reveal', 'Khai': '#khai', 'Events': '#events', 'Coming Soon': '#coming-soon' };
+const NAV_ITEMS = ['Theme', 'Khai', 'Merch', 'Events', 'Campus Ambassador', 'Coming Soon'];
+const NAV_HREFS = { 'Theme': '#theme-reveal', 'Khai': '#khai', 'Merch': '#merch', 'Events': '#events', 'Campus Ambassador': '#campus-ambassador', 'Coming Soon': '#coming-soon' };
+const NAV_HREFS_ORDER = NAV_ITEMS.map(item => NAV_HREFS[item]);
 
 function Brand() {
   return <div className="nav-brand">
@@ -16,9 +17,32 @@ function Brand() {
 
 export default function SideNavbar() {
   const [open, setOpen] = useState(false);
+  const [afterMerch, setAfterMerch] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(3);
   const panel = useRef(null), trigger = useRef(null);
   const reduced = useReducedMotion();
   const lenis = useLenis();
+
+  // Scroll-spy + gate: navbar shows only once the merch section is reached.
+  useEffect(() => {
+    const getIndex = () => {
+      const threshold = window.scrollY + window.innerHeight * 0.3;
+      let idx = 0;
+      NAV_HREFS_ORDER.forEach((sel, i) => {
+        const el = document.querySelector(sel);
+        if (el && el.getBoundingClientRect().top + window.scrollY <= threshold) idx = i;
+      });
+      return idx;
+    };
+    const update = () => {
+      setActiveIndex(getIndex());
+      const merch = document.querySelector('#merch');
+      setAfterMerch(!!merch && merch.getBoundingClientRect().top + window.scrollY <= window.scrollY + window.innerHeight * 0.3);
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -52,7 +76,7 @@ export default function SideNavbar() {
     }));
   };
   return <>
-    <header className="nav-topbar">
+    <header className={`nav-topbar${afterMerch ? "" : " nav-topbar--hidden"}`}>
       <Brand />
       <button
         ref={trigger}
@@ -88,7 +112,8 @@ export default function SideNavbar() {
           <div className="nav-sheet-wheel" data-lenis-prevent>
             <OptionWheel
               items={NAV_ITEMS}
-              defaultSelected={2}
+              defaultSelected={activeIndex}
+              selected={activeIndex}
               textColor="#a6a6a6"
               activeColor="#ffffff"
               side="right"
@@ -96,9 +121,9 @@ export default function SideNavbar() {
               spacing={1.4}
               curve={1}
               tilt={6}
-              blur={2}
-              fade={0.25}
-              minOpacity={0.05}
+              blur={0}
+              fade={0.05}
+              minOpacity={0.85}
               smoothing={200}
               inset={80}
               loop={false}
@@ -106,6 +131,7 @@ export default function SideNavbar() {
               soundUrl="/sounds/click-soft.mp3"
               soundVolume={0.5}
               onChange={(index, item) => {
+                setActiveIndex(index);
                 const href = NAV_HREFS[item];
                 if (href) goTo({ preventDefault() {} }, href);
               }}
