@@ -136,6 +136,9 @@ const PARTICLES = [...Array(8)].map((_, i) => ({
   delay: i * 0.2
 }));
 
+/* One event per copy; the rail renders three copies so wrapping is seamless. */
+const EVENT_COUNT = INITIAL_EVENTS.length;
+
 function RedPushpin({ className = "" }) {
   return (
     <svg viewBox="0 0 40 50" className={`event-card__pin-svg ${className}`} aria-hidden="true">
@@ -185,7 +188,13 @@ export default function Events() {
     const rail = boardRef.current;
     if (!rail) return undefined;
     const positionMiddleLoop = () => {
-      railLoopWidthRef.current = rail.scrollWidth / 3;
+      if (!rail.children.length) return;
+      // Exact repeating period: offset of copy-2's first card from copy-1's
+      // first card. `scrollWidth / 3` counts the rail's leading/trailing
+      // padding into two copies, so it drifts a few dozen px off the true
+      // period and the loop visibly "jumps" on every wrap.
+      const loopWidth = rail.children[EVENT_COUNT]?.offsetLeft - rail.children[0].offsetLeft;
+      railLoopWidthRef.current = loopWidth > 0 ? loopWidth : rail.scrollWidth / 3;
       rail.scrollLeft = railLoopWidthRef.current;
     };
     const frame = requestAnimationFrame(positionMiddleLoop);
@@ -323,7 +332,7 @@ export default function Events() {
                     className={`event-card event-card--${event.cardStyle}`}
                     initial={{ opacity: 0, y: 28 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, amount: 0.1 }}
+                    viewport={{ once: true, amount: 0.1 }}
                     transition={{ duration: 0.55, delay: index * 0.07, ease: "easeOut" }}
                   >
                     <div className="event-card__photo-frame">

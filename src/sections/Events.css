@@ -906,7 +906,10 @@
   overflow-x: auto;
   overflow-y: hidden;
   padding: 18px max(18px, 4vw) 34px;
-  scroll-snap-type: x mandatory;
+  /* x-mandatory + scroll-snap-align:center fights the JS wrap-around: the
+     browser re-snaps programmatic scrollLeft, so the infinite-loop position
+     never holds and the rail jitters. Snap is off; the loop is seamless. */
+  scroll-snap-type: none;
   scrollbar-width: none;
   touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
