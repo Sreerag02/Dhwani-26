@@ -59,10 +59,12 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
   const ref = useRef(null);
   const stageRef = useRef(null);
   const pointerFrame = useRef(null);
+  const settleTimer = useRef(null);
   const [playing,setPlaying] = useState(false);
   const reduced = useReducedMotion();
   const handlePointerMove = event => {
     if (reduced || event.pointerType !== "mouse" || !stageRef.current) return;
+    stageRef.current.classList.remove("carnival-stage--settle");
     const bounds = ref.current.getBoundingClientRect();
     const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
     const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
@@ -76,8 +78,14 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
   const handlePointerLeave = () => {
     if (!stageRef.current) return;
     if (pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
+    stageRef.current.classList.add("carnival-stage--settle");
     stageRef.current.style.setProperty("--theme-tilt-x", "0deg");
     stageRef.current.style.setProperty("--theme-tilt-y", "0deg");
+    if (settleTimer.current) clearTimeout(settleTimer.current);
+    settleTimer.current = setTimeout(() => {
+      stageRef.current?.classList.remove("carnival-stage--settle");
+      settleTimer.current = null;
+    }, 520);
   };
   useEffect(() => {
     let visible = false;

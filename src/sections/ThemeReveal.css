@@ -18,8 +18,12 @@
   transform: perspective(1400px) rotateX(var(--theme-tilt-y, 0deg)) rotateY(var(--theme-tilt-x, 0deg));
   transform-style: preserve-3d;
   transform-origin: center center;
-  transition: transform 700ms cubic-bezier(.16, 1, .3, 1);
   will-change: transform;
+}
+/* Only the return-to-rest gets eased; live tracking is 1:1 so the tilt never
+   lags behind or overshoots the pointer. */
+.carnival-stage--settle {
+  transition: transform 450ms cubic-bezier(.25,.8,.35,1);
 }
 .carnival::before {
   content:""; position:absolute; inset:0; pointer-events:none;
