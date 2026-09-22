@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import "./CampusAmbassador.css";
 import CarnivalBackdrop from "./CarnivalBackdrop";
 
-const API_URL = "https://affiliates.makemypass.com/api/event/dhwani-2026/leaderboard";
+const API_URL = "/api/event/dhwani-2026/leaderboard";
 
 const MEDALS = { 1: "gold", 2: "silver", 3: "bronze" };
 const PALETTE = ["#1F1D66", "#3731AB", "#9D34D1", "#AF005F", "#FABF01", "#005ED2", "#02CAEF"];
