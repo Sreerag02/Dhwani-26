@@ -319,6 +319,9 @@ export default function Merch({ progress }) {
           className="merch__pop merch__sticker merch__sticker--1" style={{ "--pop-delay": ".15s" }}
           src="/assets/merch/sticker/sticker1.png" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__sticker merch__sticker-title" style={{ "--pop-delay": ".55s" }}
+          src="/assets/merch/sticker/sticker.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__sticker merch__sticker--2" style={{ "--pop-delay": ".3s" }}
           src="/assets/merch/sticker/sticker2.png" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
@@ -336,15 +339,15 @@ export default function Merch({ progress }) {
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__bandana merch__bandana--2" style={{ "--pop-delay": ".4s" }}
           src="/assets/merch/bandana/bandana%202.webp" alt="" />
-        <MerchPop phase2={phase2} reduced={reduced}
+        {/* <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
-          src="/assets/merch/bandana/bandana-a2.webp" alt="" />
+          src="/assets/merch/bandana/bandana-a2.webp" alt="" /> */}
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__bandana merch__bandana--wide" style={{ "--pop-delay": ".5s" }}
           src="/assets/merch/bandana.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__fanny merch__fanny--right" style={{ "--pop-delay": ".58s" }}
-          src="/assets/merch/fanny-pack.png" alt="" />
+          src="/assets/merch/fanny-pack.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__badge merch__badge--wide" style={{ "--pop-delay": ".66s" }}
           src="/assets/merch/badges.webp" alt="" />
@@ -357,6 +360,9 @@ export default function Merch({ progress }) {
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__kit" style={{ "--pop-delay": ".55s" }}
           src="/assets/merch/merch-kit.png" alt="" />
+        <MerchPop phase2={phase2} reduced={reduced}
+          className="merch__pop merch__kit-title" style={{ "--pop-delay": ".55s" }}
+          src="/assets/merch/merch-kit-title.png" alt="" />
         {/* <MerchItem className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
           src="/assets/merch/badges/badge%201.png" label="Badge" />
         <MerchItem className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
