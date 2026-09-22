@@ -9,6 +9,15 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Galavant";
+  src: url("/assets/fonts/galavant/Galavant Regular/Galavant Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --midnight: #1f1d66;
   --purple-background: #511275;

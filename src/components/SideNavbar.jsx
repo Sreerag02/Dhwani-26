@@ -3,9 +3,13 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useLenis } from "lenis/react";
 import OptionWheel from "./OptionWheel";
 import "./Navigation.css";
+import { isCampusAmbassadorPage, normalizePath, currentNav } from "../lib/routes";
 
-const NAV_ITEMS = ['Theme', 'Khai', 'Events', 'Coming Soon'];
-const NAV_HREFS = { 'Theme': '#theme-reveal', 'Khai': '#khai', 'Events': '#events', 'Coming Soon': '#coming-soon' };
+const NAV_ITEMS = currentNav.map(item => item.label);
+const NAV_HREFS = {};
+for (const item of currentNav) NAV_HREFS[item.label] = item.page ?? item.anchor;
+const NAV_HREFS_ORDER = NAV_ITEMS.map(item => NAV_HREFS[item]);
+const INITIAL_ACTIVE = isCampusAmbassadorPage ? 0 : 3;
 
 function Brand() {
   return <div className="nav-brand">
@@ -16,9 +20,33 @@ function Brand() {
 
 export default function SideNavbar() {
   const [open, setOpen] = useState(false);
+  const [afterMerch, setAfterMerch] = useState(isCampusAmbassadorPage);
+  const [activeIndex, setActiveIndex] = useState(INITIAL_ACTIVE);
   const panel = useRef(null), trigger = useRef(null);
   const reduced = useReducedMotion();
   const lenis = useLenis();
+
+  // Scroll-spy + gate: navbar shows only once the merch section is reached.
+  useEffect(() => {
+    const getIndex = () => {
+      const threshold = window.scrollY + window.innerHeight * 0.3;
+      let idx = 0;
+      NAV_HREFS_ORDER.forEach((sel, i) => {
+        if (!sel.startsWith("#")) return;
+        const el = document.querySelector(sel);
+        if (el && el.getBoundingClientRect().top + window.scrollY <= threshold) idx = i;
+      });
+      return idx;
+    };
+    const update = () => {
+      setActiveIndex(getIndex());
+      const merch = document.querySelector('#merch');
+      setAfterMerch(isCampusAmbassadorPage || (!!merch && merch.getBoundingClientRect().top + window.scrollY <= window.scrollY + window.innerHeight * 0.3));
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -41,9 +69,18 @@ export default function SideNavbar() {
     };
   }, [open]);
 
-  const goTo = (event, href) => {
+const goTo = (event, href) => {
     event.preventDefault(); setOpen(false);
+    if (href.startsWith("/")) {
+      if (normalizePath() === href && lenis) {
+        lenis.scrollTo(0, { duration: reduced ? 0 : 1.2 });
+        return;
+      }
+      window.location.href = href;
+      return;
+    }
     requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!document.querySelector(href)) return;
       if (lenis) {
         lenis.scrollTo(href, { duration: reduced ? 0 : 1.2 });
       } else {
@@ -52,7 +89,7 @@ export default function SideNavbar() {
     }));
   };
   return <>
-    <header className="nav-topbar">
+    <header className={`nav-topbar${afterMerch ? "" : " nav-topbar--hidden"}`}>
       <Brand />
       <button
         ref={trigger}
@@ -88,7 +125,8 @@ export default function SideNavbar() {
           <div className="nav-sheet-wheel" data-lenis-prevent>
             <OptionWheel
               items={NAV_ITEMS}
-              defaultSelected={2}
+              defaultSelected={activeIndex}
+              selected={activeIndex}
               textColor="#a6a6a6"
               activeColor="#ffffff"
               side="right"
@@ -96,9 +134,9 @@ export default function SideNavbar() {
               spacing={1.4}
               curve={1}
               tilt={6}
-              blur={2}
-              fade={0.25}
-              minOpacity={0.05}
+              blur={0}
+              fade={0.05}
+              minOpacity={0.85}
               smoothing={200}
               inset={80}
               loop={false}
@@ -106,6 +144,7 @@ export default function SideNavbar() {
               soundUrl="/sounds/click-soft.mp3"
               soundVolume={0.5}
               onChange={(index, item) => {
+                setActiveIndex(index);
                 const href = NAV_HREFS[item];
                 if (href) goTo({ preventDefault() {} }, href);
               }}

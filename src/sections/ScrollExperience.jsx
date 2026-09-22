@@ -125,6 +125,7 @@ export default function ScrollExperience() {
   return <section ref={ref} id="world" className="reveal-journey" aria-label="Gates of Dhwani to Khai reveal">
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
     <span id="khai" className="journey-anchor khai-anchor" />
+    <span id="merch" className="journey-anchor merch-anchor" />
     <div className="journey-sticky">
       <motion.div className="journey-scene" style={{ visibility: themeVisibility }}>
         <ThemeReveal progress={theme} embedded />
