@@ -403,7 +403,7 @@
 /* ---------- Lanterns ---------- */
 .merch__lantern {
   position: absolute;
-  bottom: 10px;
+  bottom: -10px;
   right: 10%;
   width: 14%;
   height: auto;
@@ -480,9 +480,11 @@
    idle float, staggered per item via --pop-delay) live on the <img>, so the
    move layer's translation/scale never fights the float animation. */
 .merch__pop-move {
+  position: relative;
   width: 100%;
   transform-origin: center center;
 }
+
 
 /* The artwork fills the animated layer's width; it carries the gentle idle
    float (staggered per item via --pop-delay) so the move layer's translation
@@ -534,11 +536,9 @@
 /* Wide badges (badges.png, ~3:1) continues the row, just right of the fanny pack. */
 .merch__badge--wide {
   width: clamp(170px, 26cqw, 260px);
-  right: 11%;
+  right: 10%;
   top: 26%;
-  --base-rot: 0deg;
-  --fly-x: 30cqw;
-  --fly-rot: 8deg;
+  rotate:0deg;
   filter: drop-shadow(0 12px 18px rgb(31 29 102 / 0.4));
 }
 .merch__fanny { width: clamp(130px, 24cqw, 320px); filter: drop-shadow(0 16px 24px rgb(31 29 102 / 0.45)); }
@@ -549,6 +549,8 @@
 .merch__sticker { filter: drop-shadow(0 12px 18px rgb(31 29 102 / 0.4)); }
 /* Stickers (bottom-right) arrive from the lower-right corner. */
 .merch__sticker--1 { right: 6%; top: 64%; width: 10%; --base-rot: 0deg; --fly-x: 14cqw; --fly-y: 16cqw; --fly-rot: -10deg; }
+/* The stickers banner (sticker.png, ~3:1 wide) sits centred above sticker1. */
+.merch__sticker-title { right: 10%; top: 56%; width: 18%; --fly-x: 8cqw; --fly-y: 14cqw; --fly-rot: 6deg; filter: drop-shadow(0 12px 18px rgb(31 29 102 / 0.4)); }
 .merch__sticker--2 { right: 16%; top: 64%; width: 8%; --base-rot: 5deg; --fly-x: 10cqw; --fly-y: 14cqw; --fly-rot: 8deg; }
 .merch__sticker--3 { right: 24%; top: 64%; width: 8%; --base-rot: -3deg; --fly-x: 8cqw; --fly-y: 12cqw; --fly-rot: -6deg; }
 .merch__sticker--4 { right: 18%; top: 79%; width: 10%; --base-rot: 7deg; --fly-x: 14cqw; --fly-y: 10cqw; --fly-rot: -12deg; }
@@ -561,7 +563,12 @@
 .merch__fanny--1 { left: 1%; top: 62%; --base-rot: -10deg; --fly-x: -6cqw; --fly-y: 22cqw; --fly-rot: -12deg; }
 .merch__fanny--2 { left: 18%; top: 62%; --base-rot: 7deg; --fly-x: 6cqw; --fly-y: 22cqw; --fly-rot: 10deg; }
 /* Kitt rises from below. */
-.merch__kit { left: 40%; top: 20%; width: 25%; --base-rot: 0deg; --fly-y: 30cqw; --fly-rot: -4deg; filter: drop-shadow(0 16px 24px rgb(31 29 102 / 0.45)); }
+.merch__kit { left: 40%; top: 17%; width: 25%; --base-rot: 0deg; --fly-y: 30cqw; --fly-rot: -4deg; filter: drop-shadow(0 16px 24px rgb(31 29 102 / 0.45)); }
+/* The kit's title banner sits centred above the kit; ~3:1 wide art that pops
+   in on its own little rise. top is coupled to the kit's bottom edge (kit top
+   20vh + kit height 25%×559/447 of stage width) so the gap holds at any
+   window shape instead of drifting as the viewport width changes. */
+.merch__kit-title { left: 47%; top: calc(7vh + 31.27vw + 1cqw); width: 18%; rotate: -13deg; --fly-y: 30cqw; --fly-rot: -4deg; filter: drop-shadow(0 12px 18px rgb(31 29 102 / 0.4)); }
 
 /* ---------- Order button ---------- */
 .merch__order-btn {
@@ -749,21 +756,23 @@
   .merch__badge:not(.merch__badge--wide),
   .merch__fanny:not(.merch__fanny--right) { transform: translateX(-50%); }
   .merch__box { width: min(2%, 44svh); transform: translate(-50%, -50%); }
-  .merch__bandana--wide { left: 50%; top: 31%; transform: translateX(-50%); width: 38%; rotate: 3deg; --base-rot: 0deg; --fly-y: 12cqw; --fly-rot: -4deg; }
-  .merch__bandana--1 { left: 25%; top: 37%; width: 26%; --base-rot: -6deg; --fly-y: 16cqw; --fly-rot: 10deg; }
-  .merch__bandana--2 { left: 50%; top: 37%; width: 30%; --base-rot: -6deg; --fly-y: 16cqw; --fly-rot: -8deg; }
+  .merch__bandana--wide { left: 80%; top:37%; transform: translateX(-50%); width: 30%; rotate: 3deg; --base-rot: 0deg; --fly-y: 12cqw; --fly-rot: -4deg; }
+  .merch__bandana--1 { left: 83%; top: 40%; width: 26%; --base-rot: -6deg; --fly-y: 16cqw; --fly-rot: 10deg; }
+  .merch__bandana--2 { left: 68%; top: 40%; width: 30%; --base-rot: -6deg; --fly-y: 16cqw; --fly-rot: -8deg; }
   .merch__bandana--3 { left: 75%; top: 37%; width: 26%; --base-rot: 5deg; --fly-y: 16cqw; --fly-rot: 8deg; }
-  .merch__fanny--right { left: 50%; top: 46%; transform: translateX(-50%); width: 38%; rotate: -3deg; --base-rot: 0deg; --fly-y: 14cqw; --fly-rot: 5deg; }
-  .merch__fanny--1 { left: 33%; top: 52%; width: 28%; rotate: 10deg; --fly-y: 18cqw; --fly-rot: 12deg; }
-  .merch__fanny--2 { left: 67%; top: 52%; width: 28%; rotate: -10deg; --fly-y: 18cqw; --fly-rot: -10deg; }
-  .merch__kit { left: 50%; top: 14%; transform: translateX(-50%); width: 32%; --base-rot: 0deg; --fly-y: 20cqw; --fly-rot: -6deg; }
+  .merch__fanny--right { left: 20%; top: 50%; transform: translateX(-50%); width: 30%; rotate: -3deg; --base-rot: 0deg; --fly-y: 14cqw; --fly-rot: 5deg; }
+  .merch__fanny--1 { left: 15%; top: 52%; width: 28%; rotate: 10deg; --fly-y: 18cqw; --fly-rot: 12deg; }
+  .merch__fanny--2 { left: 40%; top: 47%; width: 28%; rotate: -10deg; --fly-y: 18cqw; --fly-rot: -10deg; }
+  .merch__kit { left: 30%; top: 14%; transform: translateX(-50%); width: 32%; --base-rot: 0deg; --fly-y: 20cqw; --fly-rot: -6deg; }
+  .merch__kit-title { left: 52%; top: calc(1vh + 25.02vw + 1cqw); transform: translateX(-50%); width: 30%; rotate:1deg; --fly-y: 20cqw; --fly-rot: -6deg; }
   .merch__bandana--wide,
   .merch__badge--wide { z-index: 28; }
-  .merch__badge--wide { left: 50%; top: 62%; transform: translateX(-50%); width: 38%; rotate: 3deg; --fly-y: 14cqw; --fly-rot: 4deg; }
-  .merch__badge--1 { left: 25%; top: 68%; width: 26%; --base-rot: -10deg; --fly-y: 18cqw; --fly-rot: 14deg; }
-  .merch__badge--2 { left: 50%; top: 68%; width: 28%; --base-rot: 5deg; --fly-y: 18cqw; --fly-rot: -12deg; }
-  .merch__badge--3 { left: 75%; top: 68%; width: 26%; --base-rot: 8deg; --fly-y: 18cqw; --fly-rot: -10deg; }
+  .merch__badge--wide { left: 80%; top: 60%; transform: translateX(-50%); width: 25%; rotate: 3deg; --fly-y: 14cqw; --fly-rot: 4deg; }
+  .merch__badge--1 { left: 80%; top: 63%; width: 15%; --base-rot: -10deg; --fly-y: 18cqw; --fly-rot: 14deg; }
+  .merch__badge--2 { left: 70%; top: 62%; width: 15%; --base-rot: 5deg; --fly-y: 18cqw; --fly-rot: -12deg; }
+  .merch__badge--3 { left: 90%; top: 63%; width: 15%; --base-rot: 8deg; --fly-y: 18cqw; --fly-rot: -10deg; }
   .merch__sticker--1 { left: 5%; top: 78%; width: 18%; --base-rot: -8deg; --fly-x: 6cqw; --fly-y: 14cqw; --fly-rot: 10deg; }
+  .merch__sticker-title { left: 3%; top: 73%; width: 25%; --base-rot: -3deg; --fly-x: 6cqw; --fly-y: 10cqw; --fly-rot: 5deg; }
   .merch__sticker--2 { left: 26%; top: 75%; width: 15%; --base-rot: 5deg; --fly-y: 14cqw; --fly-rot: -8deg; }
   .merch__sticker--3 { left: 43%; top: 73%; width: 15%; --base-rot: -3deg; --fly-y: 14cqw; --fly-rot: 6deg; }
   .merch__sticker--4 { left: 60%; top: 78%; width: 15%; --base-rot: 7deg; --fly-x: -6cqw; --fly-y: 14cqw; --fly-rot: -10deg; }
@@ -771,16 +780,28 @@
 }
 
 /* Extra-small phones: pull sizes back a notch and drop one mid lantern. */
-@media (max-width: 380px) {
+@media (max-width: 440px) {
   .merch__logo { width: 50%; }
   .merch__tees-now { width: 22%;left:60%;top: 32%; }
-  .merch__tee { width: 50%; }
+  .merch__tee { width: 50%; top:50% }
   .merch__tee--outline { width: 55%; }
   .merch__tee--front-left,
   .merch__tee--front-right { width: 45%; }
   .merch__lantern--plain,
   .merch__note--blue { display: none; }
   .merch__order-btn { font-size: clamp(9px, 1.7cqw, 18px); white-space: nowrap; }
+  .merch__kit{
+    top:20%;
+    width:48%;
+  }
+  .merch__kit-title{
+    top:22%;
+    width:30%;
+    left:56%;
+  }
+  .merch__fanny--2{
+    top:50%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
