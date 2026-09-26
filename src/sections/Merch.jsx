@@ -1,3 +1,4 @@
+import useSceneActive from "../hooks/useSceneActive";
 import "./Merch.css";
 import { useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useTransform } from "motion/react";
@@ -104,18 +105,18 @@ function MerchPop({ phase2, className, style, src, alt, reduced }) {
   );
 }
 
-export default function Merch({ progress }) {
+export default function Merch({ progress, sceneProgress }) {
+  const scene = useRef(null);
+  const active = useSceneActive(scene, sceneProgress, .780);
   const reduced = useReducedMotion();
-  const [cta, setCta] = useState(() => (
-    progress.get() >= 0.945
-      ? { label: "Shop Merch", href: "https://makemypass.com/event/dhwani-merch" }
-      : { label: "Buy Tees", href: "https://makemypass.com/event/dhwani-26-tee" }
-  ));
+  const [showShop, setShowShop] = useState(() => progress.get() >= 0.945);
   useMotionValueEvent(progress, "change", value => {
-    setCta(value >= 0.945
-      ? { label: "Shop Merch", href: "https://makemypass.com/event/dhwani-merch" }
-      : { label: "Buy Tees", href: "https://makemypass.com/event/dhwani-26-tee" });
+    const next = value >= 0.945;
+    if (next !== showShop) setShowShop(next);
   });
+  const cta = showShop
+    ? { label: "Shop Merch", href: "https://makemypass.com/event/dhwani-merch" }
+    : { label: "Buy Tees", href: "https://makemypass.com/event/dhwani-26-tee" };
   // Pop-in driven by the journey's reveal window: right after the concentric
   // t-shirt tunnel the poster does a gentle pop — the stage blooms from the
   // screen centre (--pop) while its elements lift a few px (--rise) and fade
@@ -144,6 +145,8 @@ export default function Merch({ progress }) {
   const ctaY = useTransform(progress, [.90, .945, .965], ["-8svh", "-8svh", "7svh"]);
   return (
     <motion.section
+      ref={scene}
+      data-animation-paused={!active}
       id="merch"
       className="merch"
       aria-label="Dhwani 26 merchandise"

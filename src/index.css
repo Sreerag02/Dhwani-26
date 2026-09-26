@@ -1056,3 +1056,9 @@ img {
 .global-navigation .side-nav-overlay {
   pointer-events: auto;
 }
+/* Preserve each animation's position while its scene is offscreen. */
+[data-animation-paused="true"] *,
+[data-animation-paused="true"] *::before,
+[data-animation-paused="true"] *::after {
+  animation-play-state: paused !important;
+}

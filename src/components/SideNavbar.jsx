@@ -9,7 +9,7 @@ const NAV_ITEMS = currentNav.map(item => item.label);
 const NAV_HREFS = {};
 for (const item of currentNav) NAV_HREFS[item.label] = item.page ?? item.anchor;
 const NAV_HREFS_ORDER = NAV_ITEMS.map(item => NAV_HREFS[item]);
-const INITIAL_ACTIVE = isCampusAmbassadorPage ? 0 : 3;
+const INITIAL_ACTIVE = isCampusAmbassadorPage ? 0 : NAV_ITEMS.indexOf("Events");
 
 function Brand() {
   return <div className="nav-brand">

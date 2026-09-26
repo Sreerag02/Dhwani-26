@@ -7,7 +7,6 @@ import CampusAmbassador from "./components/CampusAmbassador";
 import CampusAmbassadorBand from "./sections/CampusAmbassador";
 import ScrollExperience from "./sections/ScrollExperience";
 import Events from "./sections/Events";
-import ComingSoon from "./sections/ComingSoon";
 import DhwaniFooter from "./components/DhwaniFooter";
 import { isCampusAmbassadorPage } from "./lib/routes";
 

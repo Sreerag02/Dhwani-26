@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import useSceneActive from "../hooks/useSceneActive";
+import { createContext, useContext, useEffect, useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform, useSpring } from "motion/react";
 import FerrisWheel from "../components/FerrisWheel";
 import "./ThemeReveal.css";
@@ -55,12 +56,12 @@ function LayerMotion({ className, src, alt, from, float, fade, depth = 1, zoom =
     </motion.div>;
 }
 
-export default function ThemeReveal({ progress = null, embedded = false, onReady = null }) {
+export default function ThemeReveal({ progress = null, embedded = false, onReady = null, sceneProgress = null }) {
   const ref = useRef(null);
   const stageRef = useRef(null);
   const pointerFrame = useRef(null);
   const settleTimer = useRef(null);
-  const [playing,setPlaying] = useState(false);
+  const playing = useSceneActive(ref, sceneProgress, -Infinity, .45);
   const reduced = useReducedMotion();
   const handlePointerMove = event => {
     if (reduced || event.pointerType !== "mouse" || !stageRef.current) return;
@@ -87,15 +88,8 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
       settleTimer.current = null;
     }, 520);
   };
-  useEffect(() => {
-    let visible = false;
-    const update = () => setPlaying(visible && !document.hidden);
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting; update();
-    });
-    observer.observe(ref.current);
-    document.addEventListener("visibilitychange", update);
-    return () => { observer.disconnect(); document.removeEventListener("visibilitychange", update); };
+  useEffect(() => () => {
+    if (pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
   }, []);
   useEffect(() => {
     if (!onReady) return;

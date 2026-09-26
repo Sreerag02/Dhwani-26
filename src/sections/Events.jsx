@@ -1,3 +1,4 @@
+import useSceneActive from "../hooks/useSceneActive";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react";
 import "./Events.css";
@@ -174,6 +175,8 @@ export default function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef(null);
+  const active = useSceneActive(sectionRef);
+  const reduced = useReducedMotion();
   const boardRef = useRef(null);
   const railLoopWidthRef = useRef(0);
   const railFrameRef = useRef(null);
@@ -294,14 +297,14 @@ export default function Events() {
               top: particle.top,
               scale: particle.scale
             }}
-            animate={{
+            animate={active && !reduced ? {
               y: [0, -30, 0],
               opacity: [0.3, 0.6, 0.3],
               scale: [1, 1.2, 1]
-            }}
+            } : { y: 0, opacity: 0.3, scale: 1 }}
             transition={{
               duration: particle.duration,
-              repeat: Infinity,
+              repeat: active && !reduced ? Infinity : 0,
               ease: "easeInOut",
               delay: particle.delay
             }}

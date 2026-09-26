@@ -11,6 +11,7 @@ export const PAGE_NAV = {
   "/": [
     { label: "Theme", anchor: "#theme-reveal" },
     { label: "Khai", anchor: "#khai" },
+    { label: "Artists", anchor: "#artists" },
     { label: "Merch", anchor: "#merch" },
     { label: "Events", anchor: "#events" },
     { label: "Campus Ambassador", page: CAMPUS_AMBASSADOR_PATH },

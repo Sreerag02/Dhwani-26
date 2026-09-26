@@ -1,3 +1,4 @@
+import useSceneActive from "../hooks/useSceneActive";
 import React, { useRef, useCallback, useEffect } from 'react';
 import { useLenis } from 'lenis/react';
 import './DhwaniFooter.css';
@@ -38,6 +39,7 @@ const ArrowUpIcon = React.memo(({ className = '', size = 20 }) => (
 
 export function DhwaniFooter() {
   const footerRef = useRef(null);
+  const active = useSceneActive(footerRef);
   
   // Refs for elements to animate
   const glowLeftRef = useRef(null);
@@ -149,6 +151,7 @@ export function DhwaniFooter() {
   return (
     <footer 
       ref={footerRef}
+      data-animation-paused={!active}
       className="dhwani-footer-container carnival-world"
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -204,7 +207,7 @@ export function DhwaniFooter() {
         className="carnival-mascot-left-presence"
       >
         <div className="mascot-left-aura-halo" />
-        <img 
+        <img decoding="async"
           src="/assets/footer/khai2.webp" 
           alt="Khai in dynamic action pose" 
           className="mascot-khai2-img"
@@ -219,7 +222,7 @@ export function DhwaniFooter() {
         className="carnival-mascot-presence"
       >
         <div className="mascot-aura-halo" />
-        <img 
+        <img decoding="async"
           src="/assets/footer/KHAI.webp" 
           alt="Khai - The Dhwani Mascot" 
           className="mascot-khai-img"
@@ -239,7 +242,7 @@ export function DhwaniFooter() {
         {/* Brand Core: Emblem & Festival Identity */}
         <div className="brand-editorial-header">
           <div className="dhwani-emblem-gem">
-            <img 
+            <img decoding="async"
               src="/assets/footer/icon.webp" 
               alt="Dhwani '26 Feather Emblem" 
               className="dhwani-feather-emblem"
@@ -248,7 +251,7 @@ export function DhwaniFooter() {
 
           <div className="brand-identity-text">
             <h2 className="fest-main-title">
-              <img
+              <img decoding="async"
                 src="/assets/footer/dhwani-text.webp"
                 alt="Dhwani '26"
                 className="dhwani-title-img"
@@ -279,7 +282,7 @@ export function DhwaniFooter() {
         {/* Refined Social Connections */}
         <div className="dhwani-social-atelier">
           <div className="yellow-badge-container">
-            <img 
+            <img decoding="async"
               src="/assets/footer/yellowbadge.webp" 
               alt="Yellow Badge" 
               className="yellow-badge-img"

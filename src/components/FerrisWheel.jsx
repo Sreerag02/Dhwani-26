@@ -138,7 +138,7 @@ export default function FerrisWheel({
       className={`ferrisPhysics ${className}`}
       aria-hidden="true"
     >
-      <img
+      <img decoding="async"
         className="ferrisPhysics__rotor"
         ref={rotorRef}
         src="/assets/ferris/rotor.svg"
@@ -155,7 +155,7 @@ export default function FerrisWheel({
           key={cabin.file}
           ref={(node) => { cabinRefs.current[i] = node; }}
         >
-          <img
+          <img decoding="async"
             className="ferrisPhysics__cabin"
             src={cabin.file}
             alt=""
@@ -170,7 +170,7 @@ export default function FerrisWheel({
         </div>
       ))}
 
-      <img
+      <img decoding="async"
         className="ferrisPhysics__support"
         src="/assets/ferris/support.svg"
         alt=""
