@@ -123,6 +123,8 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
       {lanterns.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 110 : -110} depth={1.2} float />)}
       {notes.map(([file,pos],i) => <RevealLayer key={pos} className={pos} src={E+file} from={i%2 ? 60 : -60} depth={1.25} float />)}
     </div>
+    <RevealLayer className="carnival-mobile-cloud-bank carnival-mobile-cloud-bank--left" src={E+"theme-cloud.webp"} depth={1.5} float />
+    <RevealLayer className="carnival-mobile-cloud-bank carnival-mobile-cloud-bank--right" src={E+"theme-cloud.webp"} depth={1.5} float />
     <RevealLayer className="carnival-base-clouds" src={E+"theme-cloud.webp"} depth={1.5} float />
   </section></TimelineContext.Provider>;
 }

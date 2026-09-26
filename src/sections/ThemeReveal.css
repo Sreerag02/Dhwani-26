@@ -165,3 +165,5 @@
   0%,100% {transform:translate3d(-.5%,0,0) scale(1.02)}
   50% {transform:translate3d(.5%,-14px,0) scale(1.035)}
 }
+
+.carnival-mobile-cloud-bank { display:none; }

@@ -20,7 +20,10 @@ export default function KhaiHero({ progress, sceneProgress }) {
   return (
     <motion.section ref={scene} id="home" className="mascot-poster" data-paused={!active || !!reduced}
       style={{ "--poster-drift-state": driftState }}>
-      <img decoding="async" className="poster-background" src={MASCOT + "Gradient Fill 1.webp"} alt="" draggable="false" />
+      <picture>
+        <source media="(max-width:700px) and (max-aspect-ratio:1/1)" srcSet={MASCOT + "Gradient%20Fill%202.webp"} />
+        <img decoding="async" className="poster-background" src={MASCOT + "Gradient Fill 1.webp"} alt="" draggable="false" />
+      </picture>
       <div className="poster-tint" />
       <div className="poster-khai"><motion.img decoding="async" style={{ opacity: titleOpacity, scale: reduced ? 1 : titleScale }} src={MASCOT + "khai.webp"} alt="Khai" draggable="false" /></div>
       <div className="poster-character">

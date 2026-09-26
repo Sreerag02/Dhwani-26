@@ -11,7 +11,7 @@ export default function SixEightLayer({ progress }) {
       <EightArt file="title starvalue" x={1456} y={44} width={422} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.025} fromY={55} scaleFrom={.94}>
-      <EightArt file="artist background" x={474} y={170} width={2472} />
+      <EightArt className="six-eight-backdrop" file="artist background" x={474} y={170} width={2472} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.045} fromY={-32}>
       <EightArt file="blue note 3" x={241} y={182} width={133} />
@@ -22,8 +22,8 @@ export default function SixEightLayer({ progress }) {
       <EightArt file="note 3" x={406} y={683} width={67} />
       <EightArt file="note 2" x={3074} y={504} width={91} />
       <EightArt file="note 1" x={2920} y={719} width={141} />
-      <Art folder="srishti" file="head effect 1" x={405} y={319} width={220} style={{ rotate: '-50deg' }} />
-      <Art folder="srishti" file="head effect 2" x={2502} y={171} width={220} style={{ rotate: '45deg' }} />
+      <Art folder="srishti" file="head effect 1" mobile={[3, 24, 16]} x={405} y={319} width={220} style={{ rotate: '-50deg' }} />
+      <Art folder="srishti" file="head effect 2" mobile={[82, 23, 16]} x={2502} y={171} width={220} style={{ rotate: '45deg' }} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.07} fromY={85} scaleFrom={.975} className="six-eight-portraits">
       <EightArt file="artist main" x={488} y={204} width={2390} />

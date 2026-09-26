@@ -129,3 +129,64 @@
   .khai-journey .poster-cloud-five {top:28%;right:7%;width:22%}
   .khai-journey .poster-cloud-six {top:76%;left:40%;width:12%}
 }
+
+/* Portrait references use a stable 9:16 canvas; desktop art direction stays
+   above. All coordinates share this canvas, including the foreground. */
+@media (max-width:700px) and (max-aspect-ratio:1/1) {
+  .carnival-embedded,
+  .khai-journey .mascot-poster {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:min(100%,56.25svh); height:auto; aspect-ratio:9/16;
+  }
+  .carnival-embedded { background:linear-gradient(#020e3e 0%,#161059 19%,#67165c 34%,#ff6266 44%,#ffb650 55%,#501347 76%,#6e165f 100%); }
+  .carnival-embedded .carnival-stage { width:100%; height:100%; aspect-ratio:9/16; perspective:none; transform:none; }
+  .carnival-embedded .carnival-kicker { top:13.5%; }
+  .carnival-embedded .carnival-kicker img { width:24%; max-width:none; height:auto; }
+  .carnival-embedded .carnival-wheel { top:17%; left:5%; width:90%; }
+  .carnival-embedded .carnival-blue { top:12.5%; left:20%; width:61%; }
+  .carnival-embedded .carnival-title { top:37%; left:16%; width:68%; }
+  .carnival-embedded .carnival-gate { top:51%; left:12%; width:76%; }
+  .carnival-embedded .hidden-khai { top:66%; width:34%; }
+  .carnival-embedded .carnival-stalls { width:165%; bottom:18%; }
+  .carnival-embedded .carnival-base-clouds { width:250%; bottom:0; }
+  .carnival-embedded .lamp-a { top:19%; left:12%; width:7%; }
+  .carnival-embedded .lamp-b { top:12%; left:24%; width:10%; }
+  .carnival-embedded .lamp-c { top:29%; left:2%; width:12%; }
+  .carnival-embedded .lamp-d { top:15%; right:12%; width:10%; }
+  .carnival-embedded .lamp-e { top:21%; left:85%; width:10%; }
+  .carnival-embedded .lamp-f { top:34%; right:4%; width:7%; }
+  .carnival-embedded .lamp-g { top:43%; left:7%; width:8%; }
+  .carnival-embedded .lamp-h { top:45%; right:4%; width:10%; }
+  .carnival-embedded .note-a { top:33%; left:12%; width:4%; }
+  .carnival-embedded .note-b { top:64%; left:18%; width:4%; }
+  .carnival-embedded .note-c { top:63%; right:18%; width:4%; }
+  .carnival-embedded .note-d { top:42%; right:5%; width:4%; }
+  .carnival-embedded .note-e,.carnival-embedded .note-f { display:none; }
+
+  .khai-journey .poster-background { opacity:.45; object-fit:cover; width:170%; height:170%; left:-35%; top:-65%; }
+  .khai-journey .poster-tint { background:linear-gradient(#152c9270,#28379b44 55%,#201d6144); }
+  .khai-journey .poster-khai { top:42%; left:5%; width:90%; }
+  .khai-journey .poster-character { top:44%; width:95%; max-width:none; }
+  .khai-journey .poster-sign { z-index:5; }
+  .khai-journey .poster-sign-left { left:1%; top:34%; width:41%; rotate:-5deg; }
+  .khai-journey .poster-sign-right { right:-1%; top:38%; width:32%; height:auto; overflow:visible; }
+  .khai-journey .poster-cloud-one { top:22%; left:2%; width:38%; }
+  .khai-journey .poster-cloud-two { top:33%; left:54%; width:18%; }
+  .khai-journey .poster-cloud-three { top:22%; right:-6%; width:37%; }
+  .khai-journey .poster-cloud-four { top:46%; left:0; width:15%; }
+  .khai-journey .poster-cloud-five { top:68%; right:19%; width:22%; }
+  .khai-journey .poster-cloud-six { top:57%; left:84%; width:16%; }
+  .khai-journey .poster-foreground { width:280%; left:-90%; bottom:-1%; }
+  .khai-journey .poster-game-cta { bottom:10.5%; padding:2.4% 4%; font-size:clamp(10px,2.5vw,16px); translate:-50% 0; transform:none; }
+}
+
+@media (max-width:700px) and (max-aspect-ratio:1/1) {
+  .carnival-embedded .carnival-mobile-cloud-bank { display:block; width:220%; bottom:-17%; z-index:10; }
+  .carnival-embedded .carnival-mobile-cloud-bank--left { left:-140%; }
+  .carnival-embedded .carnival-mobile-cloud-bank--right { right:-140%; }
+}
+@media (max-width:700px) and (max-aspect-ratio:1/1) {
+  .carnival-embedded .carnival-mobile-cloud-bank {
+    mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent);
+  }
+}

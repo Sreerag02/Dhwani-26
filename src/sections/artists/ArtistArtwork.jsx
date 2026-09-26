@@ -1,19 +1,20 @@
+import { mobileLayout, MOBILE_ART_QUERY } from './mobileLayout';
 import imageSizes from './imageSizes.json';
 import { motion, useReducedMotion, useTransform } from 'motion/react';
 
 export const imagePath = (file, folder = 'kanika') =>
   `/assets/artists/${folder === 'kanika' ? 'kanika' : 'optimized/' + encodeURIComponent(folder)}/${encodeURIComponent(file)}.webp`;
 
-// Coordinates are on the reference's 3240 × 1440 artboard, never viewport
-// coordinates. Keeping one aspect ratio preserves the supplied composition.
-export function Art({ folder = 'kanika', file, x, y, width, className = '', alt = '', style }) {
+// Desktop uses the original reference coordinates; mobile uses its own poster composition.
+export function Art({ folder = 'kanika', file, x, y, width, className = '', alt = '', style, mobile }) {
   const source = imagePath(file, folder);
+  const portrait = mobile ?? mobileLayout[folder]?.[file] ?? [x / 32.4, y / 14.4, Math.max(width / 32.4, 7)];
   const size = imageSizes[`${folder}/${file}`];
   const srcSet = size?.smallWidth
     ? `${imagePath(file + '-small', folder)} ${size.smallWidth}w, ${source} ${size.width}w`
     : undefined;
-  return <img srcSet={srcSet} sizes={srcSet ? `${width / 32.4}vw` : undefined} className={`artist-art ${className}`} src={source} alt={alt}
-    draggable="false" width={width} style={{ left: `${x / 32.4}%`, top: `${y / 14.4}%`, width: `${width / 32.4}%`, ...style }} />;
+  return <img srcSet={srcSet} sizes={srcSet ? `${MOBILE_ART_QUERY} ${portrait[2]}vw, ${width / 32.4}vw` : undefined} className={`artist-art ${className}`} src={source} alt={alt}
+    draggable="false" width={width} decoding="async" style={{ '--mobile-x': `${portrait[0]}%`, '--mobile-y': `${portrait[1]}%`, '--mobile-width': `${portrait[2]}%`, left: `${x / 32.4}%`, top: `${y / 14.4}%`, width: `${width / 32.4}%`, ...style }} />;
 }
 
 export function RevealGroup({ progress, children, start = 0, fromX = 0, fromY = 45, scaleFrom = 1, className = '' }) {

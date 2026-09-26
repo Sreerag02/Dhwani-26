@@ -18,17 +18,19 @@ export default function SrishtiLayer({ progress }) {
     aria-label="Srishti — Creating the Resonance. Seven musicians, Dhwani and Srishti logos, layered yellow clouds and musical notes.">
     <div className="kanika-texture" />
     <RevealGroup progress={progress} fromY={-16}>
-      <Art file="dhwani logo png og 2" x={1492} y={24} width={95} />
+      <Art file="dhwani logo png og 2" mobile={[34, 5, 11]} x={1492} y={24} width={95} />
       <SrishtiArt file="Srishti LOGO" x={1632} y={36} width={114} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.02} fromY={65} scaleFrom={.98}>
-      <SrishtiArt file="Shape backround" x={0} y={183} width={3240} />
+      <div className="srishti-mobile-backdrop srishti-mobile-backdrop--rear" />
+      <div className="srishti-mobile-backdrop srishti-mobile-backdrop--front" />
+      <SrishtiArt className="srishti-desktop-backdrop" file="Shape backround" x={0} y={183} width={3240} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.035} fromY={-35}>
-      <SrishtiArt file="head effect 2" x={157} y={42} width={254} />
-      <SrishtiArt file="head effect 1" x={824} y={83} width={265} />
-      <SrishtiArt file="head effect 2" x={1982} y={49} width={254} />
-      <SrishtiArt file="head effect 1" x={2824} y={90} width={265} style={{ rotate: '26deg' }} />
+      <SrishtiArt file="head effect 2" mobile={[4, 17, 15]} x={157} y={42} width={254} />
+      <SrishtiArt file="head effect 1" mobile={[40, 17, 15]} x={824} y={83} width={265} />
+      <SrishtiArt file="head effect 2" mobile={[78, 18, 15]} x={1982} y={49} width={254} />
+      <SrishtiArt file="head effect 1" mobile={[80, 39, 14]} x={2824} y={90} width={265} style={{ rotate: '26deg' }} />
       <SrishtiArt file="note 2" x={25} y={213} width={100} style={{ rotate: '-28deg' }} />
       <Art folder="six eight" file="blue note 1" x={1245} y={73} width={110} />
       <Art folder="six eight" file="blue note 2" x={2450} y={83} width={111} />

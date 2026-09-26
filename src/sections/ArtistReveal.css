@@ -46,3 +46,46 @@
   paint-order:stroke fill;
   letter-spacing:.035em;
 }
+
+.srishti-mobile-backdrop { display:none; }
+
+/* Mobile is a portrait festival poster, independently composed from desktop. */
+@media (max-width:767px) and (max-aspect-ratio:1/1) {
+  .kanika-artboard {
+    width:min(100vw,66.6667svh);
+    aspect-ratio:2/3;
+    overflow:hidden;
+  }
+  .artist-art {
+    left:var(--mobile-x)!important;
+    top:var(--mobile-y)!important;
+    width:var(--mobile-width)!important;
+  }
+  .kanika-partners { left:22%; top:5%; width:56%; height:9%; gap:8%; }
+  .kanika-sun { left:10%; top:19%; width:80%; }
+  .kanika-days { top:24%; font-size:7cqw; opacity:.9; }
+  .kanika-days--left { left:4%; rotate:-12deg; }
+  .kanika-days--right { right:4%; rotate:12deg; }
+  .kanika-side-portrait { clip-path:inset(0 0 16% 0); }
+  .kanika-main-portrait { clip-path:inset(0 0 15% 0); }
+  .kanika-ray--pink-left { clip-path:polygon(4% 22%,52% 92%,22% 86%); }
+  .kanika-ray--pink-right { clip-path:polygon(96% 22%,78% 86%,48% 92%); }
+  .kanika-ray--blue-left { clip-path:polygon(0 53%,32% 79%,48% 96%); }
+  .kanika-ray--blue-right { clip-path:polygon(100% 53%,68% 79%,52% 96%); }
+  .kanika-title-bed { clip-path:polygon(0 81%,42% 78%,50% 85%,58% 78%,100% 81%,100% 96%,50% 100%,0 96%); }
+  .kanika-base { top:84%; height:16%; }
+  .six-eight-portraits { clip-path:inset(0 0 17% 0); }
+  .six-eight-tagline { left:6%; top:85%; width:88%; font-size:6.5cqw; -webkit-text-stroke:1.6cqw #b80067; }
+  .srishti-musician { clip-path:inset(0 0 17% 0); }
+  .six-eight-backdrop { height:54%; }
+  .srishti-desktop-backdrop { display:none; }
+  .srishti-mobile-backdrop { display:block; position:absolute; }
+  .srishti-mobile-backdrop--rear {
+    inset:21% -3% 19%; background:#b80067;
+    clip-path:polygon(0 7%,10% 0,25% 5%,28% 0,46% 1%,53% 8%,62% 0,79% 2%,86% 10%,100% 7%,100% 100%,0 100%);
+  }
+  .srishti-mobile-backdrop--front {
+    inset:41% -3% 16%; background:#990754;
+    clip-path:polygon(0 13%,10% 1%,23% 2%,31% 10%,34% 0,51% 0,59% 12%,65% 3%,78% 6%,83% 0,96% 5%,100% 20%,100% 100%,0 100%);
+  }
+}

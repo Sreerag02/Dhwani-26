@@ -37,16 +37,16 @@ export default function KanikaLayer({ progress }) {
       <Art file="kanika main" x={1136} y={204} width={938} className="kanika-main" />
     </RevealGroup>
     <RevealGroup progress={progress} start={.06} fromY={-35}>
-      <Art file="note 4" x={379} y={97} width={142} />
-      <Art file="note 2" x={993} y={70} width={73} style={{ rotate: '-16deg' }} />
-      <Art file="note 1" x={1974} y={77} width={130} />
-      <Art file="note 3" x={2334} y={98} width={75} style={{ rotate: '14deg' }} />
-      <Art file="note 2" x={2750} y={123} width={114} />
-      <Art file="note 1" x={493} y={480} width={70} style={{ rotate: '-12deg' }} />
-      <Art file="note 3" x={1031} y={340} width={100} />
-      <Art file="note 4" x={2223} y={340} width={61} style={{ rotate: '25deg' }} />
-      <Art file="note 2" x={495} y={919} width={80} style={{ rotate: '-15deg' }} />
-      <Art file="note 3" x={2809} y={930} width={76} />
+      <Art file="note 4" mobile={[7, 18, 8]} x={379} y={97} width={142} />
+      <Art file="note 2" mobile={[27, 17, 5]} x={993} y={70} width={73} style={{ rotate: '-16deg' }} />
+      <Art file="note 1" mobile={[77, 18, 8]} x={1974} y={77} width={130} />
+      <Art file="note 3" mobile={[89, 29, 6]} x={2334} y={98} width={75} style={{ rotate: '14deg' }} />
+      <Art file="note 2" mobile={[89, 19, 6]} x={2750} y={123} width={114} />
+      <Art file="note 1" mobile={[5, 35, 6]} x={493} y={480} width={70} style={{ rotate: '-12deg' }} />
+      <Art file="note 3" mobile={[28, 30, 6]} x={1031} y={340} width={100} />
+      <Art file="note 4" mobile={[70, 36, 5]} x={2223} y={340} width={61} style={{ rotate: '25deg' }} />
+      <Art file="note 2" mobile={[3, 69, 6]} x={495} y={919} width={80} style={{ rotate: '-15deg' }} />
+      <Art file="note 3" mobile={[91, 68, 6]} x={2809} y={930} width={76} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.16} fromY={80}>
       <div className="kanika-title-bed" />
