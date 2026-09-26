@@ -18,7 +18,7 @@ html {scroll-padding-top:var(--festival-header-height)}
 .cloud-curtain {position:absolute;inset:0;z-index:20;overflow:hidden;pointer-events:none;contain:strict}
 .cloud-curtain-ground {position:absolute;inset:0;background:#95034e}
 .cloud-curtain-layer {position:absolute;width:76%;pointer-events:none;will-change:transform;backface-visibility:hidden;transform:translateZ(0)}
-.cloud-curtain-layer img {display:block;width:100%;height:auto;max-width:none;backface-visibility:hidden;transform:translateZ(0)}
+.cloud-curtain-layer img {display:block;width:100%;height:auto;max-width:none}
 .curtain-0 {left:-13%;top:-20%;width:95%}
 .curtain-1 {right:-14%;top:-18%;width:94%}
 .curtain-2 {left:-10%;top:15%;width:80%}

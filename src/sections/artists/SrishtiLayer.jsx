@@ -42,15 +42,15 @@ export default function SrishtiLayer({ progress }) {
       </RevealGroup>
     )}
     <RevealGroup progress={progress} start={.11} fromX={-22} fromY={80}>
-      <SrishtiArt file="base cloud left" x={0} y={810} width={2936} />
+      <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "56.25%" }} file="base cloud left" x={0} y={810} width={2936} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.12} fromX={22} fromY={85}>
-      <SrishtiArt file="base cloud right" x={0} y={613} width={3239} />
+      <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "42.56944444444444%" }} file="base cloud right" x={0} y={613} width={3239} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.14} fromY={70}>
-      <SrishtiArt file="cloud 1" x={12} y={818} width={1113} />
-      <SrishtiArt file="cloud 2" x={2085} y={734} width={1173} />
-      <SrishtiArt file="cloud 3" x={964} y={616} width={1270} />
+      <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "56.80555555555556%" }} file="cloud 1" x={12} y={818} width={1113} />
+      <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "50.97222222222222%" }} file="cloud 2" x={2085} y={734} width={1173} />
+      <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "42.77777777777778%" }} file="cloud 3" x={964} y={616} width={1270} />
     </RevealGroup>
     <RevealGroup progress={progress} start={.17} fromY={65} scaleFrom={.97}>
       <SrishtiArt file="Shape title background" x={672} y={865} width={1895} />

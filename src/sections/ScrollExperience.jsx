@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import React, { useRef, useState } from "react";
+import { motion, useScroll, useTransform, useReducedMotion, useMotionValueEvent } from "motion/react";
 import KhaiHero from "../components/HeroReveal";
 import ThemeReveal from "./ThemeReveal";
 import Merch from "./Merch";
@@ -53,6 +53,18 @@ const Cloud = React.memo(function Cloud({ layer, progress }) {
     <img src={`/assets/curtain/${layer.file}.webp`} alt="" decoding="async" draggable="false" />
   </motion.div>;
 });
+
+// Subscribe only to boundary crossings. Unmount inactive curtains to release
+// their large GPU surfaces and Motion subscriptions; remount on reverse scroll.
+function CloudCurtainLayers({ progress, sceneProgress = progress, start = -Infinity, end }) {
+  const inRange = value => value >= start && value < end;
+  const [active, setActive] = useState(() => inRange(sceneProgress.get()));
+  useMotionValueEvent(sceneProgress, "change", value => {
+    const next = inRange(value);
+    if (next !== active) setActive(next);
+  });
+  return active ? CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={progress} />) : null;
+}
 
 const TUNNEL_LAYERS = [
   { base: .30, spin: -7, depth: .58, dir: -30, pan: 0 },
@@ -146,11 +158,11 @@ export default function ScrollExperience() {
       <motion.div className="section-transition-fade" style={{ opacity: transitionFade, visibility: transitionVisibility, contentVisibility: transitionVisibility, position: 'absolute', inset: 0, backgroundColor: '#11103b', zIndex: 1 }} aria-hidden="true" />
       <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility, contentVisibility: cloudVisibility }} aria-hidden="true">
         <motion.div className="cloud-curtain-ground" style={{ opacity: ground }} />
-        {CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={progress} />)}
+        <CloudCurtainLayers progress={progress} end={reduced ? .564 : .36} />
       </motion.div>
       {/* Second curtain: same clouds reused, fires Khai → artists */}
       <motion.div className="cloud-curtain cloud-curtain--2" style={{ visibility: curtain2Visibility, contentVisibility: curtain2Visibility }} aria-hidden="true">
-        {CLOUD_LAYERS.map(layer => <Cloud key={`c2-${layer.id}`} layer={layer} progress={curtain2Progress} />)}
+        <CloudCurtainLayers progress={curtain2Progress} sceneProgress={progress} start={.63} end={.70} />
       </motion.div>
       <motion.div className="scroll-mask-bg" style={{ opacity: maskBg }} aria-hidden="true" />
       <motion.div className="concentric-rings" style={{ opacity: dripOpacity, visibility: dripVisibility, contentVisibility: dripVisibility }} aria-hidden="true">
