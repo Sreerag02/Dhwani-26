@@ -6,12 +6,24 @@
   overflow:hidden;
   margin-top:-1px;
   background:linear-gradient(180deg,#1f1d66 0%,#25155e 12%,#821967 29%,#ff6266 43%,#ffb650 53%,#501347 66%,#6e165f 87%,#1f1d66 100%);
+  contain: layout paint;
 }
 .carnival-stage {
   position:relative;
   width:min(100%,1120px);
   aspect-ratio:9 / 16;
   margin:0 auto;
+  contain: layout paint;
+  perspective: 1400px;
+  transform: perspective(1400px) rotateX(var(--theme-tilt-y, 0deg)) rotateY(var(--theme-tilt-x, 0deg));
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  will-change: transform;
+}
+/* Only the return-to-rest gets eased; live tracking is 1:1 so the tilt never
+   lags behind or overshoots the pointer. */
+.carnival-stage--settle {
+  transition: transform 450ms cubic-bezier(.25,.8,.35,1);
 }
 .carnival::before {
   content:""; position:absolute; inset:0; pointer-events:none;
@@ -19,16 +31,23 @@
 }
 .carnival-kicker {
   position:absolute; z-index:8; top:2%; left:0; width:100%; margin:0;
-  font:400 clamp(20px,3vw,34px)/1.1 "Galavant",sans-serif;
-  text-align:center; color:#fabf01;
+  text-align:center; pointer-events:none;
 }
-.carnival-kicker span {display:block;font:9px/2.5 "Poppins",sans-serif;letter-spacing:.25em}
+.carnival-layer.carnival-kicker img {
+  display:block;
+  width:auto; max-width:72%;
+  height:clamp(30px,6svh,58px);
+  margin:0 auto;
+  object-fit:contain;
+}
 .carnival-layer {position:absolute;pointer-events:none;}
 .carnival-layer img {display:block;width:100%;height:auto;max-width:none;user-select:none}
 .carnival-wheel {z-index:1;top:12%;left:3%;width:94%}
 .carnival-blue {z-index:3;top:6%;left:-3%;width:106%}
 .carnival-title {z-index:7;top:25%;left:12%;width:76%}
 .carnival-gate {z-index:5;top:42%;left:-4%;width:108%}
+.hidden-khai {z-index:6;top:56%;left:50%;translate:-50% 0;width:24%}
+.hidden-khai img {filter:drop-shadow(0 16px 26px rgba(0,0,0,.38))}
 .carnival-gate-far {z-index:2;top:58%;left:18%;width:64%;opacity:.32}
 .lamp-a {z-index:4;top:7%;left:40%;width:7%}
 .lamp-b {z-index:6;top:1%;left:53%;width:15%}
@@ -52,7 +71,7 @@
 .note-f {z-index:8;top:80%;right:12%;width:3%}
 .mist-g {z-index:4;top:36%;left:-12%;width:35%}
 .mist-h {z-index:4;top:39%;right:-15%;width:38%}
-.carnival-float {animation:carnival-sway 7s ease-in-out infinite;transform-origin:50% 10%;animation-play-state:paused}
+.carnival-float {animation:carnival-sway 7s ease-in-out infinite;transform-origin:50% 10%;animation-play-state:paused;will-change:transform}
 .carnival[data-playing="true"] .carnival-float {animation-play-state:running}
 .lamp-b .carnival-float,.lamp-d .carnival-float,.mist-b .carnival-float {animation-delay:-3s;animation-duration:8s}
 @keyframes carnival-sway {50% {transform:translate3d(9px,-18px,0) rotate(3deg)}}
@@ -61,7 +80,7 @@
 @media (min-width:701px) {
   .carnival {padding-top:var(--festival-header-height,72px)}
   .carnival-stage {width:100%;aspect-ratio:16/9;height:auto}
-  .carnival-kicker {top:3%;font-size:clamp(20px,2vw,32px)}
+  .carnival-kicker {top:3%}
   .carnival-wheel {width:50%;left:25%;top:6%}
   .carnival-blue {width:94%;left:3%;top:8%;height:52%}
   .carnival-blue > div,.carnival-blue img {height:100%}
@@ -107,13 +126,14 @@
 
 /* Reference composition: wheel and stalls behind the title and central gate,
    with the supplied warm cloud artwork forming the foreground base. */
-.carnival-stalls {z-index:2;left:50%;translate:-50% 0;bottom:0;width:max(102%,142svh)}
+.carnival-stalls {z-index:0;left:50%;translate:-50% 0;bottom:0;width:max(102%,142svh)}
 .carnival-base-clouds {z-index:9;left:50%;translate:-50% 0;bottom:-12%;width:max(106%,148svh)}
 @media (min-width:701px) {
   .carnival-wheel {top:0;left:27%;width:46%}
   .carnival-blue {top:0;left:-2%;width:104%;height:48%}
   .carnival-title {top:26%;left:30%;width:40%}
   .carnival-gate {top:42%;left:28%;width:44%}
+  .hidden-khai {top:62%;width:19%}
   .lamp-a {top:9%;left:26%;width:4%}
   .lamp-b {top:1%;left:34%;width:6%}
   .lamp-c {top:21%;left:9%;width:8%}
@@ -124,11 +144,13 @@
   .lamp-h {top:8%;right:28%;width:6%}
 }
 @media (max-width:700px) {
+  .carnival-stage { contain: layout; }
   .carnival-stalls {width:max(190%,80svh);bottom:0}
   .carnival-base-clouds {width:max(200%,84svh);bottom:-3%}
   .carnival-wheel {top:12%;left:5%;width:90%}
   .carnival-title {top:32%;left:8%;width:84%}
-  .carnival-gate {top:48%;left:3%;width:94%}
+  .carnival-gate {top:58%;left:3%;width:94%}
+  .hidden-khai {top:80%;width:34%}
   .lamp-e {top:52%;left:9%;width:14%}
   .lamp-f {top:55%;right:8%;width:12%}
 }

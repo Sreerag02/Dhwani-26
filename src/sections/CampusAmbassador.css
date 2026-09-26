@@ -1,0 +1,72 @@
+.campus-amb {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at center, rgba(251, 191, 36, 0.12) 0%, transparent 70%),
+    linear-gradient(to bottom, #1f1d66 0%, rgba(31, 29, 102, 0.92) 100%);
+  color: #ffffff;
+  padding: 12svh 1.5rem;
+}
+
+.campus-amb__stage {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  text-align: center;
+}
+
+.campus-amb__kicker {
+  font-family: system-ui, -apple-system, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+  color: #fbbf24;
+  margin: 0 0 1rem;
+}
+
+.campus-amb__title {
+  font-family: 'Galavant', 'Cinzel', Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  margin: 0 0 1.25rem;
+  background: linear-gradient(135deg, #ffffff 0%, #fef08a 50%, #f59e0b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.campus-amb__text {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.campus-amb__cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.85rem 2.2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #1f1d66;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  clip-path: polygon(0.9em 0, 100% 0, 100% calc(100% - 0.9em), calc(100% - 0.9em) 100%, 0 100%, 0 0.9em);
+  transition: filter 200ms ease, transform 200ms ease;
+}
+
+.campus-amb__cta:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.campus-amb__cta:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 3px;
+}

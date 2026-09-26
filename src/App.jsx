@@ -1,32 +1,65 @@
 import { useEffect, useRef, useState } from "react";
+import { ReactLenis, useLenis } from "lenis/react";
+import { useAnimationFrame } from "motion/react";
+import "lenis/dist/lenis.css";
 import SideNavbar from "./components/SideNavbar";
+import CampusAmbassador from "./components/CampusAmbassador";
+import CampusAmbassadorBand from "./sections/CampusAmbassador";
 import ScrollExperience from "./sections/ScrollExperience";
-import DateReveal from "./sections/DateReveal";
+import Events from "./sections/Events";
+import ComingSoon from "./sections/ComingSoon";
+import DhwaniFooter from "./components/DhwaniFooter";
+import { isCampusAmbassadorPage } from "./lib/routes";
+
+function LenisFramerSync() {
+  const lenis = useLenis();
+  useAnimationFrame((time) => {
+    lenis?.raf(time);
+  });
+  return null;
+}
 
 export default function App() {
   const nextPage = useRef(null);
   const [showHeader, setShowHeader] = useState(false);
   useEffect(() => {
-    // Keep navigation hidden until the page following the entire pin reaches
-    // the viewport top; allow one CSS pixel for fractional svh/scroll rounding.
-    // Browsers can stop at a fractional section top at maximum scroll.
-    const update = () => setShowHeader(nextPage.current.getBoundingClientRect().top <= 1);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    const observer = new ResizeObserver(update);
-    observer.observe(document.documentElement);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-      observer.disconnect();
-    };
+    const el = nextPage.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowHeader(entry.isIntersecting || entry.boundingClientRect.top <= 1),
+      { threshold: 0, rootMargin: '0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
-  return <>
-    {showHeader && <div className="global-navigation"><SideNavbar /></div>}
-    <main className="dhwani-site">
-      <ScrollExperience />
-      <div ref={nextPage}><DateReveal /></div>
-    </main>
-  </>;
+  return (
+    <ReactLenis root options={{ lerp: 0.1, duration: 1.2, smoothWheel: true }} autoRaf={false}>
+      <LenisFramerSync />
+      {isCampusAmbassadorPage ? (
+        <>
+          <div className="global-navigation"><SideNavbar /></div>
+          <main className="dhwani-site">
+            <CampusAmbassador />
+            <DhwaniFooter />
+          </main>
+        </>
+      ) : (
+        <>
+          {showHeader && <div className="global-navigation"><SideNavbar /></div>}
+          <main className="dhwani-site">
+            <ScrollExperience />
+            <div ref={nextPage}>
+              <div className="events-pin">
+                <div className="events-pin__inner">
+                  <Events />
+                </div>
+              </div>
+              <CampusAmbassadorBand />
+              <DhwaniFooter />
+            </div>
+          </main>
+        </>
+      )}
+    </ReactLenis>
+  );
 }

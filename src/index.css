@@ -9,6 +9,15 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Galavant";
+  src: url("/assets/fonts/galavant/Galavant Regular/Galavant Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --midnight: #1f1d66;
   --purple-background: #511275;
@@ -35,10 +44,17 @@ body,
   min-width: 320px;
   min-height: 100%;
   margin: 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 html {
   background: var(--midnight);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -76,6 +92,7 @@ img {
   overflow: hidden;
   background: var(--midnight);
   isolation: isolate;
+  will-change: transform;
 }
 
 .gates__border {
@@ -238,6 +255,7 @@ img {
   overflow: hidden;
   background: var(--purple-background);
   isolation: isolate;
+  contain: layout paint;
 }
 
 .khai-hero__background {
