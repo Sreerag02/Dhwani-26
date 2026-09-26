@@ -518,6 +518,40 @@
   border: 2px solid #fbbf24;
 }
 
+/* Style 8 - Cyan & Teal Stage Lights */
+.event-card--carnival-cyan {
+  background: linear-gradient(135deg, #ecfeff 0%, #fff 50%, #cffafe 100%);
+  border: 3px solid #0891b2;
+  border-radius: 12px;
+}
+
+.event-card--carnival-cyan::before {
+  content: "💡";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.event-card--carnival-cyan .event-card__tape {
+  background: linear-gradient(45deg, #0891b2, #22d3ee);
+  width: 66px;
+  transform: rotate(-9deg);
+}
+
+.event-card--carnival-cyan .event-card__photo-frame {
+  border: 3px solid #22d3ee;
+  border-radius: 10px;
+}
+
+.event-card--carnival-cyan .event-card__badge {
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+  color: #ecfeff;
+  border: 2px solid #22d3ee;
+}
+
 .event-card.draggable-card:active {
   cursor: grabbing;
 }

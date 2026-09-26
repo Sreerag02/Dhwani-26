@@ -6,6 +6,26 @@ import "./Events.css";
 const INITIAL_EVENTS = [
   {
     id: 1,
+    title: "Spotlight",
+    category: "Artist Showcase",
+    ticketUrl: null,
+    subEvents: [],
+    subtitle: "Flagship event of CETalks",
+    date: "Oct 3–4, 2026",
+    venue: "Festival venue",
+    prizeLabel: "Format",
+    prize: "Artist showcase",
+    image: "/assets/events-section/spotlight.webp",
+    description: "Spotlight is the flagship event of CETalks — two days of artists taking the stage.",
+    rules: ["Artist showcase", "Oct 3–4, 2026", "Line-up to be announced"],
+    contact: "CETalks",
+    initialPos: { x: 60, y: 250 },
+    mobilePos: { x: 40, y: 180 },
+    tilt: -1.8,
+    cardStyle: "carnival-cyan"
+  },
+  {
+    id: 2,
     title: "Khelotsav '26",
     category: "Sports Fest",
     ticketUrl: "https://makemypass.com/event/khelotsav26",
@@ -24,7 +44,7 @@ const INITIAL_EVENTS = [
     cardStyle: "carnival-red"
   },
   {
-    id: 2,
+    id: 3,
     title: "Antara",
     category: "Music Fest",
     subEvents: [
@@ -48,7 +68,7 @@ const INITIAL_EVENTS = [
     cardStyle: "carnival-purple"
   },
   {
-    id: 3,
+    id: 4,
     title: "Nadanta",
     category: "Dance Fest",
     subEvents: [
@@ -72,7 +92,7 @@ const INITIAL_EVENTS = [
     cardStyle: "carnival-blue"
   },
   {
-    id: 4,
+    id: 5,
     title: "Nazaara",
     category: "Fashion Flagship Event",
     ticketUrl: "https://makemypass.com/event/nazaara",
@@ -90,7 +110,7 @@ const INITIAL_EVENTS = [
     cardStyle: "carnival-green"
   },
   {
-    id: 5,
+    id: 6,
     title: "Dionysia",
     category: "Theatrical Fest",
     ticketUrl: null,
@@ -109,7 +129,7 @@ const INITIAL_EVENTS = [
     cardStyle: "carnival-orange"
   },
   {
-    id: 6,
+    id: 7,
     title: "Rangam",
     category: "Film Fest",
     subEvents: [{ name: "Short Film Competition", ticketUrl: "https://makemypass.com/event/rangam-short-film-competition" }],
@@ -127,7 +147,7 @@ const INITIAL_EVENTS = [
     cardStyle: "carnival-pink"
   },
   {
-    id: 7,
+    id: 8,
     title: "Carpe Dictum",
     category: "Literature Fest",
     ticketUrl: null,
@@ -358,7 +378,7 @@ export default function Events() {
                     transition={{ duration: 0.55, delay: index * 0.07, ease: "easeOut" }}
                   >
                     <div className="event-card__photo-frame">
-                      <img src={event.image} alt={event.title} className="event-card__img" loading={index >= 6 && index < 12 ? "eager" : "lazy"} decoding="async" />
+                      <img src={event.image} alt={event.title} className="event-card__img" loading={index >= EVENT_COUNT && index < EVENT_COUNT * 2 ? "eager" : "lazy"} decoding="async" />
                     </div>
                     <div className="event-card__content">
                       <h3 className="event-card__title">{event.title}</h3>
@@ -421,7 +441,7 @@ export default function Events() {
                   <div className="event-modal-key-stats">
                     <div><strong>Date & Time:</strong> {selectedEvent.date}</div>
                     <div><strong>Venue:</strong> {selectedEvent.venue}</div>
-                    <div><strong>Prize Pool:</strong> <span className="highlight-prize">{selectedEvent.prize}</span></div>
+                    <div><strong>{selectedEvent.prizeLabel ?? "Prize Pool"}:</strong> <span className="highlight-prize">{selectedEvent.prize}</span></div>
                   </div>
 
                   <p className="event-modal-desc">{selectedEvent.description}</p>
