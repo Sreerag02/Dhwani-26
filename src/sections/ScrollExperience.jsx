@@ -149,23 +149,23 @@ export default function ScrollExperience() {
     <span id="khai" className="journey-anchor khai-anchor" />
     <span id="merch" className="journey-anchor merch-anchor" />
     <div className="journey-sticky">
-      <motion.div className="journey-scene" style={{ visibility: themeVisibility, contentVisibility: themeVisibility }}>
+      <motion.div className="journey-scene" style={{ visibility: themeVisibility }}>
         <ThemeReveal progress={theme} sceneProgress={progress} embedded />
       </motion.div>
-      <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ opacity: khaiOpacity, visibility: khaiVisibility, contentVisibility: khaiVisibility }}>
+      <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ opacity: khaiOpacity, visibility: khaiVisibility }}>
         <KhaiHero progress={hero} sceneProgress={progress} />
       </motion.div>
-      <motion.div className="section-transition-fade" style={{ opacity: transitionFade, visibility: transitionVisibility, contentVisibility: transitionVisibility, position: 'absolute', inset: 0, backgroundColor: '#11103b', zIndex: 1 }} aria-hidden="true" />
-      <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility, contentVisibility: cloudVisibility }} aria-hidden="true">
+      <motion.div className="section-transition-fade" style={{ opacity: transitionFade, visibility: transitionVisibility, position: 'absolute', inset: 0, backgroundColor: '#11103b', zIndex: 1 }} aria-hidden="true" />
+      <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility }} aria-hidden="true">
         <motion.div className="cloud-curtain-ground" style={{ opacity: ground }} />
         <CloudCurtainLayers progress={progress} end={reduced ? .564 : .36} />
       </motion.div>
       {/* Second curtain: same clouds reused, fires Khai → artists */}
-      <motion.div className="cloud-curtain cloud-curtain--2" style={{ visibility: curtain2Visibility, contentVisibility: curtain2Visibility }} aria-hidden="true">
+      <motion.div className="cloud-curtain cloud-curtain--2" style={{ visibility: curtain2Visibility }} aria-hidden="true">
         <CloudCurtainLayers progress={curtain2Progress} sceneProgress={progress} start={.63} end={.70} />
       </motion.div>
       <motion.div className="scroll-mask-bg" style={{ opacity: maskBg }} aria-hidden="true" />
-      <motion.div className="concentric-rings" style={{ opacity: dripOpacity, visibility: dripVisibility, contentVisibility: dripVisibility }} aria-hidden="true">
+      <motion.div className="concentric-rings" style={{ opacity: dripOpacity, visibility: dripVisibility }} aria-hidden="true">
         <motion.svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice"
           style={{ scale: reduced ? 1 : dripScale }}>
           {[
@@ -183,10 +183,10 @@ export default function ScrollExperience() {
           )}
         </motion.svg>
       </motion.div>
-      <motion.div className="scroll-mask" style={{ opacity: maskOpacity, visibility: maskVisibility, contentVisibility: maskVisibility, z: 0 }} aria-hidden="true">
+      <motion.div className="scroll-mask" style={{ opacity: maskOpacity, visibility: maskVisibility, z: 0 }} aria-hidden="true">
         <motion.img decoding="async" src="/assets/mascot/mascot%20mask.svg" alt="" draggable="false" style={{ scale: reduced ? 1 : maskScale, z: 0 }} />
       </motion.div>
-      <motion.div className="world-intro journey-scene" style={{ opacity: introOpacity, visibility: introVisibility, contentVisibility: introVisibility, z: 0 }}>
+      <motion.div className="world-intro journey-scene" style={{ opacity: introOpacity, visibility: introVisibility, z: 0 }}>
         <motion.div style={{ y: reduced ? 0 : introY, z: 0 }} className="world-intro__stack">
           <p>COLLEGE OF ENGINEERING, TRIVANDRUM</p>
           <h1>WORLD OF</h1>
@@ -194,10 +194,10 @@ export default function ScrollExperience() {
         </motion.div>
       </motion.div>
       <ArtistReveal journeyProgress={journeyProgress} />
-      <motion.div className="merch-journey" style={{ visibility: merchVisibility, contentVisibility: merchVisibility }}>
+      <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>
         <Merch progress={remappedMerchProgress} sceneProgress={progress} />
       </motion.div>
-      <motion.div className="merch-tunnel" style={{ opacity: revealOpacity, visibility: revealVisibility, contentVisibility: revealVisibility }} aria-hidden="true">
+      <motion.div className="merch-tunnel" style={{ opacity: revealOpacity, visibility: revealVisibility }} aria-hidden="true">
         {TUNNEL_LAYERS.map((layer, i) => (
           <TunnelRing key={i} layer={layer} pan={tunnelPan} grow={tunnelGrow} progress={tunnelIn} reduced={reduced} />
         ))}

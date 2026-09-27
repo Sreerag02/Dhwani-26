@@ -2,7 +2,6 @@ import { Art, RevealGroup, imagePath } from './ArtistArtwork';
 
 export default function KanikaLayer({ progress }) {
   return <div className="kanika-artboard" role="img" aria-label="Kanika Kapoor — Dhwani artist reveal. Three portraits with yellow title, musical notes, and festival partner logos.">
-    <div className="kanika-texture" />
     <RevealGroup progress={progress} start={0} fromY={-12}>
       <div className="kanika-partners">
         <img src={imagePath('ces')} alt="Campus Events" width="98" height="99" />

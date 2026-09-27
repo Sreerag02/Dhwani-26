@@ -369,13 +369,9 @@ export default function Events() {
         >
           <div className="events-card-rail" ref={boardRef} onScroll={handleRailScroll}>
             {[...INITIAL_EVENTS, ...INITIAL_EVENTS, ...INITIAL_EVENTS].map((event, index) => (
-                  <motion.article
+                  <article
                     key={`${event.id}-${index}`}
                     className={`event-card event-card--${event.cardStyle}`}
-                    initial={{ opacity: 0, y: 28 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.1 }}
-                    transition={{ duration: 0.55, delay: index * 0.07, ease: "easeOut" }}
                   >
                     <div className="event-card__photo-frame">
                       <img src={event.image} alt={event.title} className="event-card__img" loading={index >= EVENT_COUNT && index < EVENT_COUNT * 2 ? "eager" : "lazy"} decoding="async" />
@@ -392,7 +388,7 @@ export default function Events() {
                         </button>
                       )}
                     </div>
-                  </motion.article>
+                  </article>
             ))}
           </div>
         </motion.div>

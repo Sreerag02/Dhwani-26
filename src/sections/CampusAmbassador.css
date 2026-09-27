@@ -70,3 +70,9 @@
   outline: 2px solid #fbbf24;
   outline-offset: 3px;
 }
+@media (max-width: 768px), (max-height: 600px) and (pointer: coarse) {
+  .campus-amb { min-height: 0; padding: 5rem 1rem; overflow: clip; }
+  .campus-amb__stage { min-width: 0; width: 100%; }
+  .campus-amb__title { font-size: clamp(1.8rem, 8vw, 3.5rem); overflow-wrap: anywhere; }
+  .campus-amb__cta { max-width: 100%; padding-inline: 1.5rem; }
+}

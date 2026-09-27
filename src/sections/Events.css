@@ -1006,7 +1006,7 @@
      never holds and the rail jitters. Snap is off; the loop is seamless. */
   scroll-snap-type: none;
   scrollbar-width: none;
-  touch-action: pan-x;
+  touch-action: pan-x pan-y pinch-zoom;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -1140,4 +1140,13 @@
   .events-card-rail .event-card__photo-frame { height: 190px; }
   .events-card-rail .event-card__content { align-items: flex-start; flex-direction: column; gap: 12px; }
   .events-card-rail .event-card__action-btn { align-self: flex-start; }
+}
+
+/* Let compact screens follow content instead of leaving an empty viewport tail. */
+@media (max-width: 768px), (max-height: 600px) and (pointer: coarse) {
+  .events-pin, .events-pin__inner { position: static; }
+  .events-pin::after { content: none; }
+  .events-section { min-height: 0; padding: 3rem 0.5rem 2rem; }
+  .notice-board-header { margin-top: 1.5rem; }
+  .events-card-rail .event-card { content-visibility: visible; }
 }

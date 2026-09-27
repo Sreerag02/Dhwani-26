@@ -16,7 +16,6 @@ const MUSICIANS = [
 export default function SrishtiLayer({ progress }) {
   return <div className="kanika-artboard srishti-artboard" role="img"
     aria-label="Srishti — Creating the Resonance. Seven musicians, Dhwani and Srishti logos, layered yellow clouds and musical notes.">
-    <div className="kanika-texture" />
     <RevealGroup progress={progress} fromY={-16}>
       <Art file="dhwani logo png og 2" mobile={[34, 5, 11]} x={1492} y={24} width={95} />
       <SrishtiArt file="Srishti LOGO" x={1632} y={36} width={114} />
@@ -41,18 +40,18 @@ export default function SrishtiLayer({ progress }) {
         <SrishtiArt {...art} />
       </RevealGroup>
     )}
-    <RevealGroup progress={progress} start={.11} fromX={-22} fromY={80}>
+    <RevealGroup progress={progress} start={.11} fromX={-22} fromY={80} className="artist-bottom-cloud">
       <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "56.25%" }} file="base cloud left" x={0} y={810} width={2936} />
     </RevealGroup>
-    <RevealGroup progress={progress} start={.12} fromX={22} fromY={85}>
+    <RevealGroup progress={progress} start={.12} fromX={22} fromY={85} className="artist-bottom-cloud">
       <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "42.56944444444444%" }} file="base cloud right" x={0} y={613} width={3239} />
     </RevealGroup>
-    <RevealGroup progress={progress} start={.14} fromY={70}>
+    <RevealGroup progress={progress} start={.14} fromY={70} className="artist-bottom-cloud">
       <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "56.80555555555556%" }} file="cloud 1" x={12} y={818} width={1113} />
       <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "50.97222222222222%" }} file="cloud 2" x={2085} y={734} width={1173} />
       <SrishtiArt className="srishti-cloud-fill" style={{ "--cloud-top": "42.77777777777778%" }} file="cloud 3" x={964} y={616} width={1270} />
     </RevealGroup>
-    <RevealGroup progress={progress} start={.17} fromY={65} scaleFrom={.97}>
+    <RevealGroup progress={progress} start={.17} fromY={65} scaleFrom={.97} className="artist-foreground">
       <SrishtiArt file="Shape title background" x={672} y={865} width={1895} />
       <SrishtiArt file="title" x={940} y={928} width={1327} />
       <SrishtiArt file="Creating the resonance" x={1008} y={1288} width={1172} />

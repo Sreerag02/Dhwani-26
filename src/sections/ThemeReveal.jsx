@@ -108,6 +108,7 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
   }, [onReady]);
   return <TimelineContext.Provider value={progress}><section ref={ref} onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave} id={embedded ? undefined : "theme-reveal"} className={`carnival${embedded ? " carnival-embedded" : ""}`} aria-label="Carnivale Razzmatazz"
     data-playing={playing && !reduced}>
+    <div className="carnival-composition">
     <RevealLayer className="carnival-stalls" src={E+"stalls.webp"} depth={.3} zoom={false} />
     <div ref={stageRef} className="carnival-stage">
       <RevealLayer className="carnival-kicker" from={0} fade={KICKER_FADE} depth={1}>
@@ -126,5 +127,6 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
     <RevealLayer className="carnival-mobile-cloud-bank carnival-mobile-cloud-bank--left" src={E+"theme-cloud.webp"} depth={1.5} float />
     <RevealLayer className="carnival-mobile-cloud-bank carnival-mobile-cloud-bank--right" src={E+"theme-cloud.webp"} depth={1.5} float />
     <RevealLayer className="carnival-base-clouds" src={E+"theme-cloud.webp"} depth={1.5} float />
+    </div>
   </section></TimelineContext.Provider>;
 }

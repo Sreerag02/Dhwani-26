@@ -20,8 +20,8 @@
    letterbox band, so the canvas itself does not clip. */
 .merch__stage {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: visible;
   translate: var(--tee-group-x, 0) 0;
   isolation: isolate;
@@ -86,7 +86,7 @@
   top: calc(55% - 50svh);
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100svh;
   z-index: 20;
   overflow: visible;
   /* Scene 2 fades the t-shirt cluster away completely (--tees) so only the

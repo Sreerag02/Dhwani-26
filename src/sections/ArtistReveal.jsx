@@ -27,7 +27,7 @@ function ArtistChapter({ artist, index, progress }) {
   });
   const Layer = ARTIST_LAYERS[artist.id];
   return <motion.div className="artist-chapter" data-artist={artist.id}
-    style={{ opacity, visibility, contentVisibility: visibility }}>
+    style={{ opacity, visibility }}>
     {prepared && <Layer progress={chapter} />}
   </motion.div>;
 }
@@ -42,7 +42,7 @@ export default function ArtistReveal({ journeyProgress }) {
     if (!prepared && value >= ARTIST_START - .12) setPrepared(true);
   });
   return <motion.section className="artist-reveal" aria-label="Dhwani Artist Reveal"
-    style={{ opacity, visibility, contentVisibility: visibility }}>
+    style={{ opacity, visibility }}>
     {prepared && ARTISTS.map((artist, index) => <ArtistChapter key={artist.id} artist={artist} index={index} progress={progress} />)}
   </motion.section>;
 }

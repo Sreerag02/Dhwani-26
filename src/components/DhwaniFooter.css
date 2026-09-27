@@ -716,3 +716,13 @@
     height: 32px;
   }
 }
+
+/* Allow links and credits to set the height on phones and short touch screens. */
+@media (max-width: 768px), (max-height: 600px) and (pointer: coarse) {
+  .dhwani-footer-container.carnival-world {
+    height: auto;
+    min-height: 0;
+    padding: 5rem 1rem max(4rem, env(safe-area-inset-bottom));
+  }
+  .dhwani-editorial-content { flex-shrink: 0; padding: 1.5rem 0; }
+}
