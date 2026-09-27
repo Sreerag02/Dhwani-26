@@ -6,6 +6,13 @@
 .artist-bottom-cloud { z-index:3; }
 .artist-foreground { z-index:4; }
 .artist-art { position:absolute; display:block; height:auto; max-width:none; user-select:none; }
+.artist-tiny { animation: artist-tiny-drift 4.8s ease-in-out infinite alternate; }
+.artist-tiny:nth-of-type(2n) { animation-delay: -1.6s; }
+.artist-tiny:nth-of-type(3n) { animation-delay: -3.1s; }
+@keyframes artist-tiny-drift {
+  from { translate: 0 -0.35cqw; }
+  to { translate: 0 0.35cqw; }
+}
 .kanika-partners { position:absolute; left:43.3%; top:1%; width:16.5%; height:8.2%; display:flex; align-items:center; justify-content:center; gap:7%; }
 .kanika-partners img { object-fit:contain; height:100%; width:auto; min-width:0; }
 .kanika-partners img:first-child { height:87%; }
@@ -29,7 +36,10 @@
 @media (max-aspect-ratio:1/1) {
   .artist-reveal { background:radial-gradient(ellipse at 50% 48%,#35317d 0%,#201d61 68%); }
 }
-@media (prefers-reduced-motion:reduce) { .artist-layer { transform:none!important; } }
+@media (prefers-reduced-motion:reduce) {
+  .artist-layer { transform:none!important; }
+  .artist-tiny { animation:none; }
+}
 
 /* Shared artboard, typography and native artwork keep every chapter aligned. */
 .six-eight-portraits { clip-path:inset(0 0 6% 0); }

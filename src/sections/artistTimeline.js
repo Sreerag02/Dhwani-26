@@ -6,9 +6,8 @@ export const ARTISTS = [
   { id: 'srishti', name: 'Srishti' },
 ];
 export const ORIGINAL_SCROLL = 1530;
-// Remove one viewport of the fully assembled hold from each artist. Keep
-// the entrance, overlapping handoff, and exit distances exactly as authored.
-const HOLD_TRIM = 100;
+// Keep a full viewport of hold time for each fully assembled artist chapter.
+const HOLD_TRIM = 0;
 export const ARTIST_SCROLL = (400 - HOLD_TRIM) * ARTISTS.length;
 export const TOTAL_SCROLL = ORIGINAL_SCROLL + ARTIST_SCROLL;
 export const ARTIST_INSERT = .70;

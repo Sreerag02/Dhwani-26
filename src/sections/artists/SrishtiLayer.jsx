@@ -30,10 +30,10 @@ export default function SrishtiLayer({ progress }) {
       <SrishtiArt file="head effect 1" mobile={[40, 17, 15]} x={824} y={83} width={265} />
       <SrishtiArt file="head effect 2" mobile={[78, 18, 15]} x={1982} y={49} width={254} />
       <SrishtiArt file="head effect 1" mobile={[80, 39, 14]} x={2824} y={90} width={265} style={{ rotate: '26deg' }} />
-      <SrishtiArt file="note 2" x={25} y={213} width={100} style={{ rotate: '-28deg' }} />
-      <Art folder="six eight" file="blue note 1" x={1245} y={73} width={110} />
-      <Art folder="six eight" file="blue note 2" x={2450} y={83} width={111} />
-      <SrishtiArt file="note 2" x={3085} y={46} width={113} />
+      <SrishtiArt className="artist-tiny" file="note 2" x={25} y={213} width={100} style={{ rotate: '-28deg' }} />
+      <Art className="artist-tiny" folder="six eight" file="blue note 1" x={1245} y={73} width={110} />
+      <Art className="artist-tiny" folder="six eight" file="blue note 2" x={2450} y={83} width={111} />
+      <SrishtiArt className="artist-tiny" file="note 2" x={3085} y={46} width={113} />
     </RevealGroup>
     {MUSICIANS.map(({ start, fromX, ...art }) =>
       <RevealGroup key={art.file} progress={progress} start={start} fromX={fromX} fromY={65} className="srishti-musician">
