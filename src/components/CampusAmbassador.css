@@ -15,13 +15,14 @@
 .ca-hero {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
   align-items: center;
-  justify-content: center;
+  gap: clamp(24px, 4vw, 60px);
+  width: min(1180px, 100%);
   min-height: calc(100svh - var(--festival-header-height, 72px));
-  padding: clamp(28px, 5vw, 64px) clamp(18px, 5vw, 40px) clamp(44px, 8vw, 96px);
-  text-align: center;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 64px) clamp(18px, 4vw, 40px) clamp(30px, 5vw, 56px);
 }
 
 .ca-palette {
@@ -34,16 +35,32 @@
   height: 6px;
 }
 
+.ca-hero__copy {
+  min-width: 0;
+}
+
+.ca-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 clamp(14px, 2.4vw, 22px);
+  font-size: clamp(9px, 1.1vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #02caef;
+}
+
 .ca-emblem {
-  width: clamp(64px, 9vw, 110px);
+  flex: none;
+  width: clamp(34px, 4.4vw, 46px);
   height: auto;
-  margin-bottom: clamp(14px, 3vh, 28px);
-  filter: drop-shadow(0 6px 0 rgba(175, 0, 95, 0.45));
+  filter: drop-shadow(0 4px 0 rgba(175, 0, 95, 0.45));
 }
 
 .ca-title {
   margin: 0;
-  font: 400 clamp(46px, 9.5vw, 124px)/0.95 Galavant, Poppins, sans-serif;
+  font: 400 clamp(46px, 8.4vw, 112px)/0.95 Galavant, Poppins, sans-serif;
   letter-spacing: 0.01em;
   color: #fabf01;
   text-shadow: 5px 8px #af005f, 0 0 44px rgba(175, 0, 95, 0.35);
@@ -59,24 +76,93 @@
 }
 
 .ca-subtitle {
-  max-width: 620px;
-  margin: clamp(22px, 4vh, 40px) auto 0;
+  max-width: 30em;
+  margin: clamp(20px, 3.4vh, 34px) 0 0;
   font-size: clamp(13px, 1.4vw, 16px);
   line-height: 1.7;
   color: #c9d2ff;
 }
 
+.ca-hero__stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: clamp(20px, 3.4vh, 32px);
+}
+
+/* Khai holds court beside the title. */
+.ca-hero__khai {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 440px);
+  aspect-ratio: 1 / 1;
+}
+
+.ca-khai {
+  position: absolute;
+  z-index: 2;
+  top: 8%;
+  left: 6%;
+  width: 88%;
+  height: 78%;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 0 rgba(0, 0, 0, 0.22));
+  animation: ca-khai-float 5.5s ease-in-out infinite;
+}
+
+.ca-khai-base {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 2%;
+  width: 122%;
+  height: auto;
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+
+.ca-khai-cloud {
+  position: absolute;
+  z-index: 1;
+  height: auto;
+  opacity: 0.85;
+  animation: ca-khai-drift 9s ease-in-out infinite;
+}
+
+.ca-khai-cloud--l {
+  top: 2%;
+  left: -8%;
+  width: 32%;
+}
+
+.ca-khai-cloud--r {
+  top: 20%;
+  right: -6%;
+  width: 24%;
+  animation-delay: -3.5s;
+}
+
+@keyframes ca-khai-float {
+  0%, 100% { transform: translateY(0) rotate(-0.6deg); }
+  50% { transform: translateY(-16px) rotate(0.8deg); }
+}
+
+@keyframes ca-khai-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+
 .ca-board {
   position: relative;
   z-index: 1;
-  width: min(1040px, 100%);
+  width: min(1180px, 100%);
   margin: 0 auto;
-  padding: clamp(20px, 4vw, 48px) clamp(14px, 3vw, 40px) clamp(56px, 8vw, 96px);
+  padding: clamp(20px, 4vw, 48px) clamp(18px, 4vw, 40px) clamp(56px, 8vw, 96px);
 }
 
 .ca-board-head {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
@@ -92,10 +178,116 @@
   text-shadow: 3px 4px rgba(175, 0, 95, 0.55);
 }
 
-.ca-board-stats {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.ca-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  padding: 9px 15px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #02caef;
+  background: rgba(0, 94, 210, 0.16);
+  border: 1px solid rgba(2, 202, 239, 0.35);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.ca-live__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #02caef;
+  animation: ca-pulse 2s ease-out infinite;
+}
+
+@keyframes ca-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(2, 202, 239, 0.55); }
+  70%, 100% { box-shadow: 0 0 0 9px rgba(2, 202, 239, 0); }
+}
+
+/* Podium: winner centre and tallest, so the order is 2-1-3. */
+.ca-podium {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  gap: clamp(8px, 1.4vw, 16px);
+  margin: 0 0 clamp(20px, 3vw, 34px);
+}
+
+.ca-podium__step {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: clamp(16px, 2.2vw, 24px) clamp(8px, 1.4vw, 16px) clamp(14px, 2vw, 20px);
+  text-align: center;
+  background: linear-gradient(180deg, rgba(31, 29, 102, 0.8), rgba(9, 7, 40, 0.9));
+  border: 1px solid rgba(2, 202, 239, 0.28);
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+}
+
+.ca-podium__step[data-medal="gold"] {
+  padding-block: clamp(30px, 4vw, 46px) clamp(20px, 2.8vw, 30px);
+  border-color: rgba(250, 191, 1, 0.55);
+  box-shadow: 0 0 44px rgba(250, 191, 1, 0.16);
+}
+
+.ca-podium__step[data-medal="silver"] {
+  border-color: rgba(203, 213, 225, 0.4);
+}
+
+.ca-podium__step[data-medal="bronze"] {
+  border-color: rgba(245, 158, 11, 0.42);
+}
+
+.ca-podium__rank {
+  font: 400 clamp(22px, 3vw, 34px)/1 Galavant, Georgia, serif;
+}
+
+.ca-podium__step[data-medal="gold"] .ca-podium__rank { color: #fabf01; }
+.ca-podium__step[data-medal="silver"] .ca-podium__rank { color: #cbd5e1; }
+.ca-podium__step[data-medal="bronze"] .ca-podium__rank { color: #f59e0b; }
+
+.ca-podium__name {
+  max-width: 100%;
+  font-size: clamp(12px, 1.3vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  overflow-wrap: anywhere;
+  color: #fff8e8;
+}
+
+.ca-podium__tally {
+  display: grid;
+  justify-items: center;
+}
+
+.ca-podium__tally strong {
+  font-size: clamp(15px, 1.8vw, 20px);
+  font-weight: 800;
+  color: #fabf01;
+}
+
+.ca-podium__tally em,
+.ca-podium__points em {
+  font-style: normal;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #9aa3ff;
+}
+
+.ca-podium__points {
+  display: grid;
+  justify-items: center;
+  padding-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #02caef;
+  border-top: 1px solid rgba(255, 248, 232, 0.1);
 }
 
 .ca-stat {
@@ -129,6 +321,17 @@
   clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
 }
 
+.ca-table-caption {
+  caption-side: top;
+  padding: 14px clamp(12px, 2vw, 24px) 0;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: left;
+  color: #9aa3ff;
+}
+
 .ca-table {
   width: 100%;
   border-collapse: collapse;
@@ -155,10 +358,6 @@
   border-bottom: 0;
 }
 
-.ca-row--top {
-  background: rgba(250, 191, 1, 0.06);
-}
-
 .ca-rank {
   display: flex;
   align-items: center;
@@ -172,10 +371,6 @@
   font-style: normal;
   text-align: center;
 }
-
-.ca-rank[data-medal="gold"] em { color: #fabf01; }
-.ca-rank[data-medal="silver"] em { color: #cbd5e1; }
-.ca-rank[data-medal="bronze"] em { color: #f59e0b; }
 
 .ca-name {
   display: inline-flex;
@@ -282,10 +477,49 @@
   text-decoration: underline;
 }
 
+.ca-partner {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(20px, 2.6vw, 28px);
+}
+
+/* Stack the hero: Khai leads on top, copy beneath, everything centred. */
+@media (max-width: 900px) {
+  .ca-hero {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    min-height: 0;
+    gap: clamp(20px, 5vw, 32px);
+  }
+
+  .ca-hero__khai {
+    order: -1;
+    width: min(78%, 300px);
+  }
+
+  .ca-kicker,
+  .ca-hero__stats {
+    justify-content: center;
+  }
+
+  .ca-subtitle {
+    margin-inline: auto;
+  }
+}
+
 @media (max-width: 640px) {
   .ca-board-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .ca-podium {
+    gap: 6px;
+  }
+
+  .ca-podium__name {
+    letter-spacing: 0;
   }
 
   .ca-table {
@@ -299,7 +533,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ca-spinner {
+  .ca-spinner,
+  .ca-live__dot,
+  .ca-khai,
+  .ca-khai-cloud {
     animation: none;
   }
 }

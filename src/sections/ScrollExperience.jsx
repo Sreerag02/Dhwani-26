@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion, useMotionValueEvent } from "motion/react";
 import KhaiHero from "../components/HeroReveal";
 import ThemeReveal from "./ThemeReveal";
@@ -83,9 +83,13 @@ function TunnelRing({ layer, pan, grow, progress, reduced }) {
     style={{ scale: reduced ? 1 : scale, rotate: reduced ? 0 : layer.spin, opacity: reduced ? 1 : opacity, x: reduced ? 0 : x, y: reduced ? 0 : y }} />;
 }
 
+// The artist chapter is the stretch of scroll inserted at ARTIST_INSERT, so its
+// own window is that insert range. Everything after it is the merch finale.
+const ARTIST_INSERT_END = (ARTIST_INSERT * ORIGINAL_SCROLL + ARTIST_SCROLL) / TOTAL_SCROLL;
+
 // One scroll value owns every phase, so the pin cannot release before the art
 // reaches its final state (including when scrolling quickly or backwards).
-export default function ScrollExperience() {
+export default function ScrollExperience({ onNavVisibility }) {
   const ref = useRef(null);
   const { scrollYProgress: journeyProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   // Insert artist scroll distance without changing the existing scene speeds.
@@ -141,6 +145,20 @@ export default function ScrollExperience() {
   // Bridge the gap left by the removed video section with a solid background fade
   const transitionFade = useTransform(progress, [.680, .720, .780, .810], [0, 1, 1, 0]);
   const transitionVisibility = useTransform(progress, value => value < .680 || value >= .810 ? "hidden" : "visible");
+
+  // Header visibility is a scroll position, not a latch. `journeyProgress` is the
+  // only signal that moves inside the pin, since every scene here shares one
+  // sticky box and cannot be observed individually. Returning the same value is
+  // a no-op, so this only re-renders on the two boundaries.
+  const inArtistWindow = value => value >= ARTIST_START && value <= ARTIST_INSERT_END;
+  const [journeyNav, setJourneyNav] = useState(false);
+  useMotionValueEvent(journeyProgress, "change", value => {
+    setJourneyNav(prev => (prev === inArtistWindow(value) ? prev : inArtistWindow(value)));
+  });
+  // A deep link such as /#artists can mount inside the window, before the first
+  // change event, so seed from the measured position on mount.
+  useEffect(() => { setJourneyNav(inArtistWindow(journeyProgress.get())); }, [journeyProgress]);
+  useEffect(() => { onNavVisibility?.(journeyNav); }, [journeyNav, onNavVisibility]);
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="World of Dhwani, Khai, artists and merchandise"
     style={{ height: `${TOTAL_SCROLL + 100}svh`, "--artist-anchor": `${(ARTIST_START + (ARTIST_END - ARTIST_START) * ARTIST_ANCHOR_PROGRESS) * TOTAL_SCROLL}svh` }}>

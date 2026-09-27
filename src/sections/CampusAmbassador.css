@@ -1,3 +1,5 @@
+/* Home-page band for Campus Ambassador. Mirrors the subpage's split hero so the
+   two read as the same experience. */
 .campus-amb {
   position: relative;
   min-height: 100svh;
@@ -13,36 +15,44 @@
 .campus-amb__stage {
   position: relative;
   z-index: 1;
-  max-width: 720px;
-  text-align: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 60px);
+  width: min(1180px, 100%);
+}
+
+.campus-amb__copy {
+  min-width: 0;
+  text-align: left;
 }
 
 .campus-amb__kicker {
   font-family: system-ui, -apple-system, sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.35em;
-  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
-  color: #fbbf24;
+  letter-spacing: 0.32em;
+  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  font-weight: 700;
+  color: #02caef;
   margin: 0 0 1rem;
 }
 
 .campus-amb__title {
   font-family: 'Galavant', 'Cinzel', Georgia, serif;
   font-size: clamp(2.4rem, 6vw, 4.5rem);
-  line-height: 1.05;
+  line-height: 0.98;
   margin: 0 0 1.25rem;
-  background: linear-gradient(135deg, #ffffff 0%, #fef08a 50%, #f59e0b 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #fabf01;
+  text-shadow: 4px 6px rgba(175, 0, 95, 0.55), 0 0 44px rgba(175, 0, 95, 0.3);
 }
 
 .campus-amb__text {
   font-family: system-ui, -apple-system, sans-serif;
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  line-height: 1.65;
+  color: rgba(201, 210, 255, 0.9);
   margin: 0;
+  max-width: 28em;
 }
 
 .campus-amb__cta {
@@ -70,9 +80,106 @@
   outline: 2px solid #fbbf24;
   outline-offset: 3px;
 }
+
+.campus-amb__partner {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1.75rem;
+}
+
+/* Khai, same treatment as the subpage hero. */
+.campus-amb__khai {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 380px);
+  aspect-ratio: 1 / 1;
+}
+
+.campus-amb__mascot {
+  position: absolute;
+  z-index: 2;
+  top: 8%;
+  left: 6%;
+  width: 88%;
+  height: 78%;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 0 rgba(0, 0, 0, 0.22));
+  animation: campus-amb-float 5.5s ease-in-out infinite;
+}
+
+.campus-amb__base {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 2%;
+  width: 122%;
+  height: auto;
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+
+.campus-amb__cloud {
+  position: absolute;
+  z-index: 1;
+  height: auto;
+  opacity: 0.85;
+  animation: campus-amb-drift 9s ease-in-out infinite;
+}
+
+.campus-amb__cloud--l {
+  top: 2%;
+  left: -8%;
+  width: 32%;
+}
+
+.campus-amb__cloud--r {
+  top: 20%;
+  right: -6%;
+  width: 24%;
+  animation-delay: -3.5s;
+}
+
+@keyframes campus-amb-float {
+  0%, 100% { transform: translateY(0) rotate(-0.6deg); }
+  50% { transform: translateY(-14px) rotate(0.8deg); }
+}
+
+@keyframes campus-amb-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(9px); }
+}
+
+@media (max-width: 900px) {
+  .campus-amb__stage {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .campus-amb__khai {
+    order: -1;
+    width: min(72%, 260px);
+  }
+
+  .campus-amb__text {
+    margin-inline: auto;
+  }
+
+  .campus-amb__partner {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 768px), (max-height: 600px) and (pointer: coarse) {
   .campus-amb { min-height: 0; padding: 5rem 1rem; overflow: clip; }
   .campus-amb__stage { min-width: 0; width: 100%; }
   .campus-amb__title { font-size: clamp(1.8rem, 8vw, 3.5rem); overflow-wrap: anywhere; }
   .campus-amb__cta { max-width: 100%; padding-inline: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .campus-amb__mascot,
+  .campus-amb__cloud {
+    animation: none;
+  }
 }

@@ -11,6 +11,16 @@ for (const item of currentNav) NAV_HREFS[item.label] = item.page ?? item.anchor;
 const NAV_HREFS_ORDER = NAV_ITEMS.map(item => NAV_HREFS[item]);
 const INITIAL_ACTIVE = isCampusAmbassadorPage ? 0 : NAV_ITEMS.indexOf("Events");
 
+/* The topbar is fixed, so an anchor target has to be scrolled to below it.
+   `scroll-margin-top`/`scroll-padding-top` only steer native anchor jumps, so
+   Lenis needs the same correction passed explicitly. */
+function headerOffset() {
+  const declared = parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue("--festival-header-height")
+  );
+  return Number.isFinite(declared) ? declared : 72;
+}
+
 function Brand() {
   return <div className="nav-brand">
     <img src="/assets/logo/dhwani-text.webp" alt="Dhwani '26" />
@@ -18,15 +28,15 @@ function Brand() {
   </div>;
 }
 
-export default function SideNavbar() {
+export default function SideNavbar({ visible = true }) {
   const [open, setOpen] = useState(false);
-  const [afterMerch, setAfterMerch] = useState(isCampusAmbassadorPage);
   const [activeIndex, setActiveIndex] = useState(INITIAL_ACTIVE);
   const panel = useRef(null), trigger = useRef(null);
   const reduced = useReducedMotion();
   const lenis = useLenis();
 
-  // Scroll-spy + gate: navbar shows only once the merch section is reached.
+  // Scroll-spy for the wheel. Whether the header itself is on screen is owned by
+  // the page, not here, so the old merch gate is gone.
   useEffect(() => {
     const getIndex = () => {
       const threshold = window.scrollY + window.innerHeight * 0.3;
@@ -38,15 +48,14 @@ export default function SideNavbar() {
       });
       return idx;
     };
-    const update = () => {
-      setActiveIndex(getIndex());
-      const merch = document.querySelector('#merch');
-      setAfterMerch(isCampusAmbassadorPage || (!!merch && merch.getBoundingClientRect().top + window.scrollY <= window.scrollY + window.innerHeight * 0.3));
-    };
+    const update = () => setActiveIndex(getIndex());
     window.addEventListener("scroll", update, { passive: true });
     update();
     return () => window.removeEventListener("scroll", update);
   }, []);
+
+  // Losing the header must not strand an open sheet over a locked body.
+  useEffect(() => { if (!visible) setOpen(false); }, [visible]);
 
   useEffect(() => {
     if (!open) return;
@@ -82,14 +91,14 @@ const goTo = (event, href) => {
     requestAnimationFrame(() => requestAnimationFrame(() => {
       if (!document.querySelector(href)) return;
       if (lenis) {
-        lenis.scrollTo(href, { duration: reduced ? 0 : 1.2 });
+        lenis.scrollTo(href, { duration: reduced ? 0 : 1.2, offset: -headerOffset() });
       } else {
         document.querySelector(href)?.scrollIntoView({ behavior: reduced ? "instant" : "smooth" });
       }
     }));
   };
   return <>
-    <header className={`nav-topbar${afterMerch ? "" : " nav-topbar--hidden"}`}>
+    <header className="nav-topbar">
       <Brand />
       <button
         ref={trigger}

@@ -1049,6 +1049,20 @@ img {
   inset: 0;
   z-index: 1000;
   pointer-events: none;
+  /* Header follows the scroll signal in and out. `visibility` keeps the hidden
+     nav out of the tab order, and flips after the fade on the way out. */
+  transition: opacity 320ms ease, visibility 320ms;
+}
+
+.global-navigation[data-nav="hidden"] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .global-navigation {
+    transition: none;
+  }
 }
 
 .global-navigation .side-nav-trigger,

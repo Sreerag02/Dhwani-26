@@ -1,0 +1,72 @@
+/* Official ticketing partner credit. Shared by the events section and both
+   campus ambassador surfaces, so the two always read identically. */
+.ticketing-partner {
+  --partner-tracking: 0.22em;
+  display: inline-flex;
+  align-items: center;
+  /* Wraps instead of overflowing: the pair is only ~15px narrower than a 320px
+     viewport inside the band's padding, so a wider fallback font would push it
+     off the edge rather than stack. */
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  max-width: 100%;
+  margin: 0;
+}
+
+.ticketing-partner__label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: var(--partner-tracking);
+  /* Tracking puts a trailing space inside the label's box, which would otherwise
+     read as a lopsided gap. Pull the logo back by exactly that much. */
+  margin-right: calc(-1 * var(--partner-tracking));
+  text-transform: uppercase;
+  color: #9aa3ff;
+  white-space: nowrap;
+}
+
+.ticketing-partner__mark {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 13px;
+  background: #fffdfa;
+  border-radius: 9px;
+  box-shadow: 0 0 0 1px rgba(0, 204, 104, 0.4);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.ticketing-partner__mark img {
+  display: block;
+  width: 89px;
+  height: auto;
+}
+
+.ticketing-partner__mark:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(0, 204, 104, 0.75), 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.ticketing-partner__mark:focus-visible {
+  outline: 2px solid #fabf01;
+  outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .ticketing-partner {
+    gap: 7px 11px;
+  }
+
+  .ticketing-partner__mark {
+    padding: 6px 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticketing-partner__mark {
+    transition: none;
+  }
+
+  .ticketing-partner__mark:hover {
+    transform: none;
+  }
+}
