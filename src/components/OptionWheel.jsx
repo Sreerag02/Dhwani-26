@@ -21,6 +21,7 @@ const OptionWheel = ({
   defaultSelected = 3,
   selected,
   onChange,
+  onActivate,
   textColor = '#a6a6a6',
   activeColor = '#ffffff',
   side = 'left',
@@ -240,12 +241,19 @@ const OptionWheel = ({
         else if (d < -cfg.count / 2) d += cfg.count;
       }
       applyTarget(cur + d, true);
+      onActivate?.(index, cfg.items[index]);
     },
-    [applyTarget]
+    [applyTarget, onActivate]
   );
 
   const handleKeyDown = useCallback(
     e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const index = selectedRef.current;
+        onActivate?.(index, cfgRef.current.items[index]);
+        return;
+      }
       let delta = null;
       if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') delta = -1;
       else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') delta = 1;
@@ -253,7 +261,7 @@ const OptionWheel = ({
       e.preventDefault();
       applyTarget(Math.round(targetRef.current) + delta, true);
     },
-    [applyTarget]
+    [applyTarget, onActivate]
   );
 
   useEffect(() => {

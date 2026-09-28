@@ -122,11 +122,7 @@ export default function CampusAmbassador() {
 
       <section className="ca-board" aria-label="Campus ambassador leaderboard">
         <div className="ca-board-head">
-          <h2 className="ca-board-title">Leaderboard</h2>
-          <p className="ca-live">
-            <span className="ca-live__dot" aria-hidden="true" />
-            Live
-          </p>
+          <h2 className="ca-board-title">Top 10 Leaderboard</h2>
         </div>
 
         {state.status === "loading" && (
@@ -151,12 +147,11 @@ export default function CampusAmbassador() {
                 <tr>
                   <th scope="col">Rank</th>
                   <th scope="col">CA Code</th>
-                  <th scope="col">Tickets</th>
                   <th scope="col" aria-sort="descending">Points</th>
                 </tr>
               </thead>
               <tbody>
-                {rows.map(row => (
+                {rows.slice(0, 10).map(row => (
                   <tr key={`${row.rank}-${row.caCode}`} className={row.rank <= 3 ? "ca-row--top" : undefined}>
                     <td data-label="Rank">
                       <span className="ca-rank" data-medal={MEDALS[row.rank] ?? undefined}>
@@ -167,9 +162,6 @@ export default function CampusAmbassador() {
                       <span className="ca-name">
                         {row.caCode}
                       </span>
-                    </td>
-                    <td data-label="Tickets">
-                      <span className="ca-referrals">{formatPoints(row.tickets)}</span>
                     </td>
                     <td data-label="Points">
                       <span className="ca-points">{formatPoints(row.points)}</span>
@@ -195,7 +187,6 @@ export default function CampusAmbassador() {
 
         <p className="ca-board-foot">
           <span>{updated ? `Last updated ${updated.toLocaleString()}` : "Live rankings"}</span>
-          <span>Ranked by points · Highest first</span>
           <button type="button" className="ca-retry" onClick={refresh} disabled={state.status === "loading"}>
             {state.status === "loading" ? "Refreshing…" : "Refresh rankings"}
           </button>

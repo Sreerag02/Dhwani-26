@@ -9,7 +9,7 @@ const NAV_ITEMS = currentNav.map(item => item.label);
 const NAV_HREFS = {};
 for (const item of currentNav) NAV_HREFS[item.label] = item.page ?? item.anchor;
 const NAV_HREFS_ORDER = NAV_ITEMS.map(item => NAV_HREFS[item]);
-const INITIAL_ACTIVE = isCampusAmbassadorPage ? 0 : NAV_ITEMS.indexOf("Events");
+const INITIAL_ACTIVE = NAV_ITEMS.indexOf(isCampusAmbassadorPage ? "Campus Ambassador" : "Events");
 
 /* The topbar is fixed, so an anchor target has to be scrolled to below it.
    `scroll-margin-top`/`scroll-padding-top` only steer native anchor jumps, so
@@ -22,10 +22,10 @@ function headerOffset() {
 }
 
 function Brand() {
-  return <div className="nav-brand">
+  return <a className="nav-brand" href="/" aria-label="Dhwani home">
     <img src="/assets/logo/dhwani-text.webp" alt="Dhwani '26" />
     <div><strong>Oct 2, 3, 4 · 2026</strong><span>College of Engineering, Trivandrum</span></div>
-  </div>;
+  </a>;
 }
 
 export default function SideNavbar({ visible = true }) {
@@ -38,6 +38,7 @@ export default function SideNavbar({ visible = true }) {
   // Scroll-spy for the wheel. Whether the header itself is on screen is owned by
   // the page, not here, so the old merch gate is gone.
   useEffect(() => {
+    if (isCampusAmbassadorPage) return;
     const getIndex = () => {
       const threshold = window.scrollY + window.innerHeight * 0.3;
       let idx = 0;
@@ -60,6 +61,8 @@ export default function SideNavbar({ visible = true }) {
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
+    const wasStopped = lenis?.isStopped;
+    lenis?.stop();
     document.body.style.overflow = "hidden";
     const frame = requestAnimationFrame(() => panel.current?.querySelector("button")?.focus());
     const keyboard = event => {
@@ -74,9 +77,10 @@ export default function SideNavbar({ visible = true }) {
     document.addEventListener("keydown", keyboard);
     return () => {
       cancelAnimationFrame(frame); document.body.style.overflow = previous;
+      if (!wasStopped) lenis?.start();
       document.removeEventListener("keydown", keyboard); trigger.current?.focus();
     };
-  }, [open]);
+  }, [open, lenis]);
 
 const goTo = (event, href) => {
     event.preventDefault(); setOpen(false);
@@ -120,6 +124,7 @@ const goTo = (event, href) => {
           role="dialog"
           aria-modal="true"
           aria-label="Festival navigation"
+          data-lenis-prevent
           initial={{ x: reduced ? 0 : "100%", opacity: reduced ? 0 : 1 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: reduced ? 0 : "100%", opacity: reduced ? 0 : 1 }}
@@ -152,8 +157,8 @@ const goTo = (event, href) => {
               draggable
               soundUrl="/sounds/click-soft.mp3"
               soundVolume={0.5}
-              onChange={(index, item) => {
-                setActiveIndex(index);
+              onChange={index => setActiveIndex(index)}
+              onActivate={(index, item) => {
                 const href = NAV_HREFS[item];
                 if (href) goTo({ preventDefault() {} }, href);
               }}

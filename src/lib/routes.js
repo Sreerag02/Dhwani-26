@@ -18,8 +18,13 @@ export const PAGE_NAV = {
     { label: "Coming Soon", anchor: "#coming-soon" },
   ],
   [CAMPUS_AMBASSADOR_PATH]: [
-    { label: "Campus Ambassador", page: CAMPUS_AMBASSADOR_PATH },
     { label: "Home", page: "/" },
+    { label: "Theme", page: "/#theme-reveal" },
+    { label: "Khai", page: "/#khai" },
+    { label: "Artists", page: "/#artists" },
+    { label: "Merch", page: "/#merch" },
+    { label: "Events", page: "/#events" },
+    { label: "Campus Ambassador", page: CAMPUS_AMBASSADOR_PATH },
   ],
 };
 

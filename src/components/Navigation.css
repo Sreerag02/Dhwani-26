@@ -1,6 +1,6 @@
 .nav-topbar,.nav-sheet-top {display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:var(--festival-header-height,72px);padding:12px clamp(18px,2.4vw,44px)}
 .nav-topbar {background:#1f1d66;color:#fff;pointer-events:auto;}
-.nav-brand {display:flex;align-items:center;gap:16px;min-width:0}
+.nav-brand {display:flex;align-items:center;gap:16px;min-width:0;text-decoration:none}
 .nav-brand img {width:100px;height:40px;object-fit:contain}
 .nav-brand>div {border-left:1px solid #ffffff70;padding-left:14px;display:grid;gap:4px;font-size:10px;line-height:1.3}
 .nav-brand strong {font-weight:600;color:#fabf01}
