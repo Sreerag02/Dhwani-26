@@ -11,10 +11,6 @@ const MASCOT = "/assets/mascot/";
 const MEDALS = { 1: "gold", 2: "silver", 3: "bronze" };
 const PALETTE = ["#1F1D66", "#3731AB", "#9D34D1", "#AF005F", "#FABF01", "#005ED2", "#02CAEF"];
 
-function Avatar({ seed }) {
-  return <span className="ca-avatar" aria-hidden="true">{seed || "DC"}</span>;
-}
-
 /* Khai holds court in the right half of the hero, on a cloud of his own. */
 function KhaiStage() {
   return (
@@ -115,7 +111,7 @@ export default function CampusAmbassador() {
               <span className="ca-stat-label">Ambassadors</span>
             </span>
             <span className="ca-stat">
-              <strong className="ca-stat-num">{rows[0]?.name ?? "—"}</strong>
+              <strong className="ca-stat-num">{rows[0]?.caCode ?? "—"}</strong>
               <span className="ca-stat-label">At the top</span>
             </span>
           </div>
@@ -154,27 +150,24 @@ export default function CampusAmbassador() {
               <thead>
                 <tr>
                   <th scope="col">Rank</th>
-                  <th scope="col">Ambassador</th>
-                  <th scope="col">College</th>
+                  <th scope="col">CA Code</th>
                   <th scope="col">Tickets</th>
                   <th scope="col" aria-sort="descending">Points</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map(row => (
-                  <tr key={`${row.rank}-${row.name}`} className={row.rank <= 3 ? "ca-row--top" : undefined}>
+                  <tr key={`${row.rank}-${row.caCode}`} className={row.rank <= 3 ? "ca-row--top" : undefined}>
                     <td data-label="Rank">
                       <span className="ca-rank" data-medal={MEDALS[row.rank] ?? undefined}>
                         <em>{row.rank}</em>
                       </span>
                     </td>
-                    <td data-label="Ambassador">
+                    <td data-label="CA Code">
                       <span className="ca-name">
-                        <Avatar seed={row.avatarSeed} />
-                        {row.name}
+                        {row.caCode}
                       </span>
                     </td>
-                    <td data-label="College">{row.college}</td>
                     <td data-label="Tickets">
                       <span className="ca-referrals">{formatPoints(row.tickets)}</span>
                     </td>
