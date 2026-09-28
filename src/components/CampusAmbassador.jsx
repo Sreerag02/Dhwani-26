@@ -7,6 +7,7 @@ import { doc, getDocFromServer, onSnapshot } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { normalizeLeaderboard } from "../lib/leaderboard";
 
+const MASCOT = "/assets/mascot/";
 const MEDALS = { 1: "gold", 2: "silver", 3: "bronze" };
 const PALETTE = ["#1F1D66", "#3731AB", "#9D34D1", "#AF005F", "#FABF01", "#005ED2", "#02CAEF"];
 
@@ -23,35 +24,6 @@ function KhaiStage() {
       <img className="ca-khai-base" src={MASCOT + "cloud-main.webp"} alt="" draggable="false" />
       <img className="ca-khai" src={MASCOT + "khai-full.webp"} alt="" draggable="false" />
     </div>
-  );
-}
-
-/* Top three get a podium; everyone else keeps the table. */
-function Podium({ rows, showRevenue, formatPoints }) {
-  return (
-    <ol className="ca-podium" aria-label="Top three ambassadors">
-      {rows.map(row => (
-        <li
-          key={`podium-${row.rank}-${row.name}`}
-          className="ca-podium__step"
-          data-medal={MEDALS[row.rank] ?? undefined}
-        >
-          <span className="ca-podium__rank" aria-hidden="true">{row.rank}</span>
-          <Avatar seed={row.avatarSeed} />
-          <span className="ca-podium__name">{row.name}</span>
-          <span className="ca-podium__tally">
-            <strong>{row.totalReferrals}</strong>
-            <em>referrals</em>
-          </span>
-          {showRevenue && (
-            <span className="ca-podium__points">
-              {formatPoints(row.revenue)}
-              <em>{row.revenueLabel ?? "points"}</em>
-            </span>
-          )}
-        </li>
-      ))}
-    </ol>
   );
 }
 
@@ -109,12 +81,6 @@ export default function CampusAmbassador() {
 
   const formatPoints = n =>
     new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(n);
-
-  const showRevenue = Boolean(settings.showRevenue);
-  const topThree = rows.slice(0, 3);
-  /* A full podium reads 2-1-3 so the winner stands centre and tallest. */
-  const podium = topThree.length === 3 ? [topThree[1], topThree[0], topThree[2]] : topThree;
-  const rest = rows.slice(podium.length);
 
   return (
     <div className="campus-ambassador">
@@ -241,7 +207,7 @@ export default function CampusAmbassador() {
             {state.status === "loading" ? "Refreshing…" : "Refresh rankings"}
           </button>
         </p>
-        <TicketingPartner href={platformUrl} className="ca-partner" />
+        <TicketingPartner className="ca-partner" />
       </section>
     </div>
   );
