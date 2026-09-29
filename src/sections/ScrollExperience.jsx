@@ -177,7 +177,7 @@ export default function ScrollExperience({ onNavVisibility }) {
   useEffect(() => { onNavVisibility?.(journeyNav); }, [journeyNav, onNavVisibility]);
 
   return <section ref={ref} id="world" className="reveal-journey" aria-label="World of Dhwani, Khai, artists and merchandise"
-    style={{ height: `${TOTAL_SCROLL + 100}svh`, "--artist-anchor": `${(ARTIST_START + (ARTIST_END - ARTIST_START) * ARTIST_ANCHOR_PROGRESS) * TOTAL_SCROLL}svh` }}>
+    style={{ height: `${TOTAL_SCROLL + 100}svh`, "--artist-anchor": `${((ARTIST_START + (ARTIST_END - ARTIST_START) * ARTIST_ANCHOR_PROGRESS) * TOTAL_SCROLL / (TOTAL_SCROLL + 100)) * 100}%` }}>
     <span id="theme-reveal" className="journey-anchor theme-anchor" />
     <span id="artists" className="journey-anchor artist-anchor" />
     <span id="khai" className="journey-anchor khai-anchor" />

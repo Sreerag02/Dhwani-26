@@ -70,8 +70,20 @@ export default function App() {
             <ScrollExperience onNavVisibility={onJourneyNav} />
             <div ref={nextPage}>
               <div className="events-pin">
+                <div className="events-transition-clouds" aria-hidden="true">
+                  <img className="events-transition-clouds__lantern events-transition-clouds__lantern--left" src="/assets/merch/lantern/lantern1.webp" alt="" />
+                  <img className="events-transition-clouds__lantern events-transition-clouds__lantern--right" src="/assets/merch/lantern/lantern%202.webp" alt="" />
+                  <img className="events-transition-clouds__left" src="/assets/elements/theme-cloud.webp" alt="" />
+                  <img className="events-transition-clouds__right" src="/assets/elements/theme-cloud.webp" alt="" />
+                </div>
                 <div className="events-pin__inner">
                   <Events />
+                </div>
+                <div className="campus-transition-clouds" aria-hidden="true">
+                  <img className="campus-transition-clouds__lantern campus-transition-clouds__lantern--left" src="/assets/merch/lantern/lantern1.webp" alt="" />
+                  <img className="campus-transition-clouds__lantern campus-transition-clouds__lantern--right" src="/assets/merch/lantern/lantern%202.webp" alt="" />
+                  <img className="campus-transition-clouds__left" src="/assets/elements/theme-cloud.webp" alt="" />
+                  <img className="campus-transition-clouds__right" src="/assets/elements/theme-cloud.webp" alt="" />
                 </div>
               </div>
               <CampusAmbassadorBand />
