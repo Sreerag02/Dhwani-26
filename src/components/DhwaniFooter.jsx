@@ -1,3 +1,5 @@
+import useMediaQuery from "../hooks/useMediaQuery";
+import { useReducedMotion } from "motion/react";
 import useSceneActive from "../hooks/useSceneActive";
 import React, { useRef, useCallback, useEffect } from 'react';
 import { useLenis } from 'lenis/react';
@@ -40,6 +42,9 @@ const ArrowUpIcon = React.memo(({ className = '', size = 20 }) => (
 export function DhwaniFooter() {
   const footerRef = useRef(null);
   const active = useSceneActive(footerRef);
+  const reduced = useReducedMotion();
+  const finePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
+  const parallax = active && finePointer && !reduced;
   
   // Refs for elements to animate
   const glowLeftRef = useRef(null);
@@ -101,32 +106,11 @@ export function DhwaniFooter() {
     scheduleUpdate();
   }, [scheduleUpdate]);
 
-  const handleTouchMove = useCallback((e) => {
-    if (!footerRef.current || !e.touches[0]) return;
-    const touch = e.touches[0];
-    const rect = footerRef.current.getBoundingClientRect();
-    const x = (touch.clientX - rect.left) / rect.width - 0.5;
-    const y = (touch.clientY - rect.top) / rect.height - 0.5;
-    mousePosRef.current = { x, y };
-    isHoveredRef.current = true;
-    scheduleUpdate();
-  }, [scheduleUpdate]);
-
   const handleMouseEnter = useCallback(() => {
     isHoveredRef.current = true;
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    isHoveredRef.current = false;
-    mousePosRef.current = { x: 0, y: 0 };
-    scheduleUpdate();
-  }, [scheduleUpdate]);
-
-  const handleTouchStart = useCallback(() => {
-    isHoveredRef.current = true;
-  }, []);
-
-  const handleTouchEnd = useCallback(() => {
     isHoveredRef.current = false;
     mousePosRef.current = { x: 0, y: 0 };
     scheduleUpdate();
@@ -151,24 +135,13 @@ export function DhwaniFooter() {
   return (
     <footer 
       ref={footerRef}
-      data-animation-paused={!active}
+      data-animation-paused={!active || reduced}
       className="dhwani-footer-container carnival-world"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchMove={handleTouchMove}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      onMouseMove={parallax ? handleMouseMove : undefined}
+      onMouseEnter={parallax ? handleMouseEnter : undefined}
+      onMouseLeave={parallax ? handleMouseLeave : undefined}
       aria-label="Dhwani 2026 Festival Footer"
     >
-      {/* SVG Halftone Grain & Inked Noise Filter Definition */}
-      <svg className="svg-noise-def" width="0" height="0">
-        <filter id="dhwaniHalftoneGrain">
-          <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" result="noise" />
-          <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.07 0" />
-        </filter>
-      </svg>
-
       {/* Layer 1: Hand-inked Halftone Grain Texture */}
       <div className="halftone-grain-overlay" aria-hidden="true" />
 

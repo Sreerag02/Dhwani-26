@@ -1076,3 +1076,14 @@ img {
 [data-animation-paused="true"] *::after {
   animation-play-state: paused !important;
 }
+
+/* Release compositor hints when decorative scenes are paused. */
+[data-animation-paused="true"] *,
+.mascot-poster[data-paused="true"] *,
+.carnival[data-playing="false"] * {
+  will-change: auto !important;
+}
+.route-loading { min-height: 100svh; display: grid; place-items: center; }
+@media (prefers-reduced-motion: reduce) {
+  .carnival-backdrop * { animation: none !important; }
+}

@@ -1,3 +1,4 @@
+import useProgressWindow from "../hooks/useProgressWindow";
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion, useMotionValueEvent } from "motion/react";
 import KhaiHero from "../components/HeroReveal";
@@ -8,22 +9,18 @@ import { ARTIST_ANCHOR_PROGRESS, ORIGINAL_SCROLL, ARTIST_SCROLL, TOTAL_SCROLL, A
 import "../components/Opening.css";
 import "./ScrollExperience.css";
 
-// Clouds sweep right-to-left across a dense 4x8 tile grid.  Every cloud crosses
-// the centre of its tile at ~.22, so the viewport is fully covered in one
-// shared moment a little before the theme settles (.309), then all clear by
-// ~.30, ahead of the navy wipe opening at .379. Parallax comes from travel
-// distance (front ring sweeps further/faster), while timing stays in a common
-// window so the sheet never tears.
-const CLOUD_LAYERS = Array.from({ length: 20 }, (_, index) => {
-  const row = Math.floor(index / 5);
-  const col = index % 5;
+// Twelve overlapping clouds sweep sideways in four rows. Keep their shared
+// coverage beat while using continuous velocity through each tile centre.
+const CLOUD_LAYERS = Array.from({ length: 12 }, (_, index) => {
+  const row = Math.floor(index / 3);
+  const col = index % 3;
   const ring = row >= 2 ? 1 : 0;
-  const colsX = [5, 27, 50, 73, 95];
+  const colsX = [8, 50, 92];
   const rowsY = [10, 35, 60, 85];
   const micro = ((row * 3 + col * 5) % 7) - 3;
   const microY = ((col * 7 + row * 11) % 5) - 2;
   const travel = ring ? 125 + col * 15 : 195 + col * 20;
-  const mid = .22 + Math.floor(index / 5) * .010;
+  const mid = .22 + Math.floor(index / 3) * .010;
   const start = mid - .22 + (row % 2) * .014 + col * .006;
   const end = mid + .075 + (col % 2) * .012;
   return {
@@ -32,8 +29,7 @@ const CLOUD_LAYERS = Array.from({ length: 20 }, (_, index) => {
     ring,
     left: colsX[col] + micro - 5,
     top: rowsY[row] + microY,
-    from: `${travel}vw`,
-    to: `-${travel}vw`,
+    travel,
     y: `${(row % 2 ? -1 : 1) * (10 + col * 5)}svh`,
     start,
     mid,
@@ -42,14 +38,29 @@ const CLOUD_LAYERS = Array.from({ length: 20 }, (_, index) => {
   };
 });
 
+// Hermite segments share the same slope at the coverage beat, avoiding the
+// old sudden acceleration there. Both ends settle with zero velocity.
+function cloudOffset(value, layer) {
+  const { start, mid, end, travel } = layer;
+  const incoming = value <= mid;
+  const duration = incoming ? mid - start : end - mid;
+  const t = Math.max(0, Math.min(1, (value - (incoming ? start : mid)) / duration));
+  const slope = -2 * travel / (end - start);
+  const from = incoming ? travel : 0;
+  const to = incoming ? 0 : -travel;
+  const m0 = incoming ? 0 : slope * duration;
+  const m1 = incoming ? slope * duration : 0;
+  return (2*t*t*t - 3*t*t + 1)*from + (t*t*t - 2*t*t + t)*m0
+    + (-2*t*t*t + 3*t*t)*to + (t*t*t - t*t)*m1;
+}
+
 const Cloud = React.memo(function Cloud({ layer, progress }) {
-  const reduced = useReducedMotion();
-  // x crosses 0vw (tile centre) at `mid`, y settles to its tile row by `mid`.
-  const x = useTransform(progress, [layer.start, layer.mid, layer.end], [layer.from, "0vw", layer.to]);
-  const y = useTransform(progress, [layer.start, layer.mid], [layer.y, "0svh"]);
-  const rotate = useTransform(progress, [layer.start, layer.mid], [0, layer.turn]);
+  const x = useTransform(progress, value => `${cloudOffset(value, layer)}vw`);
+  const y = useTransform(progress, [layer.start, layer.mid], [layer.y, "0svh"], { ease: t => 1 - (1 - t) ** 3 });
+  const rotate = useTransform(progress, [layer.start, layer.mid], [0, layer.turn], { ease: t => 1 - (1 - t) ** 3 });
+  const visibility = useTransform(progress, value => value <= layer.start || value >= layer.end ? "hidden" : "visible");
   return <motion.div className={`cloud-curtain-layer cloud-bloom-layer cloud-bloom-ring-${layer.ring}`}
-    style={{ left: `${layer.left}%`, top: `${layer.top}%`, ...(reduced ? {} : { x, y, rotate, z: 0 }) }}>
+    style={{ left: `${layer.left}%`, top: `${layer.top}%`, x, y, rotate, visibility }}>
     <img src={`/assets/curtain/${layer.file}.webp`} alt="" decoding="async" draggable="false" />
   </motion.div>;
 });
@@ -57,13 +68,14 @@ const Cloud = React.memo(function Cloud({ layer, progress }) {
 // Subscribe only to boundary crossings. Unmount inactive curtains to release
 // their large GPU surfaces and Motion subscriptions; remount on reverse scroll.
 function CloudCurtainLayers({ progress, sceneProgress = progress, start = -Infinity, end }) {
+  const reduced = useReducedMotion();
   const inRange = value => value >= start && value < end;
   const [active, setActive] = useState(() => inRange(sceneProgress.get()));
   useMotionValueEvent(sceneProgress, "change", value => {
     const next = inRange(value);
     if (next !== active) setActive(next);
   });
-  return active ? CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={progress} />) : null;
+  return active && !reduced ? CLOUD_LAYERS.map(layer => <Cloud key={layer.id} layer={layer} progress={progress} />) : null;
 }
 
 const TUNNEL_LAYERS = [
@@ -97,6 +109,10 @@ export default function ScrollExperience({ onNavVisibility }) {
     [0, ARTIST_INSERT * ORIGINAL_SCROLL / TOTAL_SCROLL, (ARTIST_INSERT * ORIGINAL_SCROLL + ARTIST_SCROLL) / TOTAL_SCROLL, 1],
     [0, ARTIST_INSERT, ARTIST_INSERT, 1]);
   const reduced = useReducedMotion();
+  const themeMounted = useProgressWindow(progress, -Infinity, .48);
+  const khaiMounted = useProgressWindow(progress, .35, .70);
+  const merchMounted = useProgressWindow(progress, .71, Infinity);
+  const tunnelMounted = useProgressWindow(progress, .69, .84);
   const introOpacity = useTransform(progress, [.053, .121], [1, 0]);
   const introVisibility = useTransform(progress, value => value >= .121 ? "hidden" : "visible");
   const introY = useTransform(progress, [0, .121], [0, -100]);
@@ -108,7 +124,7 @@ export default function ScrollExperience({ onNavVisibility }) {
   const curtain2Progress = useTransform(progress, [.645, .698], [0, 0.32]);
   const curtain2Visibility = useTransform(progress, value => value < .645 || value >= .698 ? "hidden" : "visible");
   const theme = useTransform(progress, [.134, .309], [0, 1]);
-  const themeVisibility = useTransform(progress, value => value >= .45 ? "hidden" : "visible");
+  const themeVisibility = useTransform(progress, value => value < .12 || value >= .45 ? "hidden" : "visible");
   const maskOpacity = useTransform(progress, [.379, .433, .467, .541], [0, 1, 1, 0]);
   const maskBg = useTransform(progress, [.379, .419, .541], [0, 1, 0]);
   const maskScale = useTransform(progress, [.379, .541], [.35, 3]);
@@ -168,10 +184,10 @@ export default function ScrollExperience({ onNavVisibility }) {
     <span id="merch" className="journey-anchor merch-anchor" />
     <div className="journey-sticky">
       <motion.div className="journey-scene" style={{ visibility: themeVisibility }}>
-        <ThemeReveal progress={theme} sceneProgress={progress} embedded />
+        {themeMounted && <ThemeReveal progress={theme} sceneProgress={progress} embedded />}
       </motion.div>
       <motion.div className="journey-scene khai-journey cloud-journey-sticky" style={{ opacity: khaiOpacity, visibility: khaiVisibility }}>
-        <KhaiHero progress={hero} sceneProgress={progress} />
+        {khaiMounted && <KhaiHero progress={hero} sceneProgress={progress} />}
       </motion.div>
       <motion.div className="section-transition-fade" style={{ opacity: transitionFade, visibility: transitionVisibility, position: 'absolute', inset: 0, backgroundColor: '#11103b', zIndex: 1 }} aria-hidden="true" />
       <motion.div className="cloud-curtain" style={{ visibility: cloudVisibility }} aria-hidden="true">
@@ -213,10 +229,10 @@ export default function ScrollExperience({ onNavVisibility }) {
       </motion.div>
       <ArtistReveal journeyProgress={journeyProgress} />
       <motion.div className="merch-journey" style={{ visibility: merchVisibility }}>
-        <Merch progress={remappedMerchProgress} sceneProgress={progress} />
+        {merchMounted && <Merch progress={remappedMerchProgress} sceneProgress={progress} />}
       </motion.div>
       <motion.div className="merch-tunnel" style={{ opacity: revealOpacity, visibility: revealVisibility }} aria-hidden="true">
-        {TUNNEL_LAYERS.map((layer, i) => (
+        {tunnelMounted && TUNNEL_LAYERS.map((layer, i) => (
           <TunnelRing key={i} layer={layer} pan={tunnelPan} grow={tunnelGrow} progress={tunnelIn} reduced={reduced} />
         ))}
       </motion.div>

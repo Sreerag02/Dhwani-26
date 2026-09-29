@@ -18,7 +18,7 @@ const INITIAL_EVENTS = [
     venue: "Festival venue",
     prizeLabel: "Format",
     prize: "Artist showcase",
-    image: "/assets/events-section/spotlight.webp",
+    image: "/assets/runtime/events-section/spotlight.webp",
     description: "Spotlight is the flagship event of CETalks — two days of artists taking the stage.",
     rules: ["Artist showcase", "Oct 3–4, 2026", "Line-up to be announced"],
     contact: "CETalks",
@@ -43,7 +43,7 @@ const INITIAL_EVENTS = [
     date: "Oct 2–4, 2026",
     venue: "Festival venues",
     prize: "Unplugged: Oct 3 • 09:00–12:00 | Battle of Bands: Oct 4 • 09:00–14:00",
-    image: "/assets/events-section/antara fulll.webp",
+    image: "/assets/runtime/events-section/antara fulll.webp",
     description: "A music fest spanning idol competitions, strings, unplugged performances, and a Battle of Bands.",
     rules: ["Eastern Idol prelims: 6 minutes", "Eastern Idol finals: 8 minutes", "Strings: 7 minutes per participant"],
     contact: "Festival Desk",
@@ -68,7 +68,7 @@ const INITIAL_EVENTS = [
     date: "Oct 2–4, 2026",
     venue: "Festival venues",
     prize: "Solo: Oct 2 • 09:00–23:30",
-    image: "/assets/events-section/nadanta.webp",
+    image: "/assets/runtime/events-section/nadanta.webp",
     description: "A dance fest with solo, duo, spot, battle, and workshop experiences.",
     rules: ["Solo: Oct 2, 09:00–23:30", "Workshop by Sidharth", "Duo, Spot, and Dance Battle sub-events"],
     contact: "Festival Desk",
@@ -95,7 +95,7 @@ const INITIAL_EVENTS = [
     date: "Dates to be announced",
     venue: "Festival venue",
     prize: "Programme details to be announced",
-    image: "/assets/events-section/dionysia.webp",
+    image: "/assets/runtime/events-section/dionysia.webp",
     description: "Dionysia is Dhwani's theatrical fest.",
     rules: ["Dates to be announced", "Theatrical fest"],
     contact: "Festival Desk",
@@ -114,7 +114,7 @@ const INITIAL_EVENTS = [
     date: "Oct 3 • 14:00–23:05",
     venue: "Festival venue",
     prize: "9h 5m programme",
-    image: "/assets/events-section/NAZAARA wp.webp",
+    image: "/assets/runtime/events-section/NAZAARA wp.webp",
     description: "Dhwani's fashion flagship event, presented across a nine-hour programme.",
     rules: ["Oct 3 programme", "14:00–23:05", "Fashion flagship event"],
     contact: "Festival Desk",
@@ -133,7 +133,7 @@ const INITIAL_EVENTS = [
     date: "Oct 2–4, 2026",
     venue: "College of Engineering, Trivandrum",
     prize: "Table Tennis • Badminton • Chess • 3K / 5K / 10K",
-    image: "/assets/events-section/BANNER FULL.webp",
+    image: "/assets/runtime/events-section/BANNER FULL.webp",
     description: "A three-day sports meet featuring racket sports, chess, and 3K, 5K, and 10K marathon events.",
     rules: ["Oct 2 published window: 06:00–14:00", "Three-day meet", "Sub-events include Table Tennis, Badminton, Chess, and Marathons"],
     contact: "Festival Desk",
@@ -152,7 +152,7 @@ const INITIAL_EVENTS = [
     date: "Dates to be announced",
     venue: "Festival venue",
     prize: "Programme details to be announced",
-    image: "/assets/events-section/banner.webp",
+    image: "/assets/runtime/events-section/banner.webp",
     description: "Rangam is Dhwani's film fest, featuring a Short Film Competition.",
     rules: ["Short Film Competition", "Dates to be announced"],
     contact: "Festival Desk",
@@ -180,7 +180,7 @@ const INITIAL_EVENTS = [
     date: "Dates to be announced",
     venue: "Festival venue",
     prize: "Programme details to be announced",
-    image: "/assets/events-section/CARPE DICTUM GRID.webp",
+    image: "/assets/runtime/events-section/CARPE DICTUM GRID.webp",
     description: "Carpe Dictum is Dhwani's debate and literary stream. Seize the word.",
     rules: ["Dates to be announced", "Debate and literary stream"],
     contact: "Festival Desk",
@@ -199,7 +199,7 @@ const INITIAL_EVENTS = [
     date: "Dates to be announced",
     venue: "Festival venue",
     prize: "Programme details to be announced",
-    image: "/assets/events-section/writers-conclave.webp",
+    image: "/assets/runtime/events-section/writers-conclave.webp",
     description: "Writers' Conclave at Dhwani 26.",
     rules: ["Dates to be announced", "Writers' Conclave"],
     contact: "Festival Desk",
@@ -239,7 +239,7 @@ const INITIAL_EVENTS = [
     date: "Dates to be announced",
     venue: "Festival venue",
     prize: "Programme details to be announced",
-    image: "/assets/events-section/yuva-sansad.webp",
+    image: "/assets/runtime/events-section/yuva-sansad.webp",
     description: "Yuva Sansad at Dhwani 26.",
     rules: ["Dates to be announced", "Yuva Sansad"],
     contact: "Festival Desk",
@@ -259,7 +259,7 @@ const INITIAL_EVENTS = [
     date: "Dates to be announced",
     venue: "Festival venue",
     prize: "Programme details to be announced",
-    image: "/assets/events-section/post.webp",
+    image: "/assets/runtime/events-section/post.webp",
     description: "POST at Dhwani 26.",
     rules: ["Dates to be announced", "POST"],
     contact: "Festival Desk",
@@ -331,6 +331,7 @@ function EventCard({ event, eager, stagger, onSelect }) {
    repeating period differs with the group's card count and widths. */
 function EventRail({ events, onSelect, marquee }) {
   const railRef = useRef(null);
+  const railActive = useSceneActive(railRef);
   const loopWidthRef = useRef(0);
   const frameRef = useRef(null);
   const marqueeFrameRef = useRef(null);
@@ -365,7 +366,7 @@ function EventRail({ events, onSelect, marquee }) {
      from the frame delta, and the loop is closed here rather than waiting for
      the scroll event, so the reset never shows as a stutter. */
   useEffect(() => {
-    if (!marquee || held) return undefined;
+    if (!marquee || held || !railActive) return undefined;
     const rail = railRef.current;
     if (!rail) return undefined;
     let cancelled = false;
@@ -392,7 +393,7 @@ function EventRail({ events, onSelect, marquee }) {
       if (marqueeFrameRef.current) cancelAnimationFrame(marqueeFrameRef.current);
       marqueeLastRef.current = 0;
     };
-  }, [marquee, held]);
+  }, [marquee, held, railActive]);
 
   const handleScroll = useCallback(() => {
     if (frameRef.current) return;
@@ -429,7 +430,7 @@ function EventRail({ events, onSelect, marquee }) {
         <EventCard
           key={`${event.id}-${index}`}
           event={event}
-          eager={index >= events.length && index < events.length * 2}
+          eager={railActive && index >= events.length && index < events.length * 2}
           stagger={index % events.length}
           onSelect={onSelect}
         />
@@ -483,7 +484,7 @@ export default function Events() {
 
   // Mouse movement handler
   const handleMouseMove = useCallback((e) => {
-    if (isMobile) return;
+    if (isMobile || reduced || !active) return;
     const rect = sectionRef.current?.getBoundingClientRect();
     if (rect) {
       const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -491,7 +492,7 @@ export default function Events() {
       mouseX.set(x);
       mouseY.set(y);
     }
-  }, [isMobile, mouseX, mouseY]);
+  }, [isMobile, reduced, active, mouseX, mouseY]);
 
   // Scroll Parallax Transforms
   const { scrollYProgress } = useScroll({
@@ -520,8 +521,8 @@ export default function Events() {
       <motion.div
         className="events-parallax-bg"
         style={{
-          y: sectionParallaxY,
-          scale: sectionParallaxScale
+          y: reduced || isMobile ? 0 : sectionParallaxY,
+          scale: reduced || isMobile ? 1 : sectionParallaxScale
         }}
         aria-hidden="true"
       />

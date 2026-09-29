@@ -43,7 +43,7 @@
 
 .merch__bg--blue {
   background-color: #02c8ed;
-  background-image: url("/assets/merch/bg/bg blue.webp");
+  background-image: url("/assets/runtime/merch/bg/bg blue.webp");
   background-size: cover;
   background-position: center;
   height: 100%;
@@ -56,7 +56,7 @@
 .merch__bg--pink {
   inset: auto 0 0 0;
   height: 100%;
-  background-image: url("/assets/merch/bg/bgpink.webp");
+  background-image: url("/assets/runtime/merch/bg/bgpink.webp");
   background-size: cover;
   background-position: center;
   background-color: #af005f;

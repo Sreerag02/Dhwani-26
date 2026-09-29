@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
-import { useAnimationFrame } from "motion/react";
+import { useAnimationFrame, useReducedMotion } from "motion/react";
 import "lenis/dist/lenis.css";
 import SideNavbar from "./components/SideNavbar";
-import CampusAmbassador from "./components/CampusAmbassador";
+const CampusAmbassador = lazy(() => import("./components/CampusAmbassador"));
 import CampusAmbassadorBand from "./sections/CampusAmbassador";
 import ScrollExperience from "./sections/ScrollExperience";
 import Events from "./sections/Events";
@@ -21,6 +21,8 @@ function LenisFramerSync() {
 
 export default function App() {
   const nextPage = useRef(null);
+  const reduced = useReducedMotion();
+  const scrollOptions = useMemo(() => ({ lerp: 0.1, smoothWheel: !reduced }), [reduced]);
   // Compact screens toggle the header through the journey: up for the artist
   // chapter, away for merch, back for events. Desktop and tablet keep the header
   // out of the journey entirely and only show it once merch is behind you, which
@@ -47,13 +49,15 @@ export default function App() {
   const headerVisible = isCampusAmbassadorPage || pastJourney || (compact && journeyNav);
 
   return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 1.2, smoothWheel: true }} autoRaf={false}>
+    <ReactLenis root options={scrollOptions} autoRaf={false}>
       <LenisFramerSync />
       {isCampusAmbassadorPage ? (
         <>
           <div className="global-navigation" data-nav="shown"><SideNavbar /></div>
           <main className="dhwani-site">
-            <CampusAmbassador />
+            <Suspense fallback={<div className="route-loading" role="status">Loading campus ambassador…</div>}>
+              <CampusAmbassador />
+            </Suspense>
             <DhwaniFooter />
           </main>
         </>

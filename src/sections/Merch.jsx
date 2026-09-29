@@ -155,7 +155,7 @@ export default function Merch({ progress, sceneProgress }) {
       <div className="merch__bg merch__bg--blue" aria-hidden="true" />
       <div className="merch__bg merch__bg--pink" aria-hidden="true" />
       <img
-        src="/assets/merch/bg/bg element.webp"
+        src="/assets/runtime/merch/bg/bg element.webp"
         alt=""
         aria-hidden="true"
         className="merch__bg-element"
@@ -323,7 +323,7 @@ export default function Merch({ progress, sceneProgress }) {
           src="/assets/merch/sticker/sticker1.png" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__sticker merch__sticker-title" style={{ "--pop-delay": ".55s" }}
-          src="/assets/merch/sticker/sticker.png" alt="" />
+          src="/assets/runtime/merch/sticker/sticker.png.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__sticker merch__sticker--2" style={{ "--pop-delay": ".3s" }}
           src="/assets/merch/sticker/sticker2.png" alt="" />
@@ -335,7 +335,7 @@ export default function Merch({ progress, sceneProgress }) {
           src="/assets/merch/sticker/sticker4.png" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__sticker merch__sticker--5" style={{ "--pop-delay": ".75s" }}
-          src="/assets/merch/sticker/sticker5.png" alt="" />
+          src="/assets/runtime/merch/sticker/sticker5.png.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__bandana merch__bandana--1" style={{ "--pop-delay": ".12s" }}
           src="/assets/merch/bandana/bandana%201.webp" alt="" />
@@ -356,16 +356,16 @@ export default function Merch({ progress, sceneProgress }) {
           src="/assets/merch/badges.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
-          src="/assets/merch/fanny/fanny-1.webp" alt="" />
+          src="/assets/runtime/merch/fanny/fanny-1.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}
-          src="/assets/merch/fanny/fanny-2.webp" alt="" />
+          src="/assets/runtime/merch/fanny/fanny-2.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__kit" style={{ "--pop-delay": ".55s" }}
-          src="/assets/merch/merch-kit.png" alt="" />
+          src="/assets/runtime/merch/merch-kit.png.webp" alt="" />
         <MerchPop phase2={phase2} reduced={reduced}
           className="merch__pop merch__kit-title" style={{ "--pop-delay": ".55s" }}
-          src="/assets/merch/merch-kit-title.png" alt="" />
+          src="/assets/runtime/merch/merch-kit-title.png.webp" alt="" />
         {/* <MerchItem className="merch__pop merch__badge merch__badge--1" style={{ "--pop-delay": ".05s" }}
           src="/assets/merch/badges/badge%201.png" label="Badge" />
         <MerchItem className="merch__pop merch__badge merch__badge--2" style={{ "--pop-delay": ".35s" }}
@@ -379,9 +379,9 @@ export default function Merch({ progress, sceneProgress }) {
         <MerchItem className="merch__pop merch__bandana merch__bandana--3" style={{ "--pop-delay": ".65s" }}
           src="/assets/merch/bandana/bandana-a2.webp" label="Bandana" />
         <MerchItem className="merch__pop merch__fanny merch__fanny--1" style={{ "--pop-delay": ".2s" }}
-          src="/assets/merch/fanny/fanny-1.webp" label="Fanny Pack" />
+          src="/assets/runtime/merch/fanny/fanny-1.webp" label="Fanny Pack" />
         <MerchItem className="merch__pop merch__fanny merch__fanny--2" style={{ "--pop-delay": ".45s" }}
-          src="/assets/merch/fanny/fanny-2.webp" label="Fanny Pack" /> */}
+          src="/assets/runtime/merch/fanny/fanny-2.webp" label="Fanny Pack" /> */}
         <motion.a
           href={cta.href}
           className={`merch__order-btn${cta.label === "Buy Tees" ? " merch__order-btn--tees" : ""}`}

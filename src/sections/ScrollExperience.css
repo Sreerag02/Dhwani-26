@@ -33,7 +33,7 @@
    scales up to fill the frame, then the poster arrives under it and the giant
    shirt resolves into the poster's own outline tee. */
 .merch-tunnel {position:absolute;inset:0;z-index:47;display:grid;place-items:center;overflow:hidden;pointer-events:none}
-.merch-tunnel__tee {position:absolute;width:min(65vw,70svh);height:80%;object-fit:contain;transform-origin:center;filter:drop-shadow(0 0 16px rgb(255 196 30 / .4));will-change:transform;transform:translateZ(0)}
+.merch-tunnel__tee {position:absolute;width:min(65vw,70svh);height:80%;object-fit:contain;transform-origin:center;will-change:transform;transform:translateZ(0)}
 /* Skateboard video transition wrapper — sits between tunnel (47) and merch (46)
    but renders above both while visible, hence z-index:48 on the inner element. */
 .video-transition-wrapper {position:absolute;inset:0;z-index:48;pointer-events:none;will-change:transform}
@@ -50,7 +50,7 @@
   width: 100%;
   height: 100svh;
   background-color: #02c8ed;
-  background-image: url("/assets/merch/bg/bg blue.webp");
+  background-image: url("/assets/runtime/merch/bg/bg blue.webp");
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -73,7 +73,7 @@
   .merch-tunnel__tee {width:88vw;height:auto}
 }
 
-/* Center each cloud on an elliptical ring; scroll moves it radially outward. */
+/* Overlapping rows cover the viewport during the sideways sweep. */
 .cloud-curtain .cloud-bloom-layer {
   width:clamp(600px,95vw,1800px);
   min-width:0;

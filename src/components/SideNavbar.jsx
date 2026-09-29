@@ -38,28 +38,40 @@ export default function SideNavbar({ visible = true }) {
   // Scroll-spy for the wheel. Whether the header itself is on screen is owned by
   // the page, not here, so the old merch gate is gone.
   useEffect(() => {
-    if (isCampusAmbassadorPage) return;
+    if (isCampusAmbassadorPage || !visible) return;
+    const targets = NAV_HREFS_ORDER.map(sel => sel.startsWith("#") ? document.querySelector(sel) : null);
+    let frame = null;
     const getIndex = () => {
       const threshold = window.scrollY + window.innerHeight * 0.3;
       let idx = 0;
       NAV_HREFS_ORDER.forEach((sel, i) => {
         if (!sel.startsWith("#")) return;
-        const el = document.querySelector(sel);
+        const el = targets[i];
         if (el && el.getBoundingClientRect().top + window.scrollY <= threshold) idx = i;
       });
       return idx;
     };
-    const update = () => setActiveIndex(getIndex());
+    const update = () => {
+      if (frame !== null) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        setActiveIndex(getIndex());
+      });
+    };
     window.addEventListener("scroll", update, { passive: true });
     update();
-    return () => window.removeEventListener("scroll", update);
-  }, []);
+    return () => {
+      window.removeEventListener("scroll", update);
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
+  }, [visible]);
 
   // Losing the header must not strand an open sheet over a locked body.
   useEffect(() => { if (!visible) setOpen(false); }, [visible]);
 
   useEffect(() => {
     if (!open) return;
+    const returnFocus = trigger.current;
     const previous = document.body.style.overflow;
     const wasStopped = lenis?.isStopped;
     lenis?.stop();
@@ -78,7 +90,7 @@ export default function SideNavbar({ visible = true }) {
     return () => {
       cancelAnimationFrame(frame); document.body.style.overflow = previous;
       if (!wasStopped) lenis?.start();
-      document.removeEventListener("keydown", keyboard); trigger.current?.focus();
+      document.removeEventListener("keydown", keyboard); returnFocus?.focus();
     };
   }, [open, lenis]);
 

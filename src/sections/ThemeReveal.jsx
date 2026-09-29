@@ -49,8 +49,7 @@ function LayerMotion({ className, src, alt, from, float, fade, depth = 1, zoom =
   const opacity = useTransform(progress, fade ?? DEFAULT_FADE, [0, 1]);
   const rest = className === "carnival-title" ? .78 : 1;
   const scale = useTransform(progress, [0, 1], [zoom ? rest * (.9 + .1 * depth) : rest, 1]);
-  const z = depth * 42;
-  return <motion.div style={reduced ? undefined : { opacity, x, y, z, scale }}>
+  return <motion.div style={reduced ? undefined : { opacity, x, y, scale }}>
       {children || <img className={float ? "carnival-float" : ""} src={src}
         alt={alt} draggable="false" loading="lazy" decoding="async" />}
     </motion.div>;
@@ -61,10 +60,10 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
   const stageRef = useRef(null);
   const pointerFrame = useRef(null);
   const settleTimer = useRef(null);
-  const playing = useSceneActive(ref, sceneProgress, -Infinity, .45);
+  const playing = useSceneActive(ref, sceneProgress, sceneProgress ? .12 : -Infinity, .45);
   const reduced = useReducedMotion();
   const handlePointerMove = event => {
-    if (reduced || event.pointerType !== "mouse" || !stageRef.current) return;
+    if (!playing || reduced || event.pointerType !== "mouse" || !stageRef.current) return;
     stageRef.current.classList.remove("carnival-stage--settle");
     const bounds = ref.current.getBoundingClientRect();
     const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
@@ -90,6 +89,7 @@ export default function ThemeReveal({ progress = null, embedded = false, onReady
   };
   useEffect(() => () => {
     if (pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
+    if (settleTimer.current) clearTimeout(settleTimer.current);
   }, []);
   useEffect(() => {
     if (!onReady) return;

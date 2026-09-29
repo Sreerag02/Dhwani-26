@@ -90,7 +90,7 @@ export default function CampusAmbassador() {
           <p className="ca-kicker">
             <img
               className="ca-emblem"
-              src="/assets/logo/dhwani-icon.webp"
+              src="/assets/runtime/logo/dhwani-icon.webp"
               alt=""
               draggable="false"
             />

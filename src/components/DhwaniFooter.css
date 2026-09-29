@@ -32,7 +32,7 @@
   inset: 0;
   z-index: 4;
   pointer-events: none;
-  filter: url(#dhwaniHalftoneGrain);
+  background: url("/assets/runtime/footer/grain.webp") repeat;
   opacity: 0.85;
   mix-blend-mode: overlay;
 }
@@ -42,7 +42,7 @@
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
-  filter: blur(95px);
+
   will-change: transform;
 }
 
@@ -70,7 +70,7 @@
   width: 750px;
   height: 450px;
   background: radial-gradient(ellipse, rgba(251, 191, 36, 0.14) 0%, rgba(244, 63, 94, 0.08) 50%, transparent 80%);
-  filter: blur(80px);
+
   pointer-events: none;
   z-index: 2;
 }
@@ -725,4 +725,22 @@
     padding: 5rem 1rem max(4rem, env(safe-area-inset-bottom));
   }
   .dhwani-editorial-content { flex-shrink: 0; padding: 1.5rem 0; }
+}
+
+/* This section has a stable viewport height, so skipping its offscreen paint
+   does not move the page or change anchor positions. */
+.dhwani-footer-container.carnival-world {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100svh;
+}
+
+/* Radial gradients already provide soft lighting. Avoid large blur buffers
+   and the full-screen SVG noise filter on touch devices. */
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .ambient-festival-glow,
+  .ambient-center-lantern-glow,
+  .mascot-left-aura-halo,
+  .mascot-aura-halo,
+  .carnival-art-canvas { filter: none; will-change: auto; }
+  .halftone-grain-overlay { display: none; }
 }
