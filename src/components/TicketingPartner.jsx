@@ -1,7 +1,7 @@
 import "./TicketingPartner.css";
 
 const LOGO = "/assets/partners/makemypass-logo-green-MzJ-s8F3.svg";
-const DEFAULT_HREF = "https://org.makemypass.com/web/dhwani-26";
+const DEFAULT_HREF = "https://makemypass.com";
 
 /*
  * MakeMyPass credit. The logo mixes a bright green wordmark with a near-black

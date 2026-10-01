@@ -25,6 +25,7 @@ function KhaiStage() {
 
 export default function CampusAmbassador() {
   const [state, setState] = useState({ status: "loading" });
+  const [showAllAmbassadors, setShowAllAmbassadors] = useState(false);
 
   const [attempt, setAttempt] = useState(0);
 
@@ -122,7 +123,20 @@ export default function CampusAmbassador() {
 
       <section className="ca-board" aria-label="Campus ambassador leaderboard">
         <div className="ca-board-head">
-          <h2 className="ca-board-title">Top 10 Leaderboard</h2>
+          <h2 className="ca-board-title">
+            {showAllAmbassadors ? "All Ambassadors" : "Top 10 Leaderboard"}
+          </h2>
+          {state.status === "ok" && rows.length > 10 && (
+            <button
+              type="button"
+              className="ca-visibility-toggle"
+              aria-expanded={showAllAmbassadors}
+              aria-controls="ca-ambassador-table"
+              onClick={() => setShowAllAmbassadors(visible => !visible)}
+            >
+              {showAllAmbassadors ? "Hide" : "Show all"}
+            </button>
+          )}
         </div>
 
         {state.status === "loading" && (
@@ -141,7 +155,7 @@ export default function CampusAmbassador() {
         )}
 
         {state.status === "ok" && rows.length > 0 && (
-          <div className="ca-table-wrap">
+          <div className="ca-table-wrap" id="ca-ambassador-table">
             <table className="ca-table">
               <thead>
                 <tr>
@@ -151,7 +165,7 @@ export default function CampusAmbassador() {
                 </tr>
               </thead>
               <tbody>
-                {rows.slice(0, 10).map(row => (
+                {(showAllAmbassadors ? rows : rows.slice(0, 10)).map(row => (
                   <tr key={`${row.rank}-${row.caCode}`} className={row.rank <= 3 ? "ca-row--top" : undefined}>
                     <td data-label="Rank">
                       <span className="ca-rank" data-medal={MEDALS[row.rank] ?? undefined}>

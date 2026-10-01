@@ -239,11 +239,11 @@ export function DhwaniFooter() {
         {/* Curated Editorial Navigation */}
         <nav className="dhwani-curated-nav" aria-label="Festival Navigation">
           {[
-            { label: 'EXPLORE', href: 'https://org.makemypass.com/web/dhwani-26' },
-            { label: 'PRONITES', href: 'https://org.makemypass.com/web/dhwani-26' },
-            { label: 'COMPETITIONS', href: 'https://org.makemypass.com/web/dhwani-26' },
-            { label: 'WORKSHOPS', href: 'https://org.makemypass.com/web/dhwani-26' },
-            { label: 'SCHEDULE', href: 'https://org.makemypass.com/web/dhwani-26' },
+            { label: 'EXPLORE', href: 'https://makemypass.com/web/dhwani-26' },
+            { label: 'PRONITES', href: 'https://makemypass.com/web/dhwani-26' },
+            { label: 'COMPETITIONS', href: 'https://makemypass.com/web/dhwani-26' },
+            { label: 'WORKSHOPS', href: 'https://makemypass.com/web/dhwani-26' },
+            { label: 'SCHEDULE', href: 'https://makemypass.com/web/dhwani-26' },
           ].map((item) => (
             <a key={item.label} href={item.href} className="curated-nav-item">
               <span className="nav-item-text">{item.label}</span>

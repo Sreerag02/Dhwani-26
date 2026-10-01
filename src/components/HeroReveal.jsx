@@ -1,6 +1,6 @@
 import useSceneActive from "../hooks/useSceneActive";
-import { useRef, useState } from "react";
-import { motion, useReducedMotion, useTransform } from "motion/react";
+import { useRef } from "react";
+import { motion, useAnimationControls, useReducedMotion, useTransform } from "motion/react";
 import KhaiPuppet from "./KhaiPuppet";
 import "./MascotHero.css";
 const MASCOT = "/assets/mascot/";
@@ -8,7 +8,7 @@ const CLOUDS = [["cloud-left.webp","one"],["cloud-rightup.webp","two"],["cloud-1
 export default function KhaiHero({ progress, sceneProgress }) {
   const scene = useRef(null);
   const active = useSceneActive(scene, sceneProgress, .403, .700);
-  const [tap, setTap] = useState(0);
+  const dance = useAnimationControls();
   const reduced = useReducedMotion();
   const entrance = useTransform(progress, [.60, .82], [0, 1]);
   const rise = useTransform(progress, [.52, .88], [100, 0]);
@@ -29,11 +29,15 @@ export default function KhaiHero({ progress, sceneProgress }) {
       <div className="poster-character">
 <motion.button className="poster-character-button" type="button" aria-label="Make Khai dance"
             style={{ opacity: entrance, y: reduced ? 0 : rise, scale: 1 }}
-            onClick={() => setTap(n => n + 1)}
+            onClick={() => {
+              if (reduced) return;
+              dance.stop();
+              dance.start({ rotate: [0, -3, 3, -1, 0], y: [0, -14, 0] });
+            }}
             whileTap={reduced ? undefined : { scale: 0.97 }}>
-            <motion.div key={tap} className="poster-character-wrap"
+            <motion.div className="poster-character-wrap"
               initial={false}
-              animate={tap && !reduced ? { rotate: [0, -3, 3, -1, 0], y: [0, -14, 0] } : { rotate: 0, y: 0 }}
+              animate={reduced ? { rotate: 0, y: 0 } : dance}
               transition={{ duration: 0.65, ease: "easeInOut" }}>
               <KhaiPuppet progress={progress} reduced={reduced} />
             </motion.div>

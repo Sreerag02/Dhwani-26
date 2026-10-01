@@ -33,10 +33,13 @@ export default function ArtistReveal({ journeyProgress }) {
   const compactProgress = useTransform(journeyProgress, [ARTIST_START, ARTIST_END], [0, 1]);
   const progress = useTransform(compactProgress, ARTIST_PROGRESS_INPUTS, ARTIST_PROGRESS_OUTPUTS);
   const visibility = useTransform(journeyProgress, value => value < ARTIST_START || value >= ARTIST_END ? 'hidden' : 'visible');
+  // Chapters set their own visibility, which can override a hidden parent.
+  // Disable hit testing too, so preloaded art cannot intercept Khai's input.
+  const pointerEvents = useTransform(journeyProgress, value => value < ARTIST_START || value >= ARTIST_END ? 'none' : 'auto');
   const opacity = useTransform(progress, [0, .07 / ARTISTS.length, 1 - .11 / ARTISTS.length, 1], [0, 1, 1, 0]);
   const prepared = useProgressWindow(journeyProgress, ARTIST_START - .08, ARTIST_END + .08);
   return <motion.section className="artist-reveal" aria-label="Dhwani Artist Reveal"
-    style={{ opacity, visibility }}>
+    style={{ opacity, visibility, pointerEvents }}>
     {prepared && ARTISTS.map((artist, index) => <ArtistChapter key={artist.id} artist={artist} index={index} progress={progress} />)}
   </motion.section>;
 }
