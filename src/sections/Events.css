@@ -84,7 +84,7 @@
   left: 0;
   right: 0;
   height: 180px;
-  background: linear-gradient(to bottom, #1f1d66 0%, rgba(31, 29, 102, 0.8) 30%, transparent 100%);
+  background: linear-gradient(to bottom, #02c8ed 0%, #1f1d66 34%, rgba(31, 29, 102, 0.8) 62%, transparent 100%);
   z-index: 4;
   pointer-events: none;
 }
@@ -1025,7 +1025,7 @@
   }
 
   .events-section::before {
-    height: 120px;
+    height: 220px;
   }
 
   .events-particles {
@@ -1302,4 +1302,74 @@
   .events-section { min-height: 0; padding: var(--events-top-clearance) 0.5rem 2rem; }
   .notice-board-header { margin-top: 1.5rem; }
   .events-card-rail .event-card { content-visibility: visible; }
+}
+
+/* Yellow foreground clouds overlap the Merch → Events boundary on phones. */
+.events-transition-clouds { display:none; }
+@media (max-width:700px) {
+  .events-transition-clouds {
+    display:block;
+    position:absolute;
+    top:-112px;
+    left:0;
+    width:100%;
+    height:180px;
+    z-index:20;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .events-transition-clouds img {
+    position:absolute;
+    height:auto;
+    pointer-events:none;
+  }
+  .events-transition-clouds__left,
+  .events-transition-clouds__right {
+    bottom:-26px;
+    width:min(78vw,330px);
+    filter:drop-shadow(0 -7px 0 rgb(31 29 102 / 36%));
+  }
+  .events-transition-clouds__left { left:-22%; z-index:2; }
+  .events-transition-clouds__right { right:-22%; z-index:2; transform:scaleX(-1); }
+  .events-transition-clouds__lantern { top:38px; z-index:1; width:38px; filter:drop-shadow(0 0 9px rgb(250 191 1 / 45%)); }
+  .events-transition-clouds__lantern--left { left:25%; rotate:-8deg; }
+  .events-transition-clouds__lantern--right { right:24%; top:28px; width:34px; rotate:7deg; }
+}
+
+/* Repeat the cloud-and-lantern overlap where Events hands off to Campus Amb. */
+.campus-transition-clouds { display:none; }
+@media (max-width:700px) {
+  .campus-transition-clouds {
+    display:block;
+    position:absolute;
+    bottom:-105px;
+    left:0;
+    width:100%;
+    height:180px;
+    z-index:20;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .campus-transition-clouds img {
+    position:absolute;
+    height:auto;
+    pointer-events:none;
+  }
+  .campus-transition-clouds__left,
+  .campus-transition-clouds__right {
+    top:-26px;
+    width:min(78vw,330px);
+    filter:drop-shadow(0 -7px 0 rgb(31 29 102 / 36%));
+  }
+  .campus-transition-clouds__left { left:-22%; z-index:2; }
+  .campus-transition-clouds__right { right:-22%; z-index:2; transform:scaleX(-1); }
+  .campus-transition-clouds__lantern { top:24px; z-index:1; width:38px; filter:drop-shadow(0 0 9px rgb(250 191 1 / 45%)); }
+  .campus-transition-clouds__lantern--left { left:25%; rotate:-8deg; }
+  .campus-transition-clouds__lantern--right { right:24%; top:12px; width:34px; rotate:7deg; }
+}
+
+@media (max-width:768px) {
+  /* Keep decorative boundary layers anchored while the section scrolls normally. */
+  .events-pin { position:relative; }
+  .events-pin__inner { position:static; }
 }
