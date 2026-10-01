@@ -112,8 +112,8 @@ export default function CampusAmbassador() {
               <span className="ca-stat-label">Ambassadors</span>
             </span>
             <span className="ca-stat">
-              <strong className="ca-stat-num">{rows[0]?.caCode ?? "—"}</strong>
-              <span className="ca-stat-label">At the top</span>
+              <strong className="ca-stat-num">{rows[0] ? formatPoints(rows[0].points) : "—"}</strong>
+              <span className="ca-stat-label">Top points</span>
             </span>
           </div>
         </div>
@@ -160,22 +160,20 @@ export default function CampusAmbassador() {
               <thead>
                 <tr>
                   <th scope="col">Rank</th>
-                  <th scope="col">CA Code</th>
+                  <th scope="col">Tickets</th>
                   <th scope="col" aria-sort="descending">Points</th>
                 </tr>
               </thead>
               <tbody>
                 {(showAllAmbassadors ? rows : rows.slice(0, 10)).map(row => (
-                  <tr key={`${row.rank}-${row.caCode}`} className={row.rank <= 3 ? "ca-row--top" : undefined}>
+                  <tr key={row.rank} className={row.rank <= 3 ? "ca-row--top" : undefined}>
                     <td data-label="Rank">
                       <span className="ca-rank" data-medal={MEDALS[row.rank] ?? undefined}>
                         <em>{row.rank}</em>
                       </span>
                     </td>
-                    <td data-label="CA Code">
-                      <span className="ca-name">
-                        {row.caCode}
-                      </span>
+                    <td data-label="Tickets">
+                      <span className="ca-referrals">{formatPoints(row.tickets)}</span>
                     </td>
                     <td data-label="Points">
                       <span className="ca-points">{formatPoints(row.points)}</span>

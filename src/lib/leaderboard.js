@@ -1,5 +1,4 @@
 const number = value => Number.isFinite(Number(value)) ? Number(value) : 0;
-const text = (value, fallback) => typeof value === "string" && value.trim() ? value.trim() : fallback;
 
 export function normalizeLeaderboard(data) {
   if (data?.topAmbassadors != null && !Array.isArray(data.topAmbassadors)) {
@@ -8,7 +7,6 @@ export function normalizeLeaderboard(data) {
   const rows = (data?.topAmbassadors ?? [])
     .filter(row => row && typeof row === "object")
     .map(row => ({
-      caCode: text(row.caCode, "—"),
       points: number(row.points),
       tickets: number(row.tickets),
     }))
